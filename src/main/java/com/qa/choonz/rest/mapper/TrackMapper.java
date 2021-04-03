@@ -12,8 +12,8 @@ public class TrackMapper {
         toReturn.setDuration(track.getDuration());
         toReturn.setLyrics(track.getLyrics());
         toReturn.setAlbum(AlbumMapper.mapToShallowDTO(track.getAlbum()));
-        toReturn.setArtist(ArtistMapper.mapToShallowDTO(track.getAlbum().getArtist()));
-        toReturn.setGenre(GenreMapper.mapToShallowDTO(track.getAlbum().getGenre()));
+        toReturn.setArtist((track.getAlbum() != null) ? ArtistMapper.mapToShallowDTO(track.getAlbum().getArtist()) : null);
+        toReturn.setGenre((track.getAlbum() != null) ? GenreMapper.mapToShallowDTO(track.getAlbum().getGenre()) : null);
         toReturn.setPlaylist(PlaylistMapper.mapToShallowDTO(track.getPlaylist()));
         return toReturn;
     }

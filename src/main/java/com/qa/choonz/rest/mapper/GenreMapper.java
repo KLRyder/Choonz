@@ -18,11 +18,11 @@ public class GenreMapper {
             tracks.addAll(album.getTracks().stream().map(TrackMapper::mapToShallowDTO).collect(Collectors.toList()));
         }
 
-        toReturn.setAlbums(genre.getAlbums().stream().map(AlbumMapper::mapToShallowDTO).collect(Collectors.toList()));
-        toReturn.setTracks(tracks);
         toReturn.setDescription(genre.getDescription());
         toReturn.setId(genre.getId());
         toReturn.setName(genre.getName());
+        toReturn.setAlbums(genre.getAlbums().stream().map(AlbumMapper::mapToShallowDTO).collect(Collectors.toList()));
+        toReturn.setTracks(tracks);
         return toReturn;
     }
 
