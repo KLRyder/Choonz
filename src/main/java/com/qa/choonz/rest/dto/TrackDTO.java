@@ -1,22 +1,17 @@
 package com.qa.choonz.rest.dto;
 
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.Playlist;
-
 import java.util.Objects;
 
 public class TrackDTO {
 
     private long id;
     private String name;
-    private Album album;
-    private Playlist playlist;
+    private AlbumDTO album;
+    private PlaylistDTO playlist;
     private int duration;
     private String lyrics;
-    private Artist artist;
-    private Genre genre;
+    private ArtistDTO artist;
+    private GenreDTO genre;
 
     public TrackDTO() {
         super();
@@ -39,19 +34,19 @@ public class TrackDTO {
         this.name = name;
     }
 
-    public Album getAlbum() {
+    public AlbumDTO getAlbum() {
         return album;
     }
 
-    public void setAlbum(Album album) {
+    public void setAlbum(AlbumDTO album) {
         this.album = album;
     }
 
-    public Playlist getPlaylist() {
+    public PlaylistDTO getPlaylist() {
         return playlist;
     }
 
-    public void setPlaylist(Playlist playlist) {
+    public void setPlaylist(PlaylistDTO playlist) {
         this.playlist = playlist;
     }
 
@@ -71,19 +66,19 @@ public class TrackDTO {
         this.lyrics = lyrics;
     }
 
-    public Artist getArtist() {
+    public ArtistDTO getArtist() {
         return artist;
     }
 
-    public void setArtist(Artist artist) {
+    public void setArtist(ArtistDTO artist) {
         this.artist = artist;
     }
 
-    public Genre getGenre() {
+    public GenreDTO getGenre() {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(GenreDTO genre) {
         this.genre = genre;
     }
 
