@@ -3,6 +3,7 @@ package com.qa.choonz.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.qa.choonz.rest.mapper.TrackMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,30 +16,24 @@ import com.qa.choonz.rest.dto.TrackDTO;
 public class TrackService {
 
     private TrackRepository repo;
-    private ModelMapper mapper;
 
-    public TrackService(TrackRepository repo, ModelMapper mapper) {
+    public TrackService(TrackRepository repo) {
         super();
         this.repo = repo;
-        this.mapper = mapper;
-    }
-
-    private TrackDTO mapToDTO(Track track) {
-        return this.mapper.map(track, TrackDTO.class);
     }
 
     public TrackDTO create(Track track) {
         Track created = this.repo.save(track);
-        return this.mapToDTO(created);
+        return TrackMapper.mapToDeepDTO(created);
     }
 
     public List<TrackDTO> read() {
-        return this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+        return this.repo.findAll().stream().map(TrackMapper::mapToDeepDTO).collect(Collectors.toList());
     }
 
     public TrackDTO read(long id) {
         Track found = this.repo.findById(id).orElseThrow(TrackNotFoundException::new);
-        return this.mapToDTO(found);
+        return TrackMapper.mapToDeepDTO(found);
     }
 
     public TrackDTO update(Track track, long id) {
@@ -49,7 +44,7 @@ public class TrackService {
         toUpdate.setLyrics(track.getLyrics());
         toUpdate.setPlaylist(track.getPlaylist());
         Track updated = this.repo.save(toUpdate);
-        return this.mapToDTO(updated);
+        return TrackMapper.mapToDeepDTO(updated);
     }
 
     public boolean delete(long id) {

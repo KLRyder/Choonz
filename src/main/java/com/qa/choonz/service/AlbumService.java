@@ -3,6 +3,7 @@ package com.qa.choonz.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.qa.choonz.rest.mapper.AlbumMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,30 +16,24 @@ import com.qa.choonz.rest.dto.AlbumDTO;
 public class AlbumService {
 
     private AlbumRepository repo;
-    private ModelMapper mapper;
 
-    public AlbumService(AlbumRepository repo, ModelMapper mapper) {
+    public AlbumService(AlbumRepository repo) {
         super();
         this.repo = repo;
-        this.mapper = mapper;
-    }
-
-    private AlbumDTO mapToDTO(Album album) {
-        return this.mapper.map(album, AlbumDTO.class);
     }
 
     public AlbumDTO create(Album album) {
         Album created = this.repo.save(album);
-        return this.mapToDTO(created);
+        return AlbumMapper.mapToDeepDTO(created);
     }
 
     public List<AlbumDTO> read() {
-        return this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+        return this.repo.findAll().stream().map(AlbumMapper::mapToDeepDTO).collect(Collectors.toList());
     }
 
     public AlbumDTO read(long id) {
         Album found = this.repo.findById(id).orElseThrow(AlbumNotFoundException::new);
-        return this.mapToDTO(found);
+        return AlbumMapper.mapToDeepDTO(found);
     }
 
     public AlbumDTO update(Album album, long id) {
@@ -48,7 +43,7 @@ public class AlbumService {
         toUpdate.setArtist(toUpdate.getArtist());
         toUpdate.setCover(toUpdate.getCover());
         Album updated = this.repo.save(toUpdate);
-        return this.mapToDTO(updated);
+        return AlbumMapper.mapToDeepDTO(updated);
     }
 
     public boolean delete(long id) {
