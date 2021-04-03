@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Objects;
 
 import com.qa.choonz.persistence.domain.Album;
+import com.qa.choonz.persistence.domain.Track;
 
 public class ArtistDTO {
 
     private long id;
     private String name;
     private List<Album> albums;
+    private List<Track> tracks;
 
     public ArtistDTO() {
         super();
@@ -47,30 +49,44 @@ public class ArtistDTO {
         this.albums = albums;
     }
 
+    public List<Track> getTracks() {
+        return tracks;
+    }
+
+    public void setTracks(List<Track> tracks) {
+        this.tracks = tracks;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ArtistDTO)) return false;
+
+        ArtistDTO artistDTO = (ArtistDTO) o;
+
+        if (id != artistDTO.id) return false;
+        if (!Objects.equals(name, artistDTO.name)) return false;
+        if (!Objects.equals(albums, artistDTO.albums)) return false;
+        return Objects.equals(tracks, artistDTO.tracks);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (albums != null ? albums.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        return result;
+    }
+
     @Override
     public String toString() {
         return "ArtistDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", albums=" + albums +
+                ", tracks=" + tracks +
                 '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(albums, id, name);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof ArtistDTO)) {
-            return false;
-        }
-        ArtistDTO other = (ArtistDTO) obj;
-        return Objects.equals(albums, other.albums) && id == other.id && Objects.equals(name, other.name);
     }
 
 }
