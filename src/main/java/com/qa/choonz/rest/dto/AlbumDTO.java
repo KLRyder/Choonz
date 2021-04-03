@@ -80,6 +80,32 @@ public class AlbumDTO {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AlbumDTO)) return false;
+
+        AlbumDTO albumDTO = (AlbumDTO) o;
+
+        if (id != albumDTO.id) return false;
+        if (!Objects.equals(name, albumDTO.name)) return false;
+        if (!Objects.equals(tracks, albumDTO.tracks)) return false;
+        if (!Objects.equals(artist, albumDTO.artist)) return false;
+        if (!Objects.equals(genre, albumDTO.genre)) return false;
+        return Objects.equals(cover, albumDTO.cover);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        result = 31 * result + (artist != null ? artist.hashCode() : 0);
+        result = 31 * result + (genre != null ? genre.hashCode() : 0);
+        result = 31 * result + (cover != null ? cover.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "AlbumDTO{" +
                 "id=" + id +
@@ -89,25 +115,6 @@ public class AlbumDTO {
                 ", genre=" + genre +
                 ", cover='" + cover + '\'' +
                 '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(artist, cover, genre, id, name, tracks);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof AlbumDTO)) {
-            return false;
-        }
-        AlbumDTO other = (AlbumDTO) obj;
-        return Objects.equals(artist, other.artist) && Objects.equals(cover, other.cover)
-                && Objects.equals(genre, other.genre) && id == other.id && Objects.equals(name, other.name)
-                && Objects.equals(tracks, other.tracks);
     }
 
 }

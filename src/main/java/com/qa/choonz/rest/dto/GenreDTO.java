@@ -79,20 +79,26 @@ public class GenreDTO {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(albums, description, id, name);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GenreDTO)) return false;
+
+        GenreDTO genreDTO = (GenreDTO) o;
+
+        if (id != genreDTO.id) return false;
+        if (!Objects.equals(name, genreDTO.name)) return false;
+        if (!Objects.equals(description, genreDTO.description)) return false;
+        if (!Objects.equals(albums, genreDTO.albums)) return false;
+        return Objects.equals(tracks, genreDTO.tracks);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof GenreDTO)) {
-            return false;
-        }
-        GenreDTO other = (GenreDTO) obj;
-        return Objects.equals(albums, other.albums) && Objects.equals(description, other.description) && id == other.id
-                && Objects.equals(name, other.name);
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (albums != null ? albums.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        return result;
     }
 }

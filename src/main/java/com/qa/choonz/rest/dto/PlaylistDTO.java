@@ -98,6 +98,30 @@ public class PlaylistDTO {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PlaylistDTO)) return false;
+
+        PlaylistDTO that = (PlaylistDTO) o;
+
+        if (id != that.id) return false;
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(description, that.description)) return false;
+        if (!Objects.equals(artwork, that.artwork)) return false;
+        return Objects.equals(tracks, that.tracks);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (artwork != null ? artwork.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "PlaylistDTO{" +
                 "id=" + id +
@@ -106,24 +130,6 @@ public class PlaylistDTO {
                 ", artwork='" + artwork + '\'' +
                 ", tracks=" + tracks +
                 '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(artwork, description, id, name, tracks);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof PlaylistDTO)) {
-            return false;
-        }
-        PlaylistDTO other = (PlaylistDTO) obj;
-        return Objects.equals(artwork, other.artwork) && Objects.equals(description, other.description)
-                && id == other.id && Objects.equals(name, other.name) && Objects.equals(tracks, other.tracks);
     }
 
 }
