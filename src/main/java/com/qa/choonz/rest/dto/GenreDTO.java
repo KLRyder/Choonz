@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.qa.choonz.persistence.domain.Album;
+import com.qa.choonz.persistence.domain.Track;
 
 public class GenreDTO {
 
@@ -11,6 +12,7 @@ public class GenreDTO {
     private String name;
     private String description;
     private List<Album> albums;
+    private List<Track> tracks;
 
     public GenreDTO() {
         super();
@@ -57,12 +59,23 @@ public class GenreDTO {
         this.albums = albums;
     }
 
+    public List<Track> getTracks() {
+        return tracks;
+    }
+
+    public void setTracks(List<Track> tracks) {
+        this.tracks = tracks;
+    }
+
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("GenreDTO [id=").append(id).append(", name=").append(name).append(", description=")
-                .append(description).append(", albums=").append(albums).append("]");
-        return builder.toString();
+        return "GenreDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", albums=" + albums +
+                ", tracks=" + tracks +
+                '}';
     }
 
     @Override
@@ -82,5 +95,4 @@ public class GenreDTO {
         return Objects.equals(albums, other.albums) && Objects.equals(description, other.description) && id == other.id
                 && Objects.equals(name, other.name);
     }
-
 }
