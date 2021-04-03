@@ -1,5 +1,6 @@
 package com.qa.choonz.persistence.domain;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public class Album {
 
     public Album() {
         super();
-        // TODO Auto-generated constructor stub
+        tracks = Collections.emptyList();
     }
 
     public Album(long id, @NotNull @Size(max = 100) String name, List<Track> tracks, Artist artist, Genre genre,
