@@ -3,6 +3,7 @@ package com.qa.choonz.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.qa.choonz.rest.mapper.GenreMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,36 +16,31 @@ import com.qa.choonz.rest.dto.GenreDTO;
 public class GenreService {
 
     private GenreRepository repo;
-    private ModelMapper mapper;
 
-    public GenreService(GenreRepository repo, ModelMapper mapper) {
+    public GenreService(GenreRepository repo) {
         super();
         this.repo = repo;
-        this.mapper = mapper;
     }
 
-    private GenreDTO mapToDTO(Genre genre) {
-        return this.mapper.map(genre, GenreDTO.class);
-    }
 
     public GenreDTO create(Genre genre) {
         Genre created = this.repo.save(genre);
-        return this.mapToDTO(created);
+        return GenreMapper.mapToDeepDTO(created);
     }
 
     public List<GenreDTO> read() {
-        return this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+        return this.repo.findAll().stream().map(GenreMapper::mapToDeepDTO).collect(Collectors.toList());
     }
 
     public GenreDTO read(long id) {
         Genre found = this.repo.findById(id).orElseThrow(GenreNotFoundException::new);
-        return this.mapToDTO(found);
+        return GenreMapper.mapToDeepDTO(found);
     }
 
     public GenreDTO update(Genre genre, long id) {
         Genre toUpdate = this.repo.findById(id).orElseThrow(GenreNotFoundException::new);
         Genre updated = this.repo.save(toUpdate);
-        return this.mapToDTO(updated);
+        return GenreMapper.mapToDeepDTO(updated);
     }
 
     public boolean delete(long id) {

@@ -1,5 +1,6 @@
 package com.qa.choonz.persistence.domain;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +41,7 @@ public class Playlist {
 
     public Playlist() {
         super();
-        // TODO Auto-generated constructor stub
+        tracks = Collections.emptyList();
     }
 
     public Playlist(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description,

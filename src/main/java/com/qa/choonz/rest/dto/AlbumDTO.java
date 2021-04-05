@@ -3,17 +3,13 @@ package com.qa.choonz.rest.dto;
 import java.util.List;
 import java.util.Objects;
 
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.Track;
-
 public class AlbumDTO {
 
     private long id;
     private String name;
-    private List<Track> tracks;
-    private Artist artist;
-    private Genre genre;
+    private List<TrackDTO> tracks;
+    private ArtistDTO artist;
+    private GenreDTO genre;
     private String cover;
 
     public AlbumDTO() {
@@ -21,7 +17,7 @@ public class AlbumDTO {
         // TODO Auto-generated constructor stub
     }
 
-    public AlbumDTO(long id, String name, List<Track> tracks, Artist artist, Genre genre, String cover) {
+    public AlbumDTO(long id, String name, List<TrackDTO> tracks, ArtistDTO artist, GenreDTO genre, String cover) {
         super();
         this.id = id;
         this.name = name;
@@ -47,27 +43,27 @@ public class AlbumDTO {
         this.name = name;
     }
 
-    public List<Track> getTracks() {
+    public List<TrackDTO> getTracks() {
         return tracks;
     }
 
-    public void setTracks(List<Track> tracks) {
+    public void setTracks(List<TrackDTO> tracks) {
         this.tracks = tracks;
     }
 
-    public Artist getArtist() {
+    public ArtistDTO getArtist() {
         return artist;
     }
 
-    public void setArtist(Artist artist) {
+    public void setArtist(ArtistDTO artist) {
         this.artist = artist;
     }
 
-    public Genre getGenre() {
+    public GenreDTO getGenre() {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(GenreDTO genre) {
         this.genre = genre;
     }
 
@@ -80,31 +76,41 @@ public class AlbumDTO {
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("AlbumDTO [id=").append(id).append(", name=").append(name).append(", tracks=").append(tracks)
-                .append(", artist=").append(artist).append(", genre=").append(genre).append(", cover=").append(cover)
-                .append("]");
-        return builder.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AlbumDTO)) return false;
+
+        AlbumDTO albumDTO = (AlbumDTO) o;
+
+        if (id != albumDTO.id) return false;
+        if (!Objects.equals(name, albumDTO.name)) return false;
+        if (!Objects.equals(tracks, albumDTO.tracks)) return false;
+        if (!Objects.equals(artist, albumDTO.artist)) return false;
+        if (!Objects.equals(genre, albumDTO.genre)) return false;
+        return Objects.equals(cover, albumDTO.cover);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(artist, cover, genre, id, name, tracks);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        result = 31 * result + (artist != null ? artist.hashCode() : 0);
+        result = 31 * result + (genre != null ? genre.hashCode() : 0);
+        result = 31 * result + (cover != null ? cover.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof AlbumDTO)) {
-            return false;
-        }
-        AlbumDTO other = (AlbumDTO) obj;
-        return Objects.equals(artist, other.artist) && Objects.equals(cover, other.cover)
-                && Objects.equals(genre, other.genre) && id == other.id && Objects.equals(name, other.name)
-                && Objects.equals(tracks, other.tracks);
+    public String toString() {
+        return "AlbumDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", tracks=" + tracks +
+                ", artist=" + artist +
+                ", genre=" + genre +
+                ", cover='" + cover + '\'' +
+                '}';
     }
 
 }
