@@ -11,26 +11,27 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.qa.choonz.persistence.domain.Artist;
 import com.qa.choonz.persistence.repository.ArtistRepository;
 import com.qa.choonz.rest.dto.ArtistDTO;
 import com.qa.choonz.rest.mapper.ArtistMapper;
 
-@SpringBootTest
+@ExtendWith({MockitoExtension.class})
 public class artistServiceUnitTest {
 	
-	@Autowired
+	@InjectMocks
 	private ArtistService artistService;
 	
-	@MockBean
+	@Mock
 	private ArtistRepository artistRepo;
 	
-	@MockBean
+	@Mock
 	private ArtistMapper artistMapper;
 	
 	private List<Artist> validArtists;
@@ -69,7 +70,7 @@ public class artistServiceUnitTest {
 		when(artistRepo.findById(1L)).thenReturn(Optional.of(validArtist));
 		when(artistMapper.mapToDeepDTO(Mockito.any(Artist.class))).thenReturn(validArtistDTO);
 		
-		assertThat(validArtistDTOs).isEqualTo(artistService.read(1L));
+		assertThat(validArtistDTO).isEqualTo(artistService.read(1L));
 		
 		verify(artistRepo, times(1)).findById(1L);
 		verify(artistMapper, times(1)).mapToDeepDTO(Mockito.any(Artist.class));

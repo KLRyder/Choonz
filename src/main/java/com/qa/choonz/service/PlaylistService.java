@@ -17,10 +17,10 @@ public class PlaylistService {
     private PlaylistRepository repo;
     private PlaylistMapper mapper;
 
-    public PlaylistService(PlaylistRepository repo) {
+    public PlaylistService(PlaylistRepository repo, PlaylistMapper mapper) {
         super();
         this.repo = repo;
-        mapper = new PlaylistMapper();
+        this.mapper = mapper;
     }
 
     public PlaylistDTO create(Playlist playlist) {

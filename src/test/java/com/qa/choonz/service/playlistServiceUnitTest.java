@@ -11,26 +11,27 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.qa.choonz.persistence.domain.Playlist;
 import com.qa.choonz.persistence.repository.PlaylistRepository;
 import com.qa.choonz.rest.dto.PlaylistDTO;
 import com.qa.choonz.rest.mapper.PlaylistMapper;
 
-@SpringBootTest
+@ExtendWith({MockitoExtension.class})
 public class playlistServiceUnitTest {
 	
-	@Autowired
+	@InjectMocks
 	private PlaylistService playlistService;
 	
-	@MockBean
+	@Mock
 	private PlaylistRepository playlistRepo;
 	
-	@MockBean
+	@Mock
 	private PlaylistMapper playlistMapper;
 	
 	private List<Playlist> validPlaylists;
@@ -54,12 +55,12 @@ public class playlistServiceUnitTest {
 	void readAllPlaylist() {
 		
 		when(playlistRepo.findAll()).thenReturn(validPlaylists);
-		when(playlistMapper.mapToShallowDTO(Mockito.any(Playlist.class))).thenReturn(validPlaylistDTO);
+		when(playlistMapper.mapToDeepDTO(Mockito.any(Playlist.class))).thenReturn(validPlaylistDTO);
 		
 		assertThat(validPlaylistDTOs).isEqualTo(playlistService.read());
 		
 		verify(playlistRepo, times(1)).findAll();
-		verify(playlistMapper, times(1)).mapToShallowDTO(Mockito.any(Playlist.class));
+		verify(playlistMapper, times(1)).mapToDeepDTO(Mockito.any(Playlist.class));
 		
 	}
 	
@@ -69,7 +70,7 @@ public class playlistServiceUnitTest {
 		when(playlistRepo.findById(1L)).thenReturn(Optional.of(validPlaylist));
 		when(playlistMapper.mapToDeepDTO(Mockito.any(Playlist.class))).thenReturn(validPlaylistDTO);
 		
-		assertThat(validPlaylistDTOs).isEqualTo(playlistService.read(1L));
+		assertThat(validPlaylistDTO).isEqualTo(playlistService.read(1L));
 		
 		verify(playlistRepo, times(1)).findById(1L);
 		verify(playlistMapper, times(1)).mapToDeepDTO(Mockito.any(Playlist.class));

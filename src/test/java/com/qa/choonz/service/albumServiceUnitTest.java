@@ -11,10 +11,11 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.qa.choonz.persistence.domain.Album;
 import com.qa.choonz.persistence.domain.Artist;
@@ -25,16 +26,16 @@ import com.qa.choonz.rest.dto.ArtistDTO;
 import com.qa.choonz.rest.dto.GenreDTO;
 import com.qa.choonz.rest.mapper.AlbumMapper;
 
-@SpringBootTest
+@ExtendWith({MockitoExtension.class})
 public class albumServiceUnitTest {
 	
-	@Autowired
+	@InjectMocks
 	private AlbumService albumService;
 	
-	@MockBean
+	@Mock
 	private AlbumRepository albumRepo;
 	
-	@MockBean
+	@Mock
 	private AlbumMapper albumMapper;
 	
 	private List<Album> validAlbums;
