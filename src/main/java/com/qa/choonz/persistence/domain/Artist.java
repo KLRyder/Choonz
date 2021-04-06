@@ -66,28 +66,31 @@ public class Artist {
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Artist [id=").append(id).append(", name=").append(name).append(", albums=").append(albums)
-                .append("]");
-        return builder.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Artist)) return false;
+
+        Artist artist = (Artist) o;
+
+        if (id != artist.id) return false;
+        if (!Objects.equals(name, artist.name)) return false;
+        return Objects.equals(albums, artist.albums);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(albums, id, name);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (albums != null ? albums.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Artist)) {
-            return false;
-        }
-        Artist other = (Artist) obj;
-        return Objects.equals(albums, other.albums) && id == other.id && Objects.equals(name, other.name);
+    public String toString() {
+        return "Artist{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", albums=" + albums +
+                '}';
     }
-
 }
