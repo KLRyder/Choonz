@@ -6,18 +6,25 @@ import com.qa.choonz.rest.dto.PlaylistDTO;
 import java.util.stream.Collectors;
 
 public class PlaylistMapper {
-    public static PlaylistDTO mapToDeepDTO(Playlist playlist) {
+    private TrackMapper trackMapper;
+
+    public PlaylistDTO mapToDeepDTO(Playlist playlist) {
+        //if mappers have not been initialised yet, initialise them
+        if (trackMapper == null) {
+            trackMapper = new TrackMapper();
+        }
+
         PlaylistDTO toReturn = new PlaylistDTO();
 
         toReturn.setId(playlist.getId());
         toReturn.setName(playlist.getName());
         toReturn.setDescription(playlist.getDescription());
         toReturn.setArtwork(playlist.getArtwork());
-        toReturn.setTracks(playlist.getTracks().stream().map(TrackMapper::mapToShallowDTO).collect(Collectors.toList()));
+        toReturn.setTracks(playlist.getTracks().stream().map(trackMapper::mapToShallowDTO).collect(Collectors.toList()));
         return toReturn;
     }
 
-    public static PlaylistDTO mapToShallowDTO(Playlist playlist) {
+    public PlaylistDTO mapToShallowDTO(Playlist playlist) {
         PlaylistDTO toReturn = new PlaylistDTO();
 
         toReturn.setId(playlist.getId());

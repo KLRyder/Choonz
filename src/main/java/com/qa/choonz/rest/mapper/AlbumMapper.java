@@ -6,19 +6,30 @@ import com.qa.choonz.rest.dto.AlbumDTO;
 import java.util.stream.Collectors;
 
 public class AlbumMapper {
-    public static AlbumDTO mapToDeepDTO(Album album) {
+    private TrackMapper trackMapper;
+    private ArtistMapper artistMapper;
+    private GenreMapper genreMapper;
+
+    public AlbumDTO mapToDeepDTO(Album album) {
+        //if mappers have not been initialised yet, initialise them
+        if(trackMapper == null || artistMapper == null || genreMapper == null){
+            trackMapper = new TrackMapper();
+            artistMapper = new ArtistMapper();
+            genreMapper = new GenreMapper();
+        }
+
         AlbumDTO toReturn = new AlbumDTO();
 
         toReturn.setId(album.getId());
         toReturn.setName(album.getName());
         toReturn.setCover(album.getCover());
-        toReturn.setTracks(album.getTracks().stream().map(TrackMapper::mapToShallowDTO).collect(Collectors.toList()));
-        toReturn.setArtist(ArtistMapper.mapToShallowDTO(album.getArtist()));
-        toReturn.setGenre(GenreMapper.mapToShallowDTO(album.getGenre()));
+        toReturn.setTracks(album.getTracks().stream().map(trackMapper::mapToShallowDTO).collect(Collectors.toList()));
+        toReturn.setArtist(artistMapper.mapToShallowDTO(album.getArtist()));
+        toReturn.setGenre(genreMapper.mapToShallowDTO(album.getGenre()));
         return toReturn;
     }
 
-    public static AlbumDTO mapToShallowDTO(Album album) {
+    public AlbumDTO mapToShallowDTO(Album album) {
         AlbumDTO toReturn = new AlbumDTO();
 
         toReturn.setId(album.getId());

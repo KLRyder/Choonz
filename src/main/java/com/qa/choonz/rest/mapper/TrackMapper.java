@@ -4,21 +4,35 @@ import com.qa.choonz.persistence.domain.Track;
 import com.qa.choonz.rest.dto.TrackDTO;
 
 public class TrackMapper {
-    public static TrackDTO mapToDeepDTO(Track track) {
+    private AlbumMapper albumMapper;
+    private GenreMapper genreMapper;
+    private ArtistMapper artistMapper;
+    private PlaylistMapper playlistMapper;
+
+    public TrackDTO mapToDeepDTO(Track track) {
+        //if mappers have not been initialised yet, initialise them
+        if (albumMapper == null || genreMapper == null ||
+            artistMapper == null || playlistMapper == null){
+            artistMapper = new ArtistMapper();
+            albumMapper = new AlbumMapper();
+            genreMapper = new GenreMapper();
+            playlistMapper = new PlaylistMapper();
+        }
+
         TrackDTO toReturn = new TrackDTO();
 
         toReturn.setId(track.getId());
         toReturn.setName(track.getName());
         toReturn.setDuration(track.getDuration());
         toReturn.setLyrics(track.getLyrics());
-        toReturn.setAlbum(AlbumMapper.mapToShallowDTO(track.getAlbum()));
-        toReturn.setArtist((track.getAlbum() != null) ? ArtistMapper.mapToShallowDTO(track.getAlbum().getArtist()) : null);
-        toReturn.setGenre((track.getAlbum() != null) ? GenreMapper.mapToShallowDTO(track.getAlbum().getGenre()) : null);
-        toReturn.setPlaylist(PlaylistMapper.mapToShallowDTO(track.getPlaylist()));
+        toReturn.setAlbum(albumMapper.mapToShallowDTO(track.getAlbum()));
+        toReturn.setArtist((track.getAlbum() != null) ? artistMapper.mapToShallowDTO(track.getAlbum().getArtist()) : null);
+        toReturn.setGenre((track.getAlbum() != null) ? genreMapper.mapToShallowDTO(track.getAlbum().getGenre()) : null);
+        toReturn.setPlaylist(playlistMapper.mapToShallowDTO(track.getPlaylist()));
         return toReturn;
     }
 
-    public static TrackDTO mapToShallowDTO(Track track) {
+    public TrackDTO mapToShallowDTO(Track track) {
         TrackDTO toReturn = new TrackDTO();
 
         toReturn.setId(track.getId());
