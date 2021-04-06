@@ -50,6 +50,7 @@ public class Playlist {
     	this.id = id;
     	this.name = name;
     	this.description = description;
+    	this.artwork = artwork;
     	this.tracks = new ArrayList<Track>();
     }
 
