@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.qa.choonz.rest.mapper.ArtistMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.qa.choonz.exception.ArtistNotFoundException;
@@ -16,25 +15,26 @@ import com.qa.choonz.rest.dto.ArtistDTO;
 public class ArtistService {
 
     private ArtistRepository repo;
+    private ArtistMapper mapper;
 
     public ArtistService(ArtistRepository repo) {
         super();
         this.repo = repo;
+        mapper = new ArtistMapper();
     }
-
 
     public ArtistDTO create(Artist artist) {
         Artist created = this.repo.save(artist);
-        return ArtistMapper.mapToDeepDTO(created);
+        return mapper.mapToDeepDTO(created);
     }
 
     public List<ArtistDTO> read() {
-        return this.repo.findAll().stream().map(ArtistMapper::mapToDeepDTO).collect(Collectors.toList());
+        return this.repo.findAll().stream().map(mapper::mapToDeepDTO).collect(Collectors.toList());
     }
 
     public ArtistDTO read(long id) {
         Artist found = this.repo.findById(id).orElseThrow(ArtistNotFoundException::new);
-        return ArtistMapper.mapToDeepDTO(found);
+        return mapper.mapToDeepDTO(found);
     }
 
     public ArtistDTO update(Artist artist, long id) {
@@ -42,7 +42,7 @@ public class ArtistService {
         toUpdate.setName(artist.getName());
         toUpdate.setAlbums(artist.getAlbums());
         Artist updated = this.repo.save(toUpdate);
-        return ArtistMapper.mapToDeepDTO(updated);
+        return mapper.mapToDeepDTO(updated);
     }
 
     public boolean delete(long id) {
