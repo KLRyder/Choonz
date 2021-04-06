@@ -45,7 +45,7 @@ public class Playlist {
     }
 
     public Playlist(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description,
-            @NotNull @Size(max = 1000) String artwork, List<Track> tracks) {
+                    @NotNull @Size(max = 1000) String artwork, List<Track> tracks) {
         super();
         this.id = id;
         this.name = name;
@@ -95,30 +95,37 @@ public class Playlist {
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Playlist [id=").append(id).append(", name=").append(name).append(", description=")
-                .append(description).append(", artwork=").append(artwork).append(", tracks=").append(tracks)
-                .append("]");
-        return builder.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Playlist)) return false;
+
+        Playlist playlist = (Playlist) o;
+
+        if (id != playlist.id) return false;
+        if (!Objects.equals(name, playlist.name)) return false;
+        if (!Objects.equals(description, playlist.description)) return false;
+        if (!Objects.equals(artwork, playlist.artwork)) return false;
+        return Objects.equals(tracks, playlist.tracks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(artwork, description, id, name, tracks);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (artwork != null ? artwork.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Playlist)) {
-            return false;
-        }
-        Playlist other = (Playlist) obj;
-        return Objects.equals(artwork, other.artwork) && Objects.equals(description, other.description)
-                && id == other.id && Objects.equals(name, other.name) && Objects.equals(tracks, other.tracks);
+    public String toString() {
+        return "Playlist{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", artwork='" + artwork + '\'' +
+                ", tracks=" + tracks +
+                '}';
     }
-
 }

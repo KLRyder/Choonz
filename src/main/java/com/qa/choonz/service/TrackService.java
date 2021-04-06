@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.qa.choonz.rest.mapper.TrackMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.qa.choonz.exception.TrackNotFoundException;
@@ -16,24 +15,26 @@ import com.qa.choonz.rest.dto.TrackDTO;
 public class TrackService {
 
     private TrackRepository repo;
+    private TrackMapper mapper;
 
     public TrackService(TrackRepository repo) {
         super();
         this.repo = repo;
+        mapper = new TrackMapper();
     }
 
     public TrackDTO create(Track track) {
         Track created = this.repo.save(track);
-        return TrackMapper.mapToDeepDTO(created);
+        return mapper.mapToDeepDTO(created);
     }
 
     public List<TrackDTO> read() {
-        return this.repo.findAll().stream().map(TrackMapper::mapToDeepDTO).collect(Collectors.toList());
+        return this.repo.findAll().stream().map(mapper::mapToDeepDTO).collect(Collectors.toList());
     }
 
     public TrackDTO read(long id) {
         Track found = this.repo.findById(id).orElseThrow(TrackNotFoundException::new);
-        return TrackMapper.mapToDeepDTO(found);
+        return mapper.mapToDeepDTO(found);
     }
 
     public TrackDTO update(Track track, long id) {
@@ -44,7 +45,7 @@ public class TrackService {
         toUpdate.setLyrics(track.getLyrics());
         toUpdate.setPlaylist(track.getPlaylist());
         Track updated = this.repo.save(toUpdate);
-        return TrackMapper.mapToDeepDTO(updated);
+        return mapper.mapToDeepDTO(updated);
     }
 
     public boolean delete(long id) {

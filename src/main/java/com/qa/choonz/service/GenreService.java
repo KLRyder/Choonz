@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.qa.choonz.rest.mapper.GenreMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.qa.choonz.exception.GenreNotFoundException;
@@ -16,31 +15,32 @@ import com.qa.choonz.rest.dto.GenreDTO;
 public class GenreService {
 
     private GenreRepository repo;
+    private GenreMapper mapper;
 
     public GenreService(GenreRepository repo) {
         super();
         this.repo = repo;
+        mapper = new GenreMapper();
     }
-
 
     public GenreDTO create(Genre genre) {
         Genre created = this.repo.save(genre);
-        return GenreMapper.mapToDeepDTO(created);
+        return mapper.mapToDeepDTO(created);
     }
 
     public List<GenreDTO> read() {
-        return this.repo.findAll().stream().map(GenreMapper::mapToDeepDTO).collect(Collectors.toList());
+        return this.repo.findAll().stream().map(mapper::mapToDeepDTO).collect(Collectors.toList());
     }
 
     public GenreDTO read(long id) {
         Genre found = this.repo.findById(id).orElseThrow(GenreNotFoundException::new);
-        return GenreMapper.mapToDeepDTO(found);
+        return mapper.mapToDeepDTO(found);
     }
 
     public GenreDTO update(Genre genre, long id) {
         Genre toUpdate = this.repo.findById(id).orElseThrow(GenreNotFoundException::new);
         Genre updated = this.repo.save(toUpdate);
-        return GenreMapper.mapToDeepDTO(updated);
+        return mapper.mapToDeepDTO(updated);
     }
 
     public boolean delete(long id) {
