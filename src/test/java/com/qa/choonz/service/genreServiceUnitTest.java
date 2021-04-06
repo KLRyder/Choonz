@@ -59,7 +59,6 @@ public class genreServiceUnitTest {
 	
 	@Test
 	void readGenreByID() {
-		
 		when(genreRepo.findById(1L)).thenReturn(Optional.of(validGenre));
 		when(genreMapper.mapToDeepDTO(Mockito.any(Genre.class))).thenReturn(validGenreDTO);
 		
