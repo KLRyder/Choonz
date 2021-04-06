@@ -49,32 +49,6 @@ public class Genre {
         this.albums = albums;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Genre [id=").append(id).append(", name=").append(name).append(", description=")
-                .append(description).append(", albums=").append(albums).append("]");
-        return builder.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(albums, description, id, name);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Genre)) {
-            return false;
-        }
-        Genre other = (Genre) obj;
-        return Objects.equals(albums, other.albums) && Objects.equals(description, other.description) && id == other.id
-                && Objects.equals(name, other.name);
-    }
-
     public long getId() {
         return id;
     }
@@ -105,5 +79,37 @@ public class Genre {
 
     public void setAlbums(List<Album> albums) {
         this.albums = albums;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Genre)) return false;
+
+        Genre genre = (Genre) o;
+
+        if (id != genre.id) return false;
+        if (!Objects.equals(name, genre.name)) return false;
+        if (!Objects.equals(description, genre.description)) return false;
+        return Objects.equals(albums, genre.albums);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (albums != null ? albums.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", albums=" + albums +
+                '}';
     }
 }

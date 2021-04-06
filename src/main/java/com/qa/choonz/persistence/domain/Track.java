@@ -99,31 +99,40 @@ public class Track {
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Track [id=").append(id).append(", name=").append(name).append(", album=").append(album)
-                .append(", playlist=").append(playlist).append(", duration=").append(duration).append(", lyrics=")
-                .append(lyrics).append("]");
-        return builder.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Track)) return false;
+
+        Track track = (Track) o;
+
+        if (id != track.id) return false;
+        if (duration != track.duration) return false;
+        if (!Objects.equals(name, track.name)) return false;
+        if (!Objects.equals(album, track.album)) return false;
+        if (!Objects.equals(playlist, track.playlist)) return false;
+        return Objects.equals(lyrics, track.lyrics);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(album, duration, id, lyrics, name, playlist);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (album != null ? album.hashCode() : 0);
+        result = 31 * result + (playlist != null ? playlist.hashCode() : 0);
+        result = 31 * result + duration;
+        result = 31 * result + (lyrics != null ? lyrics.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Track)) {
-            return false;
-        }
-        Track other = (Track) obj;
-        return Objects.equals(album, other.album) && duration == other.duration && id == other.id
-                && Objects.equals(lyrics, other.lyrics) && Objects.equals(name, other.name)
-                && Objects.equals(playlist, other.playlist);
+    public String toString() {
+        return "Track{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", album=" + album +
+                ", playlist=" + playlist +
+                ", duration=" + duration +
+                ", lyrics='" + lyrics + '\'' +
+                '}';
     }
-
 }
