@@ -12,7 +12,11 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,16 +27,16 @@ import com.qa.choonz.rest.dto.GenreDTO;
 import com.qa.choonz.rest.mapper.GenreMapper;
 
 
-@SpringBootTest
+@ExtendWith({MockitoExtension.class})
 public class genreServiceUnitTest {
 	
-	@Autowired
+	@InjectMocks
 	private GenreService genreService;
 	
-	@MockBean
+	@Mock
 	private GenreRepository genreRepo;
 	
-	@MockBean
+	@Mock
 	private GenreMapper genreMapper;
 	
 	private List<Genre> validGenres;
@@ -59,7 +63,7 @@ public class genreServiceUnitTest {
 		when(genreRepo.findById(1L)).thenReturn(Optional.of(validGenre));
 		when(genreMapper.mapToDeepDTO(Mockito.any(Genre.class))).thenReturn(validGenreDTO);
 		
-		assertThat(validGenreDTOs).isEqualTo(genreService.read(1L));
+		assertThat(validGenreDTO).isEqualTo(genreService.read(1L));
 		
 		verify(genreRepo, times(1)).findById(1L);
 		verify(genreMapper, times(1)).mapToDeepDTO(Mockito.any(Genre.class));
