@@ -44,7 +44,7 @@ public class Album {
     }
 
     public Album(long id, @NotNull @Size(max = 100) String name, List<Track> tracks, Artist artist, Genre genre,
-            String cover) {
+                 String cover) {
         super();
         this.id = id;
         this.name = name;
@@ -103,31 +103,40 @@ public class Album {
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Album [id=").append(id).append(", name=").append(name).append(", tracks=").append(tracks)
-                .append(", artist=").append(artist).append(", genre=").append(genre).append(", cover=").append(cover)
-                .append("]");
-        return builder.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Album)) return false;
+
+        Album album = (Album) o;
+
+        if (id != album.id) return false;
+        if (!Objects.equals(name, album.name)) return false;
+        if (!Objects.equals(tracks, album.tracks)) return false;
+        if (!Objects.equals(artist, album.artist)) return false;
+        if (!Objects.equals(genre, album.genre)) return false;
+        return Objects.equals(cover, album.cover);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(artist, cover, genre, id, name, tracks);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        result = 31 * result + (artist != null ? artist.hashCode() : 0);
+        result = 31 * result + (genre != null ? genre.hashCode() : 0);
+        result = 31 * result + (cover != null ? cover.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Album)) {
-            return false;
-        }
-        Album other = (Album) obj;
-        return Objects.equals(artist, other.artist) && Objects.equals(cover, other.cover)
-                && Objects.equals(genre, other.genre) && id == other.id && Objects.equals(name, other.name)
-                && Objects.equals(tracks, other.tracks);
+    public String toString() {
+        return "Album{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", tracks=" + tracks +
+                ", artist=" + artist +
+                ", genre=" + genre +
+                ", cover='" + cover + '\'' +
+                '}';
     }
-
 }
