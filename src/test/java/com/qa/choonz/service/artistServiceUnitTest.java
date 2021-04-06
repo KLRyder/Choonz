@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,20 +54,64 @@ public class artistServiceUnitTest {
 	@Test
 	void readAllArtists() {
 		
+		when(artistRepo.findAll()).thenReturn(validArtists);
+		when(artistMapper.mapToDeepDTO(Mockito.any(Artist.class))).thenReturn(validArtistDTO);
+		
+		assertThat(validArtistDTOs).isEqualTo(artistService.read());
+		
+		verify(artistRepo, times(1)).findAll();
+		verify(artistMapper, times(1)).mapToDeepDTO(Mockito.any(Artist.class));
+		
 	}
 	
 	@Test
 	void readArtistByID() {
+		
+		when(artistRepo.findById(1L)).thenReturn(Optional.of(validArtist));
+		when(artistMapper.mapToDeepDTO(Mockito.any(Artist.class))).thenReturn(validArtistDTO);
+		
+		assertThat(validArtistDTOs).isEqualTo(artistService.read(1L));
+		
+		verify(artistRepo, times(1)).findById(1L);
+		verify(artistMapper, times(1)).mapToDeepDTO(Mockito.any(Artist.class));
 		
 	}
 	
 	@Test
 	void createArtist() {
 		
+		when(artistRepo.save(Mockito.any(Artist.class))).thenReturn(validArtist);
+		when(artistMapper.mapToDeepDTO(Mockito.any(Artist.class))).thenReturn(validArtistDTO);
+		
+		assertThat(validArtistDTO).isEqualTo(artistService.create(validArtist));
+		
+		verify(artistRepo, times(1)).save(Mockito.any(Artist.class));
+		verify(artistMapper, times(1)).mapToDeepDTO(Mockito.any(Artist.class));		
+		
 	}
 	
 	@Test
 	void updateArtist() {
+		
+		Artist updateArtist = new Artist(1, "Ricky", "Password");
+		ArtistDTO updateArtistDTO = new ArtistDTO(1, "Ricky");
+		
+		when(artistRepo.findById(Mockito.any(Long.class)))
+			.thenReturn(Optional.of(validArtist));
+		
+		when(artistRepo.save(Mockito.any(Artist.class)))
+			.thenReturn(updateArtist);
+		
+		when(artistMapper.mapToDeepDTO(Mockito.any(Artist.class)))
+			.thenReturn(updateArtistDTO);
+		
+		ArtistDTO testArtistDTO = artistService.update(updateArtist, validArtist.getId());
+		
+		assertThat(updateArtistDTO).isEqualTo(testArtistDTO);
+		
+		verify(artistRepo, times(1)).findById(Mockito.any(Long.class));
+		verify(artistRepo, times(1)).save(Mockito.any(Artist.class));
+		verify(artistMapper, times(1)).mapToDeepDTO(Mockito.any(Artist.class));
 		
 	}
 	
