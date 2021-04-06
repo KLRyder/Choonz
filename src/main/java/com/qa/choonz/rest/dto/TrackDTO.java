@@ -2,6 +2,14 @@ package com.qa.choonz.rest.dto;
 
 import java.util.Objects;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.qa.choonz.persistence.domain.Album;
+import com.qa.choonz.persistence.domain.Artist;
+import com.qa.choonz.persistence.domain.Genre;
+import com.qa.choonz.persistence.domain.Playlist;
+
 public class TrackDTO {
 
     private long id;
@@ -16,6 +24,21 @@ public class TrackDTO {
     public TrackDTO() {
         super();
         // TODO Auto-generated constructor stub
+    }
+    
+    public TrackDTO(long id, @NotNull @Size(max = 100) String name, 
+    				AlbumDTO album, PlaylistDTO playlist, int duration,
+    				String lyrics, ArtistDTO artist, GenreDTO genre) {
+    	super();
+    	this.id = id;
+        this.name = name;
+        this.album = album;
+        this.playlist = playlist;
+        this.duration = duration;
+        this.lyrics = lyrics;
+        this.artist = artist;
+        this.genre = genre;
+    	
     }
 
     public long getId() {

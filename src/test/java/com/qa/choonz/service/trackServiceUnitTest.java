@@ -1,7 +1,6 @@
 package com.qa.choonz.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.qa.choonz.persistence.domain.Album;
+import com.qa.choonz.persistence.domain.Artist;
+import com.qa.choonz.persistence.domain.Genre;
+import com.qa.choonz.persistence.domain.Playlist;
 import com.qa.choonz.persistence.domain.Track;
 import com.qa.choonz.persistence.repository.TrackRepository;
 import com.qa.choonz.rest.dto.TrackDTO;
@@ -40,9 +43,20 @@ public class trackServiceUnitTest {
 	private Track validTrack;
 	private TrackDTO validTrackDTO;
 
+	Genre genre = new Genre(1L, "genreName", "genreDescrip");
+	Album album = new Album();
+	Playlist playlist = new Playlist();
+	Artist artist = new Artist();
+	
+	
 	@BeforeEach
 	void init() {
-		validTrack = new Track(1, "Rick", null, null, 300, "RickandRoll");
+		Album album = new Album();
+		Playlist playlist = new Playlist();
+		Artist artist = new Artist();
+		Genre genre = new Genre();
+		
+		validTrack = new Track(1L, "Rick", album, playlist, 300, "RickandRoll");
 		validTrackDTO = new TrackDTO();
 		
 		validTracks = new ArrayList<Track>();
@@ -55,10 +69,26 @@ public class trackServiceUnitTest {
 	@Test
 	void readTrackByID() {
 		
+		//when(trackRepo.findById(Mockito.any(Long.class))).thenReturn(validTracks);
+		when(trackMapper.mapToDeepDTO(Mockito.any(Track.class))).thenReturn(validTrackDTO);
+		
+		assertThat(validTrackDTOs).isEqualTo(trackService.read(1));
+		
+		verify(trackRepo, times(1)).findById(1L);
+		verify(trackMapper, times(1)).mapToDeepDTO(Mockito.any(Track.class));
+		
 	}
 	
 	@Test
 	void readAllTrack() {
+		
+		when(trackRepo.findAll()).thenReturn(validTracks);
+		when(trackMapper.mapToDeepDTO(Mockito.any(Track.class))).thenReturn(validTrackDTO);
+		
+		assertThat(validTrackDTOs).isEqualTo(trackService.read());
+		
+		verify(trackRepo, times(1)).findAll();
+		verify(trackMapper, times(1)).mapToDeepDTO(Mockito.any(Track.class));
 		
 	}
 	
@@ -66,18 +96,17 @@ public class trackServiceUnitTest {
 	void createTrack() {
 		
 		when(trackRepo.save(Mockito.any(Track.class))).thenReturn(validTrack);
-		when (TrackMapper.mapToDeepDTO(Mockito.any(Track.class)))
+		when(trackMapper.mapToDeepDTO(Mockito.any(Track.class)))
 			.thenReturn(validTrackDTO);
 		
 		verify(trackRepo, times(1)).save(Mockito.any(Track.class));
-		verify(trackMapper, times(1));
-		TrackMapper.mapToDeepDTO(Mockito.any(Track.class));
+		verify(trackMapper, times(1)).mapToDeepDTO(Mockito.any(Track.class));
 		
 	}
 	
 	@Test
 	void updateTrack() {
-		Track updateTrack = new Track(1, "Ricky", null, null, 300, "RickyandRoll");
+		Track updateTrack = new Track(1, "Ricky", album, playlist, 300, "RickyandRoll");
 		TrackDTO updateTrackDTO = new TrackDTO();
 		
 		when(trackRepo.findById(Mockito.any(Long.class))).thenReturn(Optional.of(validTrack));

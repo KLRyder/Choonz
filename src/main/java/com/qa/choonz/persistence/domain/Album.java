@@ -1,5 +1,6 @@
 package com.qa.choonz.persistence.domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +44,15 @@ public class Album {
         tracks = Collections.emptyList();
     }
 
+    public Album(long id, @NotNull @Size(max=100) String name, Artist artist, Genre genre, String cover) {
+    	this.id = id;
+        this.name = name;
+        this.artist = artist;
+        this.genre = genre;
+        this.cover = cover;
+        this.tracks = new ArrayList<Track>();
+    }
+    
     public Album(long id, @NotNull @Size(max = 100) String name, List<Track> tracks, Artist artist, Genre genre,
                  String cover) {
         super();
