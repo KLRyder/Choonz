@@ -26,6 +26,11 @@ public class Artist {
     @Size(max = 100)
     @Column(unique = true)
     private String name;
+    
+    @NotNull
+    @Size(min = 3, max = 100)
+    @Column
+    private String password;
 
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
     private List<Album> albums;
@@ -35,10 +40,11 @@ public class Artist {
         albums = Collections.emptyList();
     }
 
-   public Artist(long id, @NotNull @Size(max = 100) String name) {
+   public Artist(long id, @NotNull @Size(max = 100) String name, String password) {
 	   super();
 	   this.id = id;
 	   this.name = name;
+	   this.password = password;
 	   this.albums = new ArrayList<Album>();
    }
     
@@ -63,6 +69,14 @@ public class Artist {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getPassword() {
+    	return password;
+    }
+    
+    public void setPassword(String password) { 
+    	this.password = password;
     }
 
     public List<Album> getAlbums() {
