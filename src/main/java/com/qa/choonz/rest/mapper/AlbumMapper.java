@@ -14,7 +14,7 @@ public class AlbumMapper {
 
     public AlbumDTO mapToDeepDTO(Album album) {
         //if mappers have not been initialised yet, initialise them
-        if(trackMapper == null || artistMapper == null || genreMapper == null){
+        if (trackMapper == null || artistMapper == null || genreMapper == null) {
             trackMapper = new TrackMapper();
             artistMapper = new ArtistMapper();
             genreMapper = new GenreMapper();
