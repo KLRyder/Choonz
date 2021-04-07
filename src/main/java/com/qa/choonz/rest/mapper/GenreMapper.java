@@ -1,14 +1,17 @@
 package com.qa.choonz.rest.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
 import com.qa.choonz.persistence.domain.Album;
 import com.qa.choonz.persistence.domain.Genre;
 import com.qa.choonz.rest.dto.GenreDTO;
 import com.qa.choonz.rest.dto.TrackDTO;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+@Component
 public class GenreMapper {
     private TrackMapper trackMapper;
     private AlbumMapper albumMapper;

@@ -1,7 +1,15 @@
 package com.qa.choonz.rest.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.qa.choonz.persistence.domain.Artist;
+import com.qa.choonz.persistence.domain.Genre;
+import com.qa.choonz.persistence.domain.Track;
 
 public class AlbumDTO {
 
@@ -17,6 +25,16 @@ public class AlbumDTO {
         // TODO Auto-generated constructor stub
     }
 
+    public AlbumDTO(long id, @NotNull @Size(max=100) String name, ArtistDTO artist, GenreDTO genre, String cover) {
+    	this.id = id;
+        this.name = name;
+        this.artist = artist;
+        this.genre = genre;
+        this.cover = cover;
+        this.tracks = new ArrayList<TrackDTO>();
+        
+    }
+    
     public AlbumDTO(long id, String name, List<TrackDTO> tracks, ArtistDTO artist, GenreDTO genre, String cover) {
         super();
         this.id = id;

@@ -17,10 +17,10 @@ public class TrackService {
     private TrackRepository repo;
     private TrackMapper mapper;
 
-    public TrackService(TrackRepository repo) {
+    public TrackService(TrackRepository repo, TrackMapper mapper) {
         super();
         this.repo = repo;
-        mapper = new TrackMapper();
+        this.mapper = mapper;
     }
 
     public TrackDTO create(Track track) {

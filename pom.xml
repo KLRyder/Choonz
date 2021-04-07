@@ -74,6 +74,12 @@
 			<artifactId>jacoco-maven-plugin</artifactId>
 			<version>0.8.6</version>
 		</dependency>
+		<dependency>
+			<groupId>nl.jqno.equalsverifier</groupId>
+			<artifactId>equalsverifier</artifactId>
+			<version>3.4.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

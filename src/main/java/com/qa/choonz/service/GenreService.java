@@ -17,10 +17,10 @@ public class GenreService {
     private GenreRepository repo;
     private GenreMapper mapper;
 
-    public GenreService(GenreRepository repo) {
+    public GenreService(GenreRepository repo, GenreMapper mapper) {
         super();
         this.repo = repo;
-        mapper = new GenreMapper();
+        this.mapper = mapper;
     }
 
     public GenreDTO create(Genre genre) {
