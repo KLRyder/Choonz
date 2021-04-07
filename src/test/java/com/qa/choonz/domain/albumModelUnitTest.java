@@ -21,8 +21,8 @@ public class albumModelUnitTest {
 	void testEquals() { 
 		EqualsVerifier.simple().forClass(Album.class)
 			.withPrefabValues(Track.class,
-					new Track(1, "name", null, playlist, 300, "lyrics"),
-					new Track(2, "name", null, playlist, 300, "lyrics"))
+					new Track(1, "name1", null, playlist, 300, "lyrics"),
+					new Track(2, "name2", null, playlist, 300, "lyrics"))
 			.withPrefabValues(Artist.class,
 					new Artist(1, "name1", "password"),
 					new Artist(2, "name2", "password"))	
