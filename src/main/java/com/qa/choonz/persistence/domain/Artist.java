@@ -1,5 +1,6 @@
 package com.qa.choonz.persistence.domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +26,11 @@ public class Artist {
     @Size(max = 100)
     @Column(unique = true)
     private String name;
+    
+    @NotNull
+    @Size(min = 3, max = 100)
+    @Column
+    private String password;
 
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
     private List<Album> albums;
@@ -34,6 +40,14 @@ public class Artist {
         albums = Collections.emptyList();
     }
 
+   public Artist(long id, @NotNull @Size(max = 100) String name, String password) {
+	   super();
+	   this.id = id;
+	   this.name = name;
+	   this.password = password;
+	   this.albums = new ArrayList<Album>();
+   }
+    
     public Artist(long id, @NotNull @Size(max = 100) String name, List<Album> albums) {
         super();
         this.id = id;
@@ -56,6 +70,14 @@ public class Artist {
     public void setName(String name) {
         this.name = name;
     }
+    
+    public String getPassword() {
+    	return password;
+    }
+    
+    public void setPassword(String password) { 
+    	this.password = password;
+    }
 
     public List<Album> getAlbums() {
         return albums;
@@ -72,15 +94,16 @@ public class Artist {
 
         Artist artist = (Artist) o;
 
-        if (id != artist.id) return false;
-        if (!Objects.equals(name, artist.name)) return false;
+        if (!Objects.equals(getName(), artist.getName())) return false;
+        if(!Objects.equals(getPassword(), artist.getPassword())) return false;
         return Objects.equals(albums, artist.albums);
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode(): 0);
         result = 31 * result + (albums != null ? albums.hashCode() : 0);
         return result;
     }
@@ -90,6 +113,7 @@ public class Artist {
         return "Artist{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", password=" + password + '\'' +
                 ", albums=" + albums +
                 '}';
     }

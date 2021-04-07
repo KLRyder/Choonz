@@ -17,10 +17,10 @@ public class ArtistService {
     private ArtistRepository repo;
     private ArtistMapper mapper;
 
-    public ArtistService(ArtistRepository repo) {
+    public ArtistService(ArtistRepository repo, ArtistMapper mapper) {
         super();
         this.repo = repo;
-        mapper = new ArtistMapper();
+        this.mapper = mapper;
     }
 
     public ArtistDTO create(Artist artist) {

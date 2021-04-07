@@ -1,5 +1,6 @@
 package com.qa.choonz.persistence.domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +41,15 @@ public class Genre {
         albums = Collections.emptyList();
     }
 
+    public Genre(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 250) 
+    			 String description) {
+    	super();
+    	this.id = id;
+    	this.name = name;
+    	this.description = description;
+    	this.albums = new ArrayList<Album>();
+    }
+    
     public Genre(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 250) String description,
             List<Album> albums) {
         super();
@@ -88,15 +98,14 @@ public class Genre {
 
         Genre genre = (Genre) o;
 
-        if (id != genre.id) return false;
-        if (!Objects.equals(name, genre.name)) return false;
-        if (!Objects.equals(description, genre.description)) return false;
-        return Objects.equals(albums, genre.albums);
+        if (!Objects.equals(getName(), genre.getName())) return false;
+        if (!Objects.equals(getDescription(), genre.getDescription())) return false;
+        return Objects.equals(getAlbums(), genre.getAlbums());
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+		int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (albums != null ? albums.hashCode() : 0);

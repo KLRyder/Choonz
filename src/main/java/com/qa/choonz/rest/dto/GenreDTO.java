@@ -1,5 +1,6 @@
 package com.qa.choonz.rest.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,12 +17,22 @@ public class GenreDTO {
         // TODO Auto-generated constructor stub
     }
 
+   public GenreDTO(long id, String name, String description) {
+	   super();
+	   this.id = id;
+	   this.name = name;
+	   this.description = description;
+	   this.albums = new ArrayList<AlbumDTO>();
+	   this.tracks = new ArrayList<TrackDTO>();
+   }
+    
     public GenreDTO(long id, String name, String description, List<AlbumDTO> albums) {
         super();
         this.id = id;
         this.name = name;
         this.description = description;
         this.albums = albums;
+        this.tracks = new ArrayList<TrackDTO>();
     }
 
     public long getId() {

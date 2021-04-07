@@ -1,7 +1,11 @@
 package com.qa.choonz.rest.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 public class PlaylistDTO {
@@ -15,6 +19,16 @@ public class PlaylistDTO {
     public PlaylistDTO() {
         super();
         // TODO Auto-generated constructor stub
+    }
+    
+    public PlaylistDTO(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description, @NotNull @Size(max = 1000) String artwork) {
+    	super();
+    	this.id = id;
+    	this.name = name;
+    	this.description = description;
+    	this.artwork = artwork;
+    	this.tracks = new ArrayList<TrackDTO>();
+    	
     }
 
     public PlaylistDTO(long id, String name, String description, String artwork, List<TrackDTO> tracks) {
