@@ -84,6 +84,14 @@ public class albumServiceUnitTest {
 	@Test
 	void readAlbumByID() {
 		
+		when(albumRepo.findById(1L)).thenReturn(Optional.of(validAlbum));
+		when(albumMapper.mapToDeepDTO(Mockito.any(Album.class))).thenReturn(validAlbumDTO);
+		
+		assertThat(validAlbumDTO).isEqualTo(albumService.read(1L));
+		
+		verify(albumRepo, times(1)).findById(1L);
+		verify(albumMapper, times(1)).mapToDeepDTO(Mockito.any(Album.class));
+		
 	}
 	
 	@Test

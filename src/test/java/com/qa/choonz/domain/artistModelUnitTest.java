@@ -17,8 +17,8 @@ public class artistModelUnitTest {
 		EqualsVerifier.simple().forClass(Artist.class)
 			.withPrefabValues
 				(Album.class,
-					new Album(1, "name", null, genre, "cover"),
-					new Album(2, "name", null, genre, "cover"))
+					new Album(1, "name1", null, genre, "cover"),
+					new Album(2, "name2", null, genre, "cover"))
 			.verify();
 	}
 	
