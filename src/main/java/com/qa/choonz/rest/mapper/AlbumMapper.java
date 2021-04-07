@@ -2,9 +2,11 @@ package com.qa.choonz.rest.mapper;
 
 import com.qa.choonz.persistence.domain.Album;
 import com.qa.choonz.rest.dto.AlbumDTO;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+@Component
 public class AlbumMapper {
     private TrackMapper trackMapper;
     private ArtistMapper artistMapper;
@@ -12,7 +14,7 @@ public class AlbumMapper {
 
     public AlbumDTO mapToDeepDTO(Album album) {
         //if mappers have not been initialised yet, initialise them
-        if(trackMapper == null || artistMapper == null || genreMapper == null){
+        if (trackMapper == null || artistMapper == null || genreMapper == null) {
             trackMapper = new TrackMapper();
             artistMapper = new ArtistMapper();
             genreMapper = new GenreMapper();

@@ -2,7 +2,9 @@ package com.qa.choonz.rest.mapper;
 
 import com.qa.choonz.persistence.domain.Track;
 import com.qa.choonz.rest.dto.TrackDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TrackMapper {
     private AlbumMapper albumMapper;
     private GenreMapper genreMapper;
