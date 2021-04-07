@@ -44,7 +44,7 @@ public class albumServiceUnitTest {
 	private Album validAlbum;
 	private AlbumDTO validAlbumDTO;
 	
-	Artist artist = new Artist(1, "Rick", "Passowrd");
+	Artist artist = new Artist(1, "Rick", "Password");
 	ArtistDTO artistDTO = new ArtistDTO(1, "Rick");
 	
 	Genre genre = new Genre(1, "Name", "GenDescrip");
@@ -53,7 +53,7 @@ public class albumServiceUnitTest {
 	@BeforeEach
 	void init() {
 		
-		Artist artist = new Artist(1, "Rick", "Passowrd");
+		Artist artist = new Artist(1, "Rick", "Password");
 		ArtistDTO artistDTO = new ArtistDTO(1, "Rick");
 		
 		Genre genre = new Genre(1, "Name", "GenDescrip");
