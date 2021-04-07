@@ -18,4 +18,4 @@ function displayLoginDetails(data){
     logLink.innerText = "Logout";
 }
 
-displayLoginDetails(username); 
+displayLoginDetails(username);
