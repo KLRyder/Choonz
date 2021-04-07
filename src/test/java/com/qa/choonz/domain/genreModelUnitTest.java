@@ -17,8 +17,10 @@ public class genreModelUnitTest {
 	@Test
 	void testEquals() {
 		EqualsVerifier.simple().forClass(Genre.class)
-			.withPrefabValues(Album.class, new Album(1, "name", artist, null, "cover"),
-				new Album(2, "name", artist, null, "cover")).verify();
+			.withPrefabValues(Album.class, 
+				new Album(),
+				new Album(2, "name", artist, null, "cover"))
+				.verify();
 	}
 	
 	@Test

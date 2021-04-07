@@ -14,7 +14,7 @@ public class genreDTOUnitTest {
 	@Test
 	void testEquals() {
 		EqualsVerifier.simple().forClass(GenreDTO.class)
-			.withPrefabValues
+				.withPrefabValues
 					(AlbumDTO.class, 
 							new AlbumDTO(1, "name", artist, null, "cover"),
 							new AlbumDTO(2, "name", artist, null, "cover"))
@@ -22,7 +22,8 @@ public class genreDTOUnitTest {
 				.withPrefabValues
 					(TrackDTO.class, 
 							new TrackDTO(1, "name", album, playlist, 300, "lyrics", artist, null), 
-							new TrackDTO(2, "name", album, playlist, 300, "lyrics", artist, null)) .verify();
+							new TrackDTO(2, "name", album, playlist, 300, "lyrics", artist, null))
+				.verify();
 	}
 	
 	@Test

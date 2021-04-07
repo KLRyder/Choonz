@@ -94,15 +94,16 @@ public class Artist {
 
         Artist artist = (Artist) o;
 
-        if (id != artist.id) return false;
-        if (!Objects.equals(name, artist.name)) return false;
+        if (!Objects.equals(getName(), artist.getName())) return false;
+        if(!Objects.equals(getPassword(), artist.getPassword())) return false;
         return Objects.equals(albums, artist.albums);
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode(): 0);
         result = 31 * result + (albums != null ? albums.hashCode() : 0);
         return result;
     }
@@ -112,6 +113,7 @@ public class Artist {
         return "Artist{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", password=" + password + '\'' +
                 ", albums=" + albums +
                 '}';
     }
