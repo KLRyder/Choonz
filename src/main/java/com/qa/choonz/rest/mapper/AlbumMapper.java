@@ -2,9 +2,11 @@ package com.qa.choonz.rest.mapper;
 
 import com.qa.choonz.persistence.domain.Album;
 import com.qa.choonz.rest.dto.AlbumDTO;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+@Component
 public class AlbumMapper {
     private TrackMapper trackMapper;
     private ArtistMapper artistMapper;
