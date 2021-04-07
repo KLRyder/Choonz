@@ -1,14 +1,3 @@
-DROP TABLE IF EXISTS playlisttrack;
-DROP TABLE IF EXISTS playlist;
-DROP TABLE IF EXISTS track;
-DROP TABLE IF EXISTS genre;
-DROP TABLE IF EXISTS album;
-DROP TABLE IF EXISTS artist;
-DROP DATABASE IF EXISTS qa_music_project;
-
-CREATE DATABASE qa_music_project;
-USE qa_music_project;
-
 CREATE TABLE artist (
     artistid     INT,
     name         VARCHAR(45)  NOT NULL,
@@ -62,7 +51,3 @@ CREATE TABLE playlisttrack (
     FOREIGN KEY (fk_playlistid)  REFERENCES playlist (playlistid),
     FOREIGN KEY (fk_trackid)     REFERENCES track (trackid)
                            );
-
-
-
-
