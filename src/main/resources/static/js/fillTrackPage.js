@@ -1,5 +1,4 @@
 'use strict'
-const apiURL = 'http://localhost:8082/'
 
 let fill = (trackJSON) => {
 
@@ -15,14 +14,17 @@ let fill = (trackJSON) => {
     // .replace("_GENRE-ID", trackJSON.genre.id)
     // .replace("_GENRE-NAME", trackJSON.genre.name)
 
-    let lyricText = document.getElementById("lyricsBox");
     let fullLyrics = trackJSON.lyrics;
     let splitLyrics = fullLyrics.split(".");
-    linebreak = document.createElement("br");
-    for (let i = 0; i < splitLyrics.length; i++) {
-        document.getElementById('lyricsBox').append(splitLyrics[i] + ".");
-        document.getElementById('lyricsBox').append(linebreak);
+
+    for (let i = 0; i < ((splitLyrics.length)-1); i++) {
+        splitLyrics[i] = splitLyrics[i] + "<br>";
     }
+
+    splitLyrics = splitLyrics.join("");
+
+    document.getElementById("lyricsBox").innerHTML = splitLyrics;
+
 }
 
 let trackInfoFill = (trackId) => {
