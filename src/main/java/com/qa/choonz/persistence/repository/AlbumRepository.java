@@ -5,7 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.qa.choonz.persistence.domain.Album;
 
+import java.util.List;
+
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, Long> {
+    List<Album> findAllByArtist_Id(long artist_id);
 
 }
