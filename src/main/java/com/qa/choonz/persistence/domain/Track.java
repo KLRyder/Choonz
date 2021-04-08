@@ -105,17 +105,16 @@ public class Track {
 
         Track track = (Track) o;
 
-        if (id != track.id) return false;
         if (duration != track.duration) return false;
-        if (!Objects.equals(name, track.name)) return false;
-        if (!Objects.equals(album, track.album)) return false;
-        if (!Objects.equals(playlist, track.playlist)) return false;
-        return Objects.equals(lyrics, track.lyrics);
+        if (!Objects.equals(getName(), track.getName())) return false;
+        if (!Objects.equals(getAlbum(), track.getAlbum())) return false;
+        if (!Objects.equals(getPlaylist(), track.getPlaylist())) return false;
+        return Objects.equals(getLyrics(), track.getLyrics());
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (album != null ? album.hashCode() : 0);
         result = 31 * result + (playlist != null ? playlist.hashCode() : 0);

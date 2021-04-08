@@ -119,7 +119,6 @@ public class Album {
 
         Album album = (Album) o;
 
-        if (id != album.id) return false;
         if (!Objects.equals(name, album.name)) return false;
         if (!Objects.equals(tracks, album.tracks)) return false;
         if (!Objects.equals(artist, album.artist)) return false;
@@ -129,7 +128,7 @@ public class Album {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
         result = 31 * result + (artist != null ? artist.hashCode() : 0);

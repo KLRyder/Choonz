@@ -11,10 +11,11 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.qa.choonz.persistence.domain.Album;
 import com.qa.choonz.persistence.domain.Artist;
@@ -25,16 +26,16 @@ import com.qa.choonz.persistence.repository.TrackRepository;
 import com.qa.choonz.rest.dto.TrackDTO;
 import com.qa.choonz.rest.mapper.TrackMapper;
 
-@SpringBootTest
+@ExtendWith({MockitoExtension.class})
 public class trackServiceUnitTest {
 
-	@Autowired
+	@InjectMocks
 	private TrackService trackService;
 
-	@MockBean
+	@Mock
 	private TrackRepository trackRepo;
 
-	@MockBean
+	@Mock
 	private TrackMapper trackMapper;
 
 	private List<Track> validTracks;
@@ -69,10 +70,10 @@ public class trackServiceUnitTest {
 	@Test
 	void readTrackByID() {
 		
-		//when(trackRepo.findById(Mockito.any(Long.class))).thenReturn(validTracks);
+		when(trackRepo.findById(1L)).thenReturn(Optional.of(validTrack));
 		when(trackMapper.mapToDeepDTO(Mockito.any(Track.class))).thenReturn(validTrackDTO);
 		
-		assertThat(validTrackDTOs).isEqualTo(trackService.read(1));
+		assertThat(validTrackDTO).isEqualTo(trackService.read(1L));
 		
 		verify(trackRepo, times(1)).findById(1L);
 		verify(trackMapper, times(1)).mapToDeepDTO(Mockito.any(Track.class));
@@ -98,6 +99,8 @@ public class trackServiceUnitTest {
 		when(trackRepo.save(Mockito.any(Track.class))).thenReturn(validTrack);
 		when(trackMapper.mapToDeepDTO(Mockito.any(Track.class)))
 			.thenReturn(validTrackDTO);
+		
+		assertThat(validTrackDTO).isEqualTo(trackService.create(validTrack));
 		
 		verify(trackRepo, times(1)).save(Mockito.any(Track.class));
 		verify(trackMapper, times(1)).mapToDeepDTO(Mockito.any(Track.class));

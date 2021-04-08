@@ -50,6 +50,7 @@ public class Playlist {
     	this.id = id;
     	this.name = name;
     	this.description = description;
+    	this.artwork = artwork;
     	this.tracks = new ArrayList<Track>();
     }
 
@@ -109,8 +110,7 @@ public class Playlist {
         if (!(o instanceof Playlist)) return false;
 
         Playlist playlist = (Playlist) o;
-
-        if (id != playlist.id) return false;
+        
         if (!Objects.equals(name, playlist.name)) return false;
         if (!Objects.equals(description, playlist.description)) return false;
         if (!Objects.equals(artwork, playlist.artwork)) return false;
@@ -119,7 +119,7 @@ public class Playlist {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (artwork != null ? artwork.hashCode() : 0);

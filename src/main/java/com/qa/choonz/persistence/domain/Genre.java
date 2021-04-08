@@ -98,15 +98,14 @@ public class Genre {
 
         Genre genre = (Genre) o;
 
-        if (id != genre.id) return false;
-        if (!Objects.equals(name, genre.name)) return false;
-        if (!Objects.equals(description, genre.description)) return false;
-        return Objects.equals(albums, genre.albums);
+        if (!Objects.equals(getName(), genre.getName())) return false;
+        if (!Objects.equals(getDescription(), genre.getDescription())) return false;
+        return Objects.equals(getAlbums(), genre.getAlbums());
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+		int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (albums != null ? albums.hashCode() : 0);

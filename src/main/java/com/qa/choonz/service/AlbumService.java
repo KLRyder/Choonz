@@ -3,13 +3,13 @@ package com.qa.choonz.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.qa.choonz.rest.mapper.AlbumMapper;
 import org.springframework.stereotype.Service;
 
 import com.qa.choonz.exception.AlbumNotFoundException;
 import com.qa.choonz.persistence.domain.Album;
 import com.qa.choonz.persistence.repository.AlbumRepository;
 import com.qa.choonz.rest.dto.AlbumDTO;
+import com.qa.choonz.rest.mapper.AlbumMapper;
 
 @Service
 public class AlbumService {
@@ -17,10 +17,10 @@ public class AlbumService {
     private AlbumRepository repo;
     private AlbumMapper mapper;
 
-    public AlbumService(AlbumRepository repo) {
+    public AlbumService(AlbumRepository repo, AlbumMapper mapper) {
         super();
         this.repo = repo;
-        mapper = new AlbumMapper();
+        this.mapper = mapper;
     }
 
     public AlbumDTO create(Album album) {
