@@ -34,8 +34,19 @@ body {
   font-weight: bold;
 }
 
-.footer {
+.container {
+  margin-bottom :40px;
+}
 
+.col {
+  margin-bottom :20px;
+}
+
+.btn {
+  width: 60%;
+}
+
+.footer {
   height:24px; 
   width: 100%; 
   background-image: none;
