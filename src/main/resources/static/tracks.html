@@ -85,6 +85,7 @@
 </div>
 <!-- /Footer -->
 
+<!-- Accordian Template -->
 <template id="trackTemplate">
   <div class="accordion-item" id="track_TRACK-ID">
     <h2 class="accordion-header" id="trackHeader_TRACK-ID">
@@ -99,24 +100,25 @@
         <div class="row text-center">
           <div class="col">
             Artist:&nbsp;
-            <a href="/artist?_ARTIST-ID"> _ARTIST-NAME</a>
+            <a href="/artists?artistid=_ARTIST-ID"> _ARTIST-NAME</a>
           </div>
           <div class="col">
             Album:&nbsp;
-            <a href="/artist?_ALBUM-ID"> _ALBUM-NAME</a>
+            <a href="/albums?albumid=_ALBUM-ID"> _ALBUM-NAME</a>
           </div>
           <div class="col">
-            <a href="/track?_TRACK-ID">Lyrics</a>
+            <a href="/tracks?trackid=_TRACK-ID">Lyrics</a>
           </div>
           <div class="col">
             Genre:&nbsp;
-            <a href="/genre?_GENRE-ID">_GENRE-NAME</a>
+            <a href="/genres?genreid=_GENRE-ID">_GENRE-NAME</a>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+<!-- Accordian Template -->
 
 <script src="./js/base.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
