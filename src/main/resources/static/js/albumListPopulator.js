@@ -10,7 +10,7 @@ let displayAlbum = albumJSON => {
     let template = document.querySelector('#albumTemplate');
     let clone = template.content.cloneNode(true);
     let node = clone.getElementById('album_ALBUM-ID');
-    node.id = 'album'+albumJSON.id;
+    node.id = 'album' + albumJSON.id;
 
     // fill in album info
     // let albumLink=node.getElementById('album_ALBUM-ID');
@@ -37,4 +37,12 @@ let getAllAlbums = () => {
         .catch((error) => console.error(`Request failed ${error}`))
 }
 
-getAllAlbums();
+let getAlbumsByArtist = (artist_id) => {
+    fetch(apiURL + 'albums/read/artist/' + artist_id).then(res => res.json())
+        .then((data) => {
+            for (let i = 0; i < data.length; i++) {
+                displayAlbum(data[i]);
+            }
+        })
+        .catch((error) => console.error(`Request failed ${error}`))
+}

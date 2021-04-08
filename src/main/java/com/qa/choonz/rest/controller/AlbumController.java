@@ -39,7 +39,7 @@ public class AlbumController {
         return new ResponseEntity<>(this.service.read(), HttpStatus.OK);
     }
 
-    @GetMapping("/read/album/{id}")
+    @GetMapping("/read/artist/{id}")
     public ResponseEntity<List<AlbumDTO>> readByAlbum(@PathVariable long id) {
         return new ResponseEntity<>(this.service.readByAlbum(id), HttpStatus.OK);
     }
