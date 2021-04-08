@@ -62,7 +62,36 @@
 <!-- /Search -->
 
 <!-- Main -->
-<h1>PUT STUFF HERE</h1>
+
+<section class="albumInfo">
+  <div class="container">
+    <div class="row", id="albumInfoRow">
+      <div class="col-md-3">
+        <div class="col">
+          <img alt="" class="resize-image center-block" id="image1" src="img/alb/Zeitgeist.png"/>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <div class="col">
+          <div class="col">
+            <h4 id="albumName">ALBUM NAME</h4>
+          </div>
+          <div class="col">
+            <a href="/artists?artist_id=_ARTIST-ID"> _ARTIST-NAME</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="col">
+          <button class="btn btn-primary" id="updateButton" onclick="updateOne()">Edit Album</button>
+        </div>
+        <div class="col">
+          <button class="btn btn-danger" id="updateButton" onclick="updateOne()">Delete Album</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <div class="container mx-5 align-items-center text-cente/
 r" id="trackList">
@@ -134,5 +163,6 @@ r" id="trackList">
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
 <script src="./js/tracklistPopulator.js"></script>
+<script src="./js/fillAlbumPage.js"></script>
 </body>
 </html>

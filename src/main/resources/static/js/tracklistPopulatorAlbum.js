@@ -26,15 +26,18 @@ let populate = (trackJSON) => {
     document.getElementById('trackListAccordion').append(node);
 }
 
-let getAllTracks = () => {
+let getAllTracks = (albumId) => {
     console.log("try to populate")
-    fetch(apiURL + 'tracks/read').then(res => res.json())
+    fetch(apiURL + 'albums/read/' + albumId).then(res => res.json())
         .then((data) => {
-            for (let i = 0; i < data.length; i++) {
-                populate(data[i]);
+            for (let i = 0; i < data.tracks.length; i++) {
+                populate(data.tracks[i]);
             }
         })
         .catch((error) => console.error(`Request failed ${error}`))
 }
+
 console.log("try to run script")
-getAllTracks();
+const queryString3 = window.location.search;
+const urlParams3 = new URLSearchParams(queryString3);
+getAllTracks(urlParams3.get("album_id"));

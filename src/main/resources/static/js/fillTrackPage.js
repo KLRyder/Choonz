@@ -1,5 +1,4 @@
 'use strict'
-const apiURL = 'http://localhost:8082/'
 
 let fill = (trackJSON) => {
 
