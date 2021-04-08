@@ -1,6 +1,6 @@
 package com.qa.choonz.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat; 
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,6 @@ public class trackServiceIntegrationTest {
 	private List<TrackDTO> trackDTOs;
 
 	private Track validTrack;
-	@SuppressWarnings("unused")
 	private TrackDTO validTrackDTO;
 
 	@BeforeEach
