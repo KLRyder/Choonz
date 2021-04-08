@@ -37,6 +37,10 @@ public class AlbumService {
         return mapper.mapToDeepDTO(found);
     }
 
+    public List<AlbumDTO> readByAlbum(long id) {
+        return this.repo.findAllByArtist_Id(id).stream().map(mapper::mapToDeepDTO).collect(Collectors.toList());
+    }
+
     public AlbumDTO update(Album album, long id) {
         Album toUpdate = this.repo.findById(id).orElseThrow(AlbumNotFoundException::new);
         toUpdate.setName(toUpdate.getName());
@@ -51,5 +55,4 @@ public class AlbumService {
         this.repo.deleteById(id);
         return !this.repo.existsById(id);
     }
-
 }
