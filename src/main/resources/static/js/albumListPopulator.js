@@ -13,8 +13,6 @@ let displayAlbum = albumJSON => {
     node.id = 'album' + albumJSON.id;
 
     // fill in album info
-    // let albumLink=node.getElementById('album_ALBUM-ID');
-    // albumLink.href = "albums"
     for (let i = 0; i < 2; i++) {
         node.innerHTML = node.innerHTML.replace("_ALBUM-ID", albumJSON.id);
     }
