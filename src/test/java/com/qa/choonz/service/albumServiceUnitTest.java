@@ -44,26 +44,29 @@ public class albumServiceUnitTest {
 	private Album validAlbum;
 	private AlbumDTO validAlbumDTO;
 	
-	Artist artist = new Artist(1, "Rick", "Password");
+	Artist artist = new Artist(1, "Rick");
 	ArtistDTO artistDTO = new ArtistDTO(1, "Rick");
 	
 	Genre genre = new Genre(1, "Name", "GenDescrip");
 	GenreDTO genreDTO = new GenreDTO(1, "Name", "GenDescrip");
+	List<GenreDTO> genreDTOS = new ArrayList<>();
 	
 	@BeforeEach
 	void init() {
 		
-		Artist artist = new Artist(1, "Rick", "Password");
+		Artist artist = new Artist(1, "Rick");
 		ArtistDTO artistDTO = new ArtistDTO(1, "Rick");
 		
 		Genre genre = new Genre(1, "Name", "GenDescrip");
 		GenreDTO genreDTO = new GenreDTO(1, "Name", "GenDescrip");
-	
-		validAlbum = new Album(1, "Name", artist, genre, "Cover");
-		validAlbumDTO = new AlbumDTO(1, "Name", artistDTO, genreDTO, "Cover");
-		
-		validAlbums = new ArrayList<Album>();
-		validAlbumDTOs = new ArrayList<AlbumDTO>();
+		genreDTOS.clear();
+		genreDTOS.add(genreDTO);
+
+		validAlbum = new Album(1, "Name", artist, "Cover");
+		validAlbumDTO = new AlbumDTO(1, "Name", artistDTO, genreDTOS, "Cover");
+
+		validAlbums = new ArrayList<>();
+		validAlbumDTOs = new ArrayList<>();
 		validAlbums.add(validAlbum);
 		validAlbumDTOs.add(validAlbumDTO);
 	}
@@ -110,8 +113,8 @@ public class albumServiceUnitTest {
 	@Test
 	void updateAlbum() {
 		
-		Album updateAlbum = new Album(1, "newName", artist, genre, "newCover");
-		AlbumDTO updateAlbumDTO = new AlbumDTO(1, "newName", artistDTO, genreDTO, "newCover");
+		Album updateAlbum = new Album(1, "newName", artist, "newCover");
+		AlbumDTO updateAlbumDTO = new AlbumDTO(1, "newName", artistDTO, genreDTOS, "newCover");
 		
 		when(albumRepo.findById(Mockito.any(Long.class)))
 			 .thenReturn(Optional.of(validAlbum));

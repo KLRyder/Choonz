@@ -1,17 +1,14 @@
 package com.qa.choonz.persistence.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,12 +21,10 @@ public class Playlist {
 
     @NotNull
     @Size(max = 100)
-    @Column(unique = true)
     private String name;
 
     @NotNull
     @Size(max = 500)
-    @Column(unique = true)
     private String description;
 
     @NotNull
@@ -37,8 +32,9 @@ public class Playlist {
     @Column(unique = true)
     private String artwork;
 
-    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL)
-    private List<Track> tracks;
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<PlaylistLink> tracks;
 
     public Playlist() {
         super();
@@ -51,17 +47,21 @@ public class Playlist {
     	this.name = name;
     	this.description = description;
     	this.artwork = artwork;
-    	this.tracks = new ArrayList<Track>();
+    	this.tracks = new ArrayList<>();
     }
 
     public Playlist(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description,
-                    @NotNull @Size(max = 1000) String artwork, List<Track> tracks) {
+                    @NotNull @Size(max = 1000) String artwork, List<PlaylistLink> tracks) {
         super();
         this.id = id;
         this.name = name;
         this.description = description;
         this.artwork = artwork;
         this.tracks = tracks;
+    }
+
+    public Playlist(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -96,11 +96,11 @@ public class Playlist {
         this.artwork = artwork;
     }
 
-    public List<Track> getTracks() {
+    public List<PlaylistLink> getTracks() {
         return tracks;
     }
 
-    public void setTracks(List<Track> tracks) {
+    public void setTracks(List<PlaylistLink> tracks) {
         this.tracks = tracks;
     }
 

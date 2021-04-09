@@ -22,8 +22,8 @@ public class GenreDTO {
 	   this.id = id;
 	   this.name = name;
 	   this.description = description;
-	   this.albums = new ArrayList<AlbumDTO>();
-	   this.tracks = new ArrayList<TrackDTO>();
+	   this.albums = new ArrayList<>();
+	   this.tracks = new ArrayList<>();
    }
     
     public GenreDTO(long id, String name, String description, List<AlbumDTO> albums) {

@@ -43,7 +43,7 @@ public class artistControllerUnitTest {
 	
 	@BeforeEach
 	void init() {
-		validArtist = new Artist(1, "Rick", "Password");
+		validArtist = new Artist(1, "Rick");
 		validArtistDTO = new ArtistDTO(1, "Rick");
 		
 		validArtists = new ArrayList<Artist>();
