@@ -57,11 +57,11 @@ public class trackControllerUnitTest {
 		Artist artist = new Artist();
 		Genre genre = new Genre();
 		
-		validTrack = new Track(1L, "Rick", album, playlist, 300, "RickandRoll");
+		validTrack = new Track(1L, "Rick", album, 300, "RickandRoll");
 		validTrackDTO = new TrackDTO();
 		
-		validTracks = new ArrayList<Track>();
-		validTrackDTOs = new ArrayList<TrackDTO>();
+		validTracks = new ArrayList<>();
+		validTrackDTOs = new ArrayList<>();
 		validTracks.add(validTrack);
 		validTrackDTOs.add(validTrackDTO);
 	}
@@ -72,7 +72,7 @@ public class trackControllerUnitTest {
 		when(trackService.read()).thenReturn(validTrackDTOs);
 		
 		ResponseEntity<List<TrackDTO>> response = 
-				new ResponseEntity<List<TrackDTO>>(validTrackDTOs, HttpStatus.OK);
+				new ResponseEntity<>(validTrackDTOs, HttpStatus.OK);
 		
 		assertThat(response).isEqualTo(trackController.read());
 		

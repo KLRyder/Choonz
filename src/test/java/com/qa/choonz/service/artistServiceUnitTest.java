@@ -42,7 +42,7 @@ public class artistServiceUnitTest {
 	
 	@BeforeEach
 	void init() {
-		validArtist = new Artist(1, "Rick", "Password");
+		validArtist = new Artist(1, "Rick");
 		validArtistDTO = new ArtistDTO(1, "Rick");
 		
 		validArtists = new ArrayList<Artist>();
@@ -93,7 +93,7 @@ public class artistServiceUnitTest {
 	@Test
 	void updateArtist() {
 		
-		Artist updateArtist = new Artist(1, "Ricky", "Password");
+		Artist updateArtist = new Artist(1, "Ricky");
 		ArtistDTO updateArtistDTO = new ArtistDTO(1, "Ricky");
 		
 		when(artistRepo.findById(Mockito.any(Long.class)))

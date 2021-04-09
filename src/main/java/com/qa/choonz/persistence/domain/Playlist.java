@@ -24,12 +24,10 @@ public class Playlist {
 
     @NotNull
     @Size(max = 100)
-    @Column(unique = true)
     private String name;
 
     @NotNull
     @Size(max = 500)
-    @Column(unique = true)
     private String description;
 
     @NotNull
@@ -37,7 +35,7 @@ public class Playlist {
     @Column(unique = true)
     private String artwork;
 
-    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL)
+    @OneToMany
     private List<Track> tracks;
 
     public Playlist() {
@@ -51,7 +49,7 @@ public class Playlist {
     	this.name = name;
     	this.description = description;
     	this.artwork = artwork;
-    	this.tracks = new ArrayList<Track>();
+    	this.tracks = new ArrayList<>();
     }
 
     public Playlist(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description,

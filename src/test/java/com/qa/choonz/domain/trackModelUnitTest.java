@@ -21,8 +21,8 @@ public class trackModelUnitTest {
 	void testEquals() {
 		EqualsVerifier.simple().forClass(Track.class)
 			.withPrefabValues(Album.class,
-					new Album(1, "name1", artist, genre, "cover"),
-					new Album(1, "name2", artist, genre, "cover"))
+					new Album(1, "name1", artist, "cover"),
+					new Album(1, "name2", artist, "cover"))
 			
 			.withPrefabValues(Playlist.class,
 					new Playlist(1, "name", "description", "artwork"),
@@ -32,7 +32,7 @@ public class trackModelUnitTest {
 	
 	@Test
 	void constructorTest() {
-		Track newTrackModel = new Track(1, "name", album, playlist, 300, "lyrics");
+		Track newTrackModel = new Track(1, "name", album, 300, "lyrics");
 		newTrackModel.toString();
 	}
 

@@ -4,19 +4,23 @@ import org.junit.jupiter.api.Test;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class artistDTOUnitTest {
 	
 	private final PlaylistDTO playlist = new PlaylistDTO();
 	private final AlbumDTO album = new AlbumDTO();
 	private final GenreDTO genre = new GenreDTO();
+	private final List<GenreDTO> genres = new ArrayList<>();
 	
 	@Test
 	void testEquals() {
 		EqualsVerifier.simple().forClass(ArtistDTO.class)
 				.withPrefabValues
 					(AlbumDTO.class,
-							new AlbumDTO(1, "name", null, genre, "cover"),
-							new AlbumDTO(2, "name", null, genre, "cover"))
+							new AlbumDTO(1, "name", null, genres, "cover"),
+							new AlbumDTO(2, "name", null, genres, "cover"))
 				
 				.withPrefabValues
 					(TrackDTO.class,

@@ -1,17 +1,14 @@
 package com.qa.choonz.persistence.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,21 +21,19 @@ public class Genre {
 
     @NotNull
     @Size(max = 100)
-    @Column(unique = true)
     private String name;
 
     @NotNull
     @Size(max = 250)
-    @Column(unique = true)
     private String description;
 
-    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
-    private List<Album> albums;
+    @OneToMany(mappedBy = "genre", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    private List<Track> tracks;
 
     public Genre() {
         super();
-        // TODO Auto-generated constructor stub
-        albums = Collections.emptyList();
+        tracks = Collections.emptyList();
     }
 
     public Genre(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 250) 
@@ -47,16 +42,16 @@ public class Genre {
     	this.id = id;
     	this.name = name;
     	this.description = description;
-    	this.albums = new ArrayList<Album>();
+    	this.tracks = new ArrayList<>();
     }
     
     public Genre(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 250) String description,
-            List<Album> albums) {
+            List<Track> tracks) {
         super();
         this.id = id;
         this.name = name;
         this.description = description;
-        this.albums = albums;
+        this.tracks = tracks;
     }
 
     public long getId() {
@@ -83,12 +78,12 @@ public class Genre {
         this.description = description;
     }
 
-    public List<Album> getAlbums() {
-        return albums;
+    public List<Track> getTracks() {
+        return tracks;
     }
 
-    public void setAlbums(List<Album> albums) {
-        this.albums = albums;
+    public void setTracks(List<Track> tracks) {
+        this.tracks = tracks;
     }
 
     @Override
@@ -100,7 +95,7 @@ public class Genre {
 
         if (!Objects.equals(getName(), genre.getName())) return false;
         if (!Objects.equals(getDescription(), genre.getDescription())) return false;
-        return Objects.equals(getAlbums(), genre.getAlbums());
+        return Objects.equals(getTracks(), genre.getTracks());
     }
 
     @Override
@@ -108,7 +103,7 @@ public class Genre {
 		int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (albums != null ? albums.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
         return result;
     }
 
@@ -118,7 +113,7 @@ public class Genre {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", albums=" + albums +
+                ", albums=" + tracks +
                 '}';
     }
 }

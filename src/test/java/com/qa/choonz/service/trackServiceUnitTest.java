@@ -57,7 +57,7 @@ public class trackServiceUnitTest {
 		Artist artist = new Artist();
 		Genre genre = new Genre();
 		
-		validTrack = new Track(1L, "Rick", album, playlist, 300, "RickandRoll");
+		validTrack = new Track(1L, "Rick", album, 300, "RickandRoll");
 		validTrackDTO = new TrackDTO();
 		
 		validTracks = new ArrayList<Track>();
@@ -109,7 +109,7 @@ public class trackServiceUnitTest {
 	
 	@Test
 	void updateTrack() {
-		Track updateTrack = new Track(1, "Ricky", album, playlist, 300, "RickyandRoll");
+		Track updateTrack = new Track(1, "Ricky", album, 300, "RickyandRoll");
 		TrackDTO updateTrackDTO = new TrackDTO();
 		
 		when(trackRepo.findById(Mockito.any(Long.class))).thenReturn(Optional.of(validTrack));

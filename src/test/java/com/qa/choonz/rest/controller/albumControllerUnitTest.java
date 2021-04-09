@@ -45,7 +45,7 @@ public class albumControllerUnitTest {
 	private Album validAlbum;
 	private AlbumDTO validAlbumDTO;
 	
-	Artist artist = new Artist(1, "Rick", "Password");
+	Artist artist = new Artist(1, "Rick");
 	ArtistDTO artistDTO = new ArtistDTO(1, "Rick");
 	
 	Genre genre = new Genre(1, "Name", "GenDescrip");
@@ -54,17 +54,19 @@ public class albumControllerUnitTest {
 	@BeforeEach
 	void init() {
 		
-		Artist artist = new Artist(1, "Rick", "Password");
+		Artist artist = new Artist(1, "Rick");
 		ArtistDTO artistDTO = new ArtistDTO(1, "Rick");
 		
 		Genre genre = new Genre(1, "Name", "GenDescrip");
 		GenreDTO genreDTO = new GenreDTO(1, "Name", "GenDescrip");
+		List<GenreDTO> genreDTOS = new ArrayList<>();
+		genreDTOS.add(genreDTO);
 		
-		validAlbum = new Album(1, "Name", artist, genre, "Cover");
-		validAlbumDTO = new AlbumDTO(1, "Name", artistDTO, genreDTO, "Cover");
+		validAlbum = new Album(1, "Name", artist,"Cover");
+		validAlbumDTO = new AlbumDTO(1, "Name", artistDTO, genreDTOS, "Cover");
 		
-		validAlbums = new ArrayList<Album>();
-		validAlbumDTOs = new ArrayList<AlbumDTO>();
+		validAlbums = new ArrayList<>();
+		validAlbumDTOs = new ArrayList<>();
 		validAlbums.add(validAlbum);
 		validAlbumDTOs.add(validAlbumDTO);
 	}

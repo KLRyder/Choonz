@@ -2,6 +2,7 @@ package com.qa.choonz.domain;
 
 import java.util.ArrayList;
 
+import com.qa.choonz.persistence.domain.Track;
 import org.junit.jupiter.api.Test;
 
 import com.qa.choonz.persistence.domain.Album;
@@ -18,14 +19,14 @@ public class genreModelUnitTest {
 	void testEquals() {
 		EqualsVerifier.simple().forClass(Genre.class)
 			.withPrefabValues(Album.class, 
-				new Album(1, "name1", artist, null, "cover"),
-				new Album(2, "name2", artist, null, "cover"))
+				new Album(1, "name1", artist, "cover"),
+				new Album(2, "name2", artist, "cover"))
 				.verify();
 	}
 	
 	@Test
 	void constructorTest() {
-		Genre newGenreModel = new Genre(1, "Rick", "RickandRoll", new ArrayList<Album>());
+		Genre newGenreModel = new Genre(1, "Rick", "RickandRoll", new ArrayList<>());
 		newGenreModel.toString();
 	}
 

@@ -3,11 +3,16 @@ package com.qa.choonz.rest.dto;
 import org.junit.jupiter.api.Test;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.input.LineSeparatorDetector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class albumDTOUnitTest {
 	
 	private final ArtistDTO artist = new ArtistDTO();
 	private final GenreDTO genre = new GenreDTO();
+	private final List<GenreDTO> genreDTOS = new ArrayList<GenreDTO>();
 	private final PlaylistDTO playlist = new PlaylistDTO();
 	private final AlbumDTO album = new AlbumDTO();
 	
@@ -28,7 +33,8 @@ public class albumDTOUnitTest {
 	
 	@Test
 	void constructorTest() {
-		AlbumDTO newAlbumModel = new AlbumDTO(1, "name", artist, genre, "cover");
+		genreDTOS.add(genre);
+		AlbumDTO newAlbumModel = new AlbumDTO(1, "name", artist, genreDTOS, "cover");
 		newAlbumModel.toString();
 	}
 

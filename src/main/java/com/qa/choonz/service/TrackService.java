@@ -43,7 +43,6 @@ public class TrackService {
         toUpdate.setAlbum(track.getAlbum());
         toUpdate.setDuration(track.getDuration());
         toUpdate.setLyrics(track.getLyrics());
-        toUpdate.setPlaylist(track.getPlaylist());
         Track updated = this.repo.save(toUpdate);
         return mapper.mapToDeepDTO(updated);
     }
