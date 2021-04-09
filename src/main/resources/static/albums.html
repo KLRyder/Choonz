@@ -86,7 +86,7 @@
           <button class="btn btn-primary" id="updateButton" onclick="updateOne()">Edit Album</button>
         </div>
         <div class="col">
-          <button class="btn btn-danger" id="updateButton" onclick="updateOne()">Delete Album</button>
+          <button class="btn btn-danger" id="deleteAlbumButton" onclick="displayDeleteAlbumModal()">Delete Album</button>
         </div>
       </div>
     </div>
@@ -152,6 +152,50 @@ r" id="trackList">
 </template>
 <!-- Accordian Template -->
 
+<!--
+<div id="deleteAlbumModal" class="modal">
+  <div class="modal-content">
+
+    <p id="confirmMessage">Are you sure you want to delete the ALBUM-NAME Album?</p>
+    <button class="floated btn btn-light" id="closeDeleteAlbumModalButton" onclick="closeDeleteAlbumModal()">No</button>
+    <button class="floated btn btn-danger" id="updateButton" onclick="deleteAlbumConfirm()">Yes</button>
+    
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+    </div>      
+    <div class="modal-body">
+      <p>You are about to delete the album, this procedure is irreversible.</p>
+      <p>Do you want to proceed?</p>
+      <p class="debug-url"></p>
+    </div>          
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      <a class="btn btn-danger btn-ok">Delete</a>
+    </div>
+  </div>
+</div>
+-->
+
+<div id="deleteAlbumModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>You are about to delete the album, this procedure is irreversible.</p>
+        <p>Do you want to proceed?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="./js/base.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -164,5 +208,6 @@ r" id="trackList">
         crossorigin="anonymous"></script>
 <script src="./js/tracklistPopulator.js"></script>
 <script src="./js/fillAlbumPage.js"></script>
+<script src="./js/albums.js"></script>
 </body>
 </html>

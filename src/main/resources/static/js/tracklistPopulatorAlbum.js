@@ -28,6 +28,7 @@ let populate = (trackJSON) => {
 
 let getAllTracks = (albumId) => {
     console.log("try to populate")
+
     fetch(apiURL + 'albums/read/' + albumId).then(res => res.json())
         .then((data) => {
             for (let i = 0; i < data.tracks.length; i++) {
