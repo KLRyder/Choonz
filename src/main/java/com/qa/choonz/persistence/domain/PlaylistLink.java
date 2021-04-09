@@ -1,20 +1,28 @@
 package com.qa.choonz.persistence.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 public class PlaylistLink {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Playlist.class, fetch = FetchType.LAZY)
     Playlist playlist;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Track.class, fetch = FetchType.LAZY)
     Track track;
+
+    public PlaylistLink(Playlist playlist, Track track) {
+        this.track = track;
+        this.playlist = playlist;
+    }
+
+    public PlaylistLink() {
+
+    }
 
     public long getId() {
         return id;

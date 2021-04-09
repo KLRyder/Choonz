@@ -42,6 +42,11 @@ public class Track {
         this.duration = duration;
         this.lyrics = lyrics;
     }
+
+    public Track(long id) {
+        this.id = id;
+    }
+
     public Genre getGenre() {
         return genre;
     }

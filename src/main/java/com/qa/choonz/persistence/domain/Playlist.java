@@ -1,17 +1,14 @@
 package com.qa.choonz.persistence.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -35,7 +32,8 @@ public class Playlist {
     @Column(unique = true)
     private String artwork;
 
-    @OneToMany
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<PlaylistLink> tracks;
 
     public Playlist() {
@@ -60,6 +58,10 @@ public class Playlist {
         this.description = description;
         this.artwork = artwork;
         this.tracks = tracks;
+    }
+
+    public Playlist(long id) {
+        this.id = id;
     }
 
     public long getId() {
