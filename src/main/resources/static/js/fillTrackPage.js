@@ -8,16 +8,17 @@ let fill = (trackJSON) => {
 
     let basicTrackInfo = document.getElementById("trackInfoRow");
     basicTrackInfo.innerHTML = basicTrackInfo.innerHTML.replace("_ARTIST-ID", trackJSON.artist.id)
-    .replace("_ARTIST-NAME", trackJSON.artist.name)
-    .replace("_ALBUM-ID", trackJSON.album.id)
-    .replace("_ALBUM-NAME", trackJSON.album.name)
+        .replace("_ARTIST-NAME", trackJSON.artist.name)
+        .replace("_ALBUM-ID", trackJSON.album.id)
+        .replace("_ALBUM-NAME", trackJSON.album.name)
+        .replace("_DURATION", trackJSON.duration)
     // .replace("_GENRE-ID", trackJSON.genre.id)
     // .replace("_GENRE-NAME", trackJSON.genre.name)
 
     let fullLyrics = trackJSON.lyrics;
     let splitLyrics = fullLyrics.split(".");
 
-    for (let i = 0; i < ((splitLyrics.length)-1); i++) {
+    for (let i = 0; i < ((splitLyrics.length) - 1); i++) {
         splitLyrics[i] = splitLyrics[i] + "<br>";
     }
 

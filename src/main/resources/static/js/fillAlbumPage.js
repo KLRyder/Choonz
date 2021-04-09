@@ -6,6 +6,9 @@ let fill = (albumJSON) => {
     let albumNameText = document.querySelector('#albumName');
     albumNameText.innerHTML = albumNameText.innerHTML.replace("ALBUM NAME", albumJSON.name)
 
+    let albumImage = document.getElementById("image1");
+    albumImage.src = albumJSON.cover;
+
     let basicalbumInfo = document.getElementById("albumInfoRow");
     basicalbumInfo.innerHTML = basicalbumInfo.innerHTML.replace("_ARTIST-ID", albumJSON.artist.id)
     .replace("_ARTIST-NAME", albumJSON.artist.name)

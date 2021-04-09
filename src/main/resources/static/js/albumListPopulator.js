@@ -1,4 +1,3 @@
-const apiURL = 'http://localhost:8082/'
 let albumContainer = document.querySelector('#albumListContainer');
 let msn = new Masonry(albumContainer, {
     // options

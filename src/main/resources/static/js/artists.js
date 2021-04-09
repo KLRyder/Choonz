@@ -15,7 +15,8 @@ let getArtist = (artist_id) => {
         .then((data) => {
             displayArtist(data);
         })
-        .catch(() => {window.location.href = "404.html";
+        .catch((error) => {
+            console.log(error)
         })
 }
 
