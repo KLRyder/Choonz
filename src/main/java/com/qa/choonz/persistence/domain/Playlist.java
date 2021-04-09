@@ -36,7 +36,7 @@ public class Playlist {
     private String artwork;
 
     @OneToMany
-    private List<Track> tracks;
+    private List<PlaylistLink> tracks;
 
     public Playlist() {
         super();
@@ -53,7 +53,7 @@ public class Playlist {
     }
 
     public Playlist(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description,
-                    @NotNull @Size(max = 1000) String artwork, List<Track> tracks) {
+                    @NotNull @Size(max = 1000) String artwork, List<PlaylistLink> tracks) {
         super();
         this.id = id;
         this.name = name;
@@ -94,11 +94,11 @@ public class Playlist {
         this.artwork = artwork;
     }
 
-    public List<Track> getTracks() {
+    public List<PlaylistLink> getTracks() {
         return tracks;
     }
 
-    public void setTracks(List<Track> tracks) {
+    public void setTracks(List<PlaylistLink> tracks) {
         this.tracks = tracks;
     }
 
