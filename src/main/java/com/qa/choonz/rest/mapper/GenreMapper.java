@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.qa.choonz.persistence.domain.Album;
 import com.qa.choonz.persistence.domain.Genre;
 import com.qa.choonz.rest.dto.GenreDTO;
-import com.qa.choonz.rest.dto.TrackDTO;
 
 @Component
 public class GenreMapper {
@@ -49,6 +48,6 @@ public class GenreMapper {
         toReturn.setName(genre.getName());
         toReturn.setId(genre.getId());
         toReturn.setDescription(genre.getDescription());
-        return null;
+        return toReturn;
     }
 }

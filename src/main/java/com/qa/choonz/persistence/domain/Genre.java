@@ -28,7 +28,7 @@ public class Genre {
     private String description;
 
     @OneToMany(mappedBy = "genre", fetch = FetchType.LAZY, orphanRemoval = true)
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Track> tracks;
 
     public Genre() {
