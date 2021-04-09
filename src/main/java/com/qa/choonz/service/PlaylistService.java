@@ -43,7 +43,7 @@ public class PlaylistService {
         toUpdate.setDescription(playlist.getDescription());
         toUpdate.setArtwork(playlist.getArtwork());
         toUpdate.setTracks(playlist.getTracks());
-        Playlist updated = this.repo.save(playlist);
+        Playlist updated = this.repo.save(toUpdate);
         return mapper.mapToDeepDTO(updated);
     }
 
