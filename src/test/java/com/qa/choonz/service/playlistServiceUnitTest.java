@@ -1,14 +1,11 @@
 package com.qa.choonz.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.qa.choonz.persistence.domain.Playlist;
+import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.repository.PlaylistRepository;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.PlaylistDTO;
+import com.qa.choonz.rest.mapper.PlaylistMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,10 +14,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.qa.choonz.persistence.domain.Playlist;
-import com.qa.choonz.persistence.repository.PlaylistRepository;
-import com.qa.choonz.rest.dto.PlaylistDTO;
-import com.qa.choonz.rest.mapper.PlaylistMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 public class playlistServiceUnitTest {
@@ -39,10 +38,17 @@ public class playlistServiceUnitTest {
 	
 	private Playlist validPlaylist;
 	private PlaylistDTO validPlaylistDTO;
+
+	private UserDetails user = new UserDetails();
 	
 	@BeforeEach
 	void init() {
-		validPlaylist = new Playlist(1, "Name" ,"PlaylistDescrip", "Artwork");
+		user.setId(1);
+		user.setRole(UserRole.ADMIN);
+		user.setPassword("pass");
+		user.setUsername("addy the admin");
+
+		validPlaylist = new Playlist(1, "Name" ,"PlaylistDescrip", "Artwork", user);
 		validPlaylistDTO = new PlaylistDTO(1, "Name" ,"PlaylistDescrip", "Artwork");
 		
 		validPlaylists = new ArrayList<Playlist>();
@@ -83,7 +89,7 @@ public class playlistServiceUnitTest {
 		when(playlistRepo.save(Mockito.any(Playlist.class))).thenReturn(validPlaylist);
 		when(playlistMapper.mapToDeepDTO(Mockito.any(Playlist.class))).thenReturn(validPlaylistDTO);
 		
-		assertThat(validPlaylistDTO).isEqualTo(playlistService.create(validPlaylist));
+		assertThat(validPlaylistDTO).isEqualTo(playlistService.create(validPlaylist, user));
 		
 		verify(playlistRepo, times(1)).save(Mockito.any(Playlist.class));
 		verify(playlistMapper, times(1)).mapToDeepDTO(Mockito.any(Playlist.class));
@@ -93,7 +99,7 @@ public class playlistServiceUnitTest {
 	@Test
 	void updatePlaylist() {
 		
-		Playlist updatePlaylist = new Playlist(1, "newName", "newDescrip", "newArt");
+		Playlist updatePlaylist = new Playlist(1, "newName", "newDescrip", "newArt", user);
 		PlaylistDTO updatePlaylistDTO = new PlaylistDTO(1, "newName", "newDescrip", "newArt");
 		
 		when(playlistRepo.findById(Mockito.any(Long.class)))
@@ -105,7 +111,7 @@ public class playlistServiceUnitTest {
 		when(playlistMapper.mapToDeepDTO(Mockito.any(Playlist.class)))
 			 .thenReturn(updatePlaylistDTO);
 		
-		PlaylistDTO testPlaylistDTO = playlistService.update(updatePlaylist, validPlaylist.getId());
+		PlaylistDTO testPlaylistDTO = playlistService.update(updatePlaylist, validPlaylist.getId(), user);
 		
 		assertThat(updatePlaylistDTO).isEqualTo(testPlaylistDTO);
 		
@@ -119,7 +125,7 @@ public class playlistServiceUnitTest {
 		
 		when(playlistRepo.existsById(Mockito.any(Long.class))).thenReturn(true, false);
 		
-		assertThat(false).isEqualTo(playlistService.delete(validPlaylist.getId()));
+		assertThat(false).isEqualTo(playlistService.delete(validPlaylist.getId(), user));
 		
 		verify(playlistRepo, times(1)).existsById(Mockito.any(Long.class));
 	}

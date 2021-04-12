@@ -3,14 +3,13 @@ package com.qa.choonz.persistence.domain;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 public class Playlist {
@@ -36,28 +35,33 @@ public class Playlist {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<PlaylistLink> tracks;
 
+    @ManyToOne(targetEntity = UserDetails.class, fetch = FetchType.LAZY)
+    private UserDetails creator;
+
     public Playlist() {
         super();
         tracks = Collections.emptyList();
     }
     
-    public Playlist(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description, @NotNull @Size(max = 1000) String artwork) {
+    public Playlist(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description, @NotNull @Size(max = 1000) String artwork, UserDetails creator) {
     	super();
     	this.id = id;
     	this.name = name;
     	this.description = description;
     	this.artwork = artwork;
-    	this.tracks = new ArrayList<>();
+        this.creator = creator;
+        this.tracks = new ArrayList<>();
     }
 
     public Playlist(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description,
-                    @NotNull @Size(max = 1000) String artwork, List<PlaylistLink> tracks) {
+                    @NotNull @Size(max = 1000) String artwork, List<PlaylistLink> tracks, UserDetails creator) {
         super();
         this.id = id;
         this.name = name;
         this.description = description;
         this.artwork = artwork;
         this.tracks = tracks;
+        this.creator = creator;
     }
 
     public Playlist(long id) {
@@ -104,6 +108,14 @@ public class Playlist {
         this.tracks = tracks;
     }
 
+    public UserDetails getCreator() {
+        return creator;
+    }
+
+    public void setCreator(UserDetails creator) {
+        this.creator = creator;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,6 +126,7 @@ public class Playlist {
         if (!Objects.equals(name, playlist.name)) return false;
         if (!Objects.equals(description, playlist.description)) return false;
         if (!Objects.equals(artwork, playlist.artwork)) return false;
+        if (!Objects.equals(creator, playlist.creator)) return false;
         return Objects.equals(tracks, playlist.tracks);
     }
 
@@ -124,6 +137,7 @@ public class Playlist {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (artwork != null ? artwork.hashCode() : 0);
         result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        result = 31 * result + (creator != null ? creator.hashCode() : 0);
         return result;
     }
 
@@ -135,6 +149,7 @@ public class Playlist {
                 ", description='" + description + '\'' +
                 ", artwork='" + artwork + '\'' +
                 ", tracks=" + tracks +
+                ", creator=" + creator +
                 '}';
     }
 }

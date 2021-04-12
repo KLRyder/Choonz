@@ -1,13 +1,16 @@
 package com.qa.choonz.rest.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.qa.choonz.persistence.domain.Album;
+import com.qa.choonz.persistence.domain.Artist;
+import com.qa.choonz.persistence.domain.Genre;
+import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.AlbumDTO;
+import com.qa.choonz.rest.dto.ArtistDTO;
+import com.qa.choonz.rest.dto.GenreDTO;
+import com.qa.choonz.rest.mapper.AlbumMapper;
+import com.qa.choonz.service.AlbumService;
+import com.qa.choonz.utils.ActiveSessions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,14 +21,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.rest.dto.AlbumDTO;
-import com.qa.choonz.rest.dto.ArtistDTO;
-import com.qa.choonz.rest.dto.GenreDTO;
-import com.qa.choonz.rest.mapper.AlbumMapper;
-import com.qa.choonz.service.AlbumService;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 public class albumControllerUnitTest {
@@ -38,6 +39,9 @@ public class albumControllerUnitTest {
 	
 	@Mock
 	private AlbumMapper albumMapper;
+
+	@Mock
+	private ActiveSessions sessions;
 	
 	private List<Album> validAlbums;
 	private List<AlbumDTO> validAlbumDTOs;
@@ -50,6 +54,7 @@ public class albumControllerUnitTest {
 	
 	Genre genre = new Genre(1, "Name", "GenDescrip");
 	GenreDTO genreDTO = new GenreDTO(1, "Name", "GenDescrip");
+	private UserDetails user = new UserDetails();
 	
 	@BeforeEach
 	void init() {
@@ -69,15 +74,21 @@ public class albumControllerUnitTest {
 		validAlbumDTOs = new ArrayList<>();
 		validAlbums.add(validAlbum);
 		validAlbumDTOs.add(validAlbumDTO);
+
+		user.setId(1);
+		user.setRole(UserRole.ADMIN);
+		user.setPassword("pass");
+		user.setUsername("addy the admin");
 	}
 	
 	@Test
-	void readAllGenres() {
+	void readAllAlbum() {
 		
 		when(albumService.read()).thenReturn(validAlbumDTOs);
-		
-		ResponseEntity<List<AlbumDTO>> response = 
-				new ResponseEntity<List<AlbumDTO>>(validAlbumDTOs, HttpStatus.OK);
+		when(sessions.getSession(any(String.class))).thenReturn(user);
+
+		ResponseEntity<List<AlbumDTO>> response =
+				new ResponseEntity<>(validAlbumDTOs, HttpStatus.OK);
 		
 		assertThat(response).isEqualTo(albumController.read());
 		
@@ -85,12 +96,13 @@ public class albumControllerUnitTest {
 	}
 	
 	@Test
-	void readGenreByID() {
+	void readAlbumByID() {
 		
 		when(albumService.read(1L)).thenReturn(validAlbumDTO);
-		
+		when(sessions.getSession(any(String.class))).thenReturn(user);
+
 		ResponseEntity<AlbumDTO> response =
-				new ResponseEntity<AlbumDTO>(validAlbumDTO, HttpStatus.OK);
+				new ResponseEntity<>(validAlbumDTO, HttpStatus.OK);
 		
 		assertThat(response).isEqualTo(albumController.read(1L));
 		
@@ -99,44 +111,50 @@ public class albumControllerUnitTest {
 	}
 	
 	@Test
-	void createGenre() {
+	void createAlbum() {
 		
-		when(albumService.create(Mockito.any(Album.class))).thenReturn(validAlbumDTO);
-		
+		when(albumService.create(Mockito.any(Album.class), user)).thenReturn(validAlbumDTO);
+		when(sessions.getSession(any(String.class))).thenReturn(user);
+
 		ResponseEntity<AlbumDTO> response = 
-				new ResponseEntity<AlbumDTO>(validAlbumDTO, HttpStatus.CREATED);
+				new ResponseEntity<>(validAlbumDTO, HttpStatus.CREATED);
 		
-		assertThat(response).isEqualTo(albumController.create(validAlbum));
+		assertThat(response).isEqualTo(albumController.create(validAlbum, "user"));
 		
-		verify(albumService, times(1)).create(Mockito.any(Album.class));
+		verify(albumService, times(1)).create(Mockito.any(Album.class), user);
+		verify(sessions, times(1)).getSession(any(String.class));
 		
 	}
 	
 	@Test
-	void updateGenre() {
+	void updateAlbum() {
 		
-		when(albumService.update(validAlbum, validAlbum.getId()))
+		when(albumService.update(validAlbum, validAlbum.getId(), user))
 			 .thenReturn(validAlbumDTO);
-		
+		when(sessions.getSession(any(String.class))).thenReturn(user);
+
 		ResponseEntity<AlbumDTO> response =
-				new ResponseEntity<AlbumDTO>(validAlbumDTO, HttpStatus.ACCEPTED);
+				new ResponseEntity<>(validAlbumDTO, HttpStatus.ACCEPTED);
 		
-		assertThat(response).isEqualTo(albumController.update(validAlbum, validAlbum.getId()));
+		assertThat(response).isEqualTo(albumController.update(validAlbum, validAlbum.getId(), "user"));
 		
-		verify(albumService, times(1)).update(validAlbum, validAlbum.getId());
+		verify(albumService, times(1)).update(validAlbum, validAlbum.getId(), user);
+		verify(sessions, times(1)).getSession(any(String.class));
 	}
 	
 	@Test
-	void deleteGenre() {
+	void deleteAlbum() {
 		
-		when(albumService.delete(validAlbum.getId())).thenReturn(true);
+		when(albumService.delete(validAlbum.getId(), user)).thenReturn(true);
+		when(sessions.getSession(any(String.class))).thenReturn(user);
+
+		ResponseEntity<AlbumDTO> response =
+				new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
-		ResponseEntity<Boolean> response = 
-				new ResponseEntity<Boolean>(HttpStatus.NO_CONTENT);
+		assertThat(response).isEqualTo(albumController.delete(validAlbum.getId(), "user"));
 		
-		assertThat(response).isEqualTo(albumController.delete(validAlbum.getId()));
-		
-		verify(albumService, times(1)).delete(validAlbum.getId());
+		verify(albumService, times(1)).delete(validAlbum.getId(), user);
+		verify(sessions, times(1)).getSession(any(String.class));
 	}
 
 }

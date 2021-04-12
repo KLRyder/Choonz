@@ -27,17 +27,11 @@ public class SessionController {
         var sessionId = service.authenticate(user);
         if (sessionId != null) {
             Cookie sessionCookie = new Cookie("SESSID", sessionId);
-            Cookie usernameCookie = new Cookie("U_NAME", user.getUsername());
             sessionCookie.setHttpOnly(false);
             sessionCookie.setSecure(true);
             sessionCookie.setMaxAge(60*60);
             sessionCookie.setDomain("localhost");
-            usernameCookie.setHttpOnly(false);
-            usernameCookie.setSecure(true);
-            usernameCookie.setMaxAge(60*60);
-            usernameCookie.setDomain("localhost");
             response.addCookie(sessionCookie);
-            response.addCookie(usernameCookie);
             return new ResponseEntity<>("success", HttpStatus.OK);
         } else return new ResponseEntity<>("fail", HttpStatus.OK);
     }

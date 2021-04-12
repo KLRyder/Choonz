@@ -1,14 +1,11 @@
 package com.qa.choonz.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.qa.choonz.persistence.domain.Genre;
+import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.repository.GenreRepository;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.GenreDTO;
+import com.qa.choonz.rest.mapper.GenreMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,10 +14,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.repository.GenreRepository;
-import com.qa.choonz.rest.dto.GenreDTO;
-import com.qa.choonz.rest.mapper.GenreMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith({MockitoExtension.class})
@@ -40,6 +39,7 @@ public class genreServiceUnitTest {
 	
 	private Genre validGenre;
 	private GenreDTO validGenreDTO;
+	private UserDetails user = new UserDetails();
 	
 	@BeforeEach
 	void init() { 
@@ -50,7 +50,11 @@ public class genreServiceUnitTest {
 		validGenreDTOs = new ArrayList<GenreDTO>();
 		validGenres.add(validGenre);
 		validGenreDTOs.add(validGenreDTO);
-		
+
+		user.setId(1);
+		user.setRole(UserRole.ADMIN);
+		user.setPassword("pass");
+		user.setUsername("addy the admin");
 	}
 	
 	@Test
@@ -84,7 +88,7 @@ public class genreServiceUnitTest {
 		when(genreRepo.save(Mockito.any(Genre.class))).thenReturn(validGenre);
 		when(genreMapper.mapToDeepDTO(Mockito.any(Genre.class))).thenReturn(validGenreDTO);
 		
-		assertThat(validGenreDTO).isEqualTo(genreService.create(validGenre));
+		assertThat(validGenreDTO).isEqualTo(genreService.create(validGenre, user));
 		
 		verify(genreRepo, times(1)).save(Mockito.any(Genre.class));
 		verify(genreMapper, times(1)).mapToDeepDTO(Mockito.any(Genre.class));
@@ -101,7 +105,7 @@ public class genreServiceUnitTest {
 		when(genreRepo.save(Mockito.any(Genre.class))).thenReturn(updateGenre);
 		when(genreMapper.mapToDeepDTO(Mockito.any(Genre.class))).thenReturn(updateGenreDTO);
 		
-		GenreDTO testGenreDTO = genreService.update(updateGenre, validGenre.getId());
+		GenreDTO testGenreDTO = genreService.update(updateGenre, validGenre.getId(), user);
 		
 		assertThat(updateGenreDTO).isEqualTo(testGenreDTO);
 		
@@ -115,7 +119,7 @@ public class genreServiceUnitTest {
 		
 		when(genreRepo.existsById(Mockito.any(Long.class))).thenReturn(true, false);
 		
-		assertThat(false).isEqualTo(genreService.delete(validGenre.getId()));
+		assertThat(false).isEqualTo(genreService.delete(validGenre.getId(), user));
 		
 		verify(genreRepo, times(1)).existsById(Mockito.any(Long.class));
 	}

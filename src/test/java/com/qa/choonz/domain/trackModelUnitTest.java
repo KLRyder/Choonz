@@ -1,12 +1,7 @@
 package com.qa.choonz.domain;
 
+import com.qa.choonz.persistence.domain.*;
 import org.junit.jupiter.api.Test;
-
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.Playlist;
-import com.qa.choonz.persistence.domain.Track;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
@@ -25,8 +20,8 @@ public class trackModelUnitTest {
 					new Album(1, "name2", artist, "cover"))
 			
 			.withPrefabValues(Playlist.class,
-					new Playlist(1, "name", "description", "artwork"),
-					new Playlist(2, "name2", "description2", "artwork"))
+					new Playlist(1, "name", "description", "artwork", new UserDetails()),
+					new Playlist(2, "name2", "description2", "artwork", new UserDetails()))
 		.verify();
 	}
 	

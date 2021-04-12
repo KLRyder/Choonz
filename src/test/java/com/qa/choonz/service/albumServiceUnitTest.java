@@ -1,14 +1,15 @@
 package com.qa.choonz.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.qa.choonz.persistence.domain.Album;
+import com.qa.choonz.persistence.domain.Artist;
+import com.qa.choonz.persistence.domain.Genre;
+import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.repository.AlbumRepository;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.AlbumDTO;
+import com.qa.choonz.rest.dto.ArtistDTO;
+import com.qa.choonz.rest.dto.GenreDTO;
+import com.qa.choonz.rest.mapper.AlbumMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,14 +18,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.repository.AlbumRepository;
-import com.qa.choonz.rest.dto.AlbumDTO;
-import com.qa.choonz.rest.dto.ArtistDTO;
-import com.qa.choonz.rest.dto.GenreDTO;
-import com.qa.choonz.rest.mapper.AlbumMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 public class albumServiceUnitTest {
@@ -50,6 +49,7 @@ public class albumServiceUnitTest {
 	Genre genre = new Genre(1, "Name", "GenDescrip");
 	GenreDTO genreDTO = new GenreDTO(1, "Name", "GenDescrip");
 	List<GenreDTO> genreDTOS = new ArrayList<>();
+	private UserDetails user = new UserDetails();
 	
 	@BeforeEach
 	void init() {
@@ -69,6 +69,11 @@ public class albumServiceUnitTest {
 		validAlbumDTOs = new ArrayList<>();
 		validAlbums.add(validAlbum);
 		validAlbumDTOs.add(validAlbumDTO);
+
+		user.setId(1);
+		user.setRole(UserRole.ADMIN);
+		user.setPassword("pass");
+		user.setUsername("addy the admin");
 	}
 	
 	@Test
@@ -103,7 +108,7 @@ public class albumServiceUnitTest {
 		when(albumRepo.save(Mockito.any(Album.class))).thenReturn(validAlbum);
 		when(albumMapper.mapToDeepDTO(Mockito.any(Album.class))).thenReturn(validAlbumDTO);
 		
-		assertThat(validAlbumDTO).isEqualTo(albumService.create(validAlbum));
+		assertThat(validAlbumDTO).isEqualTo(albumService.create(validAlbum, user));
 		
 		verify(albumRepo, times(1)).save(Mockito.any(Album.class));
 		verify(albumMapper, times(1)).mapToDeepDTO(Mockito.any(Album.class));
@@ -125,7 +130,7 @@ public class albumServiceUnitTest {
 		when(albumMapper.mapToDeepDTO(Mockito.any(Album.class)))
 			 .thenReturn(updateAlbumDTO);
 		
-		AlbumDTO testAlbumDTO = albumService.update(updateAlbum, validAlbum.getId());
+		AlbumDTO testAlbumDTO = albumService.update(updateAlbum, validAlbum.getId(), user);
 		
 		assertThat(updateAlbumDTO).isEqualTo(testAlbumDTO);
 		
@@ -141,7 +146,7 @@ public class albumServiceUnitTest {
 		when(albumRepo.existsById(Mockito.any(Long.class)))
 			 .thenReturn(true, false);
 		
-		assertThat(false).isEqualTo(albumService.delete(validAlbum.getId()));
+		assertThat(false).isEqualTo(albumService.delete(validAlbum.getId(), user));
 		
 		verify(albumRepo, times(1)).existsById(Mockito.any(Long.class));
 	}

@@ -1,14 +1,10 @@
 package com.qa.choonz.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.qa.choonz.persistence.domain.*;
+import com.qa.choonz.persistence.repository.TrackRepository;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.TrackDTO;
+import com.qa.choonz.rest.mapper.TrackMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,14 +13,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.Playlist;
-import com.qa.choonz.persistence.domain.Track;
-import com.qa.choonz.persistence.repository.TrackRepository;
-import com.qa.choonz.rest.dto.TrackDTO;
-import com.qa.choonz.rest.mapper.TrackMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 public class trackServiceUnitTest {
@@ -48,6 +42,7 @@ public class trackServiceUnitTest {
 	Album album = new Album();
 	Playlist playlist = new Playlist();
 	Artist artist = new Artist();
+	private UserDetails user = new UserDetails();
 	
 	
 	@BeforeEach
@@ -60,11 +55,15 @@ public class trackServiceUnitTest {
 		validTrack = new Track(1L, "Rick", album, 300, "RickandRoll");
 		validTrackDTO = new TrackDTO();
 		
-		validTracks = new ArrayList<Track>();
-		validTrackDTOs = new ArrayList<TrackDTO>();
+		validTracks = new ArrayList<>();
+		validTrackDTOs = new ArrayList<>();
 		validTracks.add(validTrack);
 		validTrackDTOs.add(validTrackDTO);
-		
+
+		user.setId(1);
+		user.setRole(UserRole.ADMIN);
+		user.setPassword("pass");
+		user.setUsername("addy the admin");
 	}
 	
 	@Test
@@ -100,7 +99,7 @@ public class trackServiceUnitTest {
 		when(trackMapper.mapToDeepDTO(Mockito.any(Track.class)))
 			.thenReturn(validTrackDTO);
 		
-		assertThat(validTrackDTO).isEqualTo(trackService.create(validTrack));
+		assertThat(validTrackDTO).isEqualTo(trackService.create(validTrack, user));
 		
 		verify(trackRepo, times(1)).save(Mockito.any(Track.class));
 		verify(trackMapper, times(1)).mapToDeepDTO(Mockito.any(Track.class));
@@ -116,7 +115,7 @@ public class trackServiceUnitTest {
 		when(trackRepo.save(Mockito.any(Track.class))).thenReturn(updateTrack);
 		when(trackMapper.mapToDeepDTO(Mockito.any(Track.class))).thenReturn(updateTrackDTO);
 		
-		TrackDTO testTrackDTO = trackService.update(updateTrack, validTrack.getId());
+		TrackDTO testTrackDTO = trackService.update(updateTrack, validTrack.getId(), user);
 		
 		assertThat(updateTrackDTO).isEqualTo(testTrackDTO);
 		
@@ -132,7 +131,7 @@ public class trackServiceUnitTest {
 		when(trackRepo.existsById(Mockito.any(Long.class)))
 			.thenReturn(true, false);
 		
-		assertThat(false).isEqualTo(trackService.delete(validTrack.getId()));
+		assertThat(false).isEqualTo(trackService.delete(validTrack.getId(), user));
 		
 		verify(trackRepo, times(1)).existsById(Mockito.any(Long.class));
 		

@@ -1,5 +1,7 @@
 package com.qa.choonz.persistence.domain;
 
+import com.qa.choonz.persistence.roles.UserRole;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.security.MessageDigest;
@@ -18,6 +20,16 @@ public class UserDetails {
 
     @NotNull
     String password;
+
+    private UserRole role;
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
 
     public String getPassword() {
         return password;
@@ -61,13 +73,15 @@ public class UserDetails {
         UserDetails that = (UserDetails) o;
 
         if (!Objects.equals(username, that.username)) return false;
-        return Objects.equals(password, that.password);
+        if (!Objects.equals(password, that.password)) return false;
+        return role == that.role;
     }
 
     @Override
     public int hashCode() {
         int result = username != null ? username.hashCode() : 0;
         result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
         return result;
     }
 
@@ -88,6 +102,7 @@ public class UserDetails {
         return "UserDetails{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", role=" + role +
                 '}';
     }
 }
