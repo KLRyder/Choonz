@@ -1,72 +1,56 @@
+let updateAlbumModal = document.getElementById('updateAlbumModal');
+
+updateAlbumModal.addEventListener('show.bs.modal', function (event) {
+
+    //Fix code here to fill in update modal
+    //get task information from triggering button
+    //let button = event.relatedTarget;
+    //let listId = button.getAttribute('data-bs-listID');
+    //let listName = button.getAttribute('data-bs-listName');
+
+    // Update the modal's content.
+    //let modalTitle = createTaskModal.querySelector('.modal-title');
+    //let modelListId = createTaskModal.querySelector('#listID');
+
+    //modalTitle.textContent = 'New task: ' + listName;
+    //modelListId.value = listId;
+})
+
+
 function deleteAlbum(){
-    if (dataType.value == "listdata") {
-        fetch("http://localhost:8080/todolist/" + id.value, {
-            method: 'delete'
-        }).then(res => {
-            if (res.status === 200) {
-                console.info(id.value + " deleted")
-                querySuccess();
-                return;
-            } else {
-                console.error(`Request failed ${res.body}`)
-            }
-        }).catch((error) => console.error(`Request failed ${error}`))
-    }
-    else if (dataType.value == "itemdata"){
-        fetch("http://localhost:8080/item/" + id.value, {
-            method: 'delete'
-        }).then(res => {
-            if (res.status === 200) {
-                console.info(id.value + " deleted")
-                querySuccess();
-                return;
-            } else {
-                console.error(`Request failed ${res.body}`)
-            }
-        }).catch((error) => console.error(`Request failed ${error}`))
-    }
-    queryFailure();
+    fetch("http://localhost:8082/albums/delete/" + urlParams.get("album_id"), {
+        method: 'delete'
+    }).then(res => {
+        if (res.status === 200) {
+            console.info("Deleted successfully")
+            return;
+        } else {
+            console.error(`Request failed ${res.body}`)
+        }
+    }).catch((error) => console.error(`Request failed ${error}`))
 }
 
 function updateAlbum(){
-    clearInfo();
-    if (dataType.value == "listdata") {
-        fetch("http://localhost:8080/todolist/" + id.value, {
-            method: 'put',
-            headers: {
-                "Content-type": "application/json"
+    let albumName = document.querySelector('#update-album-name').value;
+    let albumArtistId = document.querySelector('#update-artist-id').value;
+    let albumCover = document.querySelector('#albumPic').value;
+
+    fetch("http://localhost:8082/albums/update/" + urlParams.get("album_id"), {
+        method: 'put',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+            "name": albumName,
+            "artist": {
+              "id": albumArtistId
             },
-            body: JSON.stringify({
-                "title": textData.value,
-                "completed": document.getElementById("myCheck").checked
-            })
-        }).then(res => res.json())
-            .then((data) => {
-                displayList(data);
-                querySuccess();
-                return;
-            })
-            .catch((error) => console.error(`Request failed ${error}`))
-    }
-    else if (dataType.value == "itemdata"){
-        fetch("http://localhost:8080/item/" + id.value, {
-            method: 'put',
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify({
-                "textBody": textData.value,
-                "taskDone": document.getElementById("myCheck").checked,
-                "toDoList": {
-                    "listId": listId.value
-                }
-            })
-        }).then(res => res.json())
-            .then((data) => {
-                querySuccess();
-                return;
-            })
-            .catch((error) => console.error(`Request failed ${error}`))
-    }
-    queryFailure();
+            "cover": albumCover
+        })
+    }).then(res => res.json())
+        .then((data) => {
+            console.info("Updated")
+            return;
+        })
+         .catch((error) => console.error(`Request failed ${error}`))
 }

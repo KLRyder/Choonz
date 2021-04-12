@@ -8,8 +8,13 @@ let fill = (albumJSON) => {
 
     let albumImage = document.getElementById("image1");
     albumImage.src = albumJSON.cover;
+    console.info(albumJSON.cover)
 
     let basicalbumInfo = document.getElementById("albumInfoRow");
+    basicalbumInfo.innerHTML = basicalbumInfo.innerHTML.replace("_ARTIST-ID", albumJSON.artist.id)
+    .replace("_ARTIST-NAME", albumJSON.artist.name)
+
+    let  = document.getElementById("albumInfoRow");
     basicalbumInfo.innerHTML = basicalbumInfo.innerHTML.replace("_ARTIST-ID", albumJSON.artist.id)
     .replace("_ARTIST-NAME", albumJSON.artist.name)
 }

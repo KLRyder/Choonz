@@ -166,11 +166,11 @@ r" id="trackList">
             <input type="text" class="form-control" id="update-album-name">
           </div>
           <div class="mb-3">
-            <label for="update-album-name" class="col-form-label">Artist ID:</label>
+            <label for="update-album-artistid" class="col-form-label">Artist ID:</label>
             <input type="number" class="form-control" id="update-artist-id">
           </div>
           <div class="mb-3">
-            <select class="form-select" aria-label="Album Cover Picture">
+            <select class="form-select" id="albumPic" aria-label="Album Cover Picture">
               <option selected>Album Cover</option>
               <option value="banana">Banana</option>
               <option value="choonvana">Choonvana</option>
@@ -180,6 +180,7 @@ r" id="trackList">
               <option value="Zeitgeist">Zeitgeist</option>
             </select>
           </div>
+          <input type="hidden" id="artistId" name="artistId" value="0">
         </form>
       </div>
       <div class="modal-footer">
