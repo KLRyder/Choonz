@@ -3,6 +3,7 @@ package com.qa.choonz.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.qa.choonz.utils.ActiveSessions;
 import org.springframework.stereotype.Service;
 
 import com.qa.choonz.exception.AlbumNotFoundException;
@@ -16,11 +17,13 @@ public class AlbumService {
 
     private AlbumRepository repo;
     private AlbumMapper mapper;
+    private ActiveSessions sessions;
 
-    public AlbumService(AlbumRepository repo, AlbumMapper mapper) {
+    public AlbumService(AlbumRepository repo, AlbumMapper mapper, ActiveSessions sessions) {
         super();
         this.repo = repo;
         this.mapper = mapper;
+        this.sessions = sessions;
     }
 
     public AlbumDTO create(Album album) {

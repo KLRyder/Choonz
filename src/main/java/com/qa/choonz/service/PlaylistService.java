@@ -7,6 +7,7 @@ import com.qa.choonz.persistence.domain.PlaylistLink;
 import com.qa.choonz.persistence.domain.Track;
 import com.qa.choonz.persistence.repository.PlaylistLinkRepository;
 import com.qa.choonz.rest.mapper.PlaylistMapper;
+import com.qa.choonz.utils.ActiveSessions;
 import org.springframework.stereotype.Service;
 
 import com.qa.choonz.exception.PlaylistNotFoundException;
@@ -21,15 +22,18 @@ public class PlaylistService {
     private PlaylistRepository repo;
     private PlaylistLinkRepository linkRepo;
     private PlaylistMapper mapper;
+    private ActiveSessions sessions;
 
-    public PlaylistService(PlaylistRepository repo, PlaylistMapper mapper, PlaylistLinkRepository linkRepo) {
+    public PlaylistService(PlaylistRepository repo, PlaylistMapper mapper, PlaylistLinkRepository linkRepo, ActiveSessions sessions) {
         super();
         this.repo = repo;
         this.mapper = mapper;
         this.linkRepo = linkRepo;
+        this.sessions = sessions;
     }
 
     public PlaylistDTO create(Playlist playlist) {
+        sessions.testUsers();
         Playlist created = this.repo.save(playlist);
         return mapper.mapToDeepDTO(created);
     }

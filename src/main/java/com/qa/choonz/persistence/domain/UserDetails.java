@@ -82,4 +82,12 @@ public class UserDetails {
         }
         return hexString.toString();
     }
+
+    @Override
+    public String toString() {
+        return "UserDetails{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }

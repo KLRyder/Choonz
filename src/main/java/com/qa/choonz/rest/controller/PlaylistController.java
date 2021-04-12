@@ -23,7 +23,11 @@ public class PlaylistController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<PlaylistDTO> create(@RequestBody Playlist playlist) {
+    public ResponseEntity<PlaylistDTO> create(@RequestBody Playlist playlist,
+                                              @CookieValue(value = "SESSID", defaultValue = "Not logged in") String sessID) {
+        if (sessID.equals("Not logged in")||sessID.equals("none")){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         return new ResponseEntity<>(this.service.create(playlist), HttpStatus.CREATED);
     }
 
@@ -49,13 +53,13 @@ public class PlaylistController {
     }
 
     @PutMapping("/add/{id}/{track}")
-    public ResponseEntity<PlaylistDTO> addTrack(@PathVariable long id, @PathVariable long track){
+    public ResponseEntity<PlaylistDTO> addTrack(@PathVariable long id, @PathVariable long track) {
         return this.service.add(id, track) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/remove/{id}/{track}")
-    public ResponseEntity<PlaylistDTO> removeTrack(@PathVariable long id, @PathVariable long track){
+    public ResponseEntity<PlaylistDTO> removeTrack(@PathVariable long id, @PathVariable long track) {
         return this.service.remove(id, track) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }

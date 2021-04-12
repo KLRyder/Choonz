@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.qa.choonz.rest.mapper.ArtistMapper;
+import com.qa.choonz.utils.ActiveSessions;
 import org.springframework.stereotype.Service;
 
 import com.qa.choonz.exception.ArtistNotFoundException;
@@ -16,11 +17,13 @@ public class ArtistService {
 
     private ArtistRepository repo;
     private ArtistMapper mapper;
+    private ActiveSessions sessions;
 
-    public ArtistService(ArtistRepository repo, ArtistMapper mapper) {
+    public ArtistService(ArtistRepository repo, ArtistMapper mapper, ActiveSessions sessions) {
         super();
         this.repo = repo;
         this.mapper = mapper;
+        this.sessions = sessions;
     }
 
     public ArtistDTO create(Artist artist) {

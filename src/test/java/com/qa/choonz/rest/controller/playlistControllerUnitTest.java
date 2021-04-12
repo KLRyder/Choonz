@@ -56,8 +56,8 @@ public class playlistControllerUnitTest {
 		validPlaylist = new Playlist(1, "Name" ,"PlaylistDescrip", "Artwork");
 		validPlaylistDTO = new PlaylistDTO(1, "Name" ,"PlaylistDescrip", "Artwork");
 		
-		validPlaylists = new ArrayList<Playlist>();
-		validPlaylistDTOs = new ArrayList<PlaylistDTO>();
+		validPlaylists = new ArrayList<>();
+		validPlaylistDTOs = new ArrayList<>();
 		validPlaylists.add(validPlaylist);
 		validPlaylistDTOs.add(validPlaylistDTO);
 	}
@@ -68,7 +68,7 @@ public class playlistControllerUnitTest {
 		when(playlistService.read()).thenReturn(validPlaylistDTOs);
 		
 		ResponseEntity<List<PlaylistDTO>> response = 
-				new ResponseEntity<List<PlaylistDTO>>(validPlaylistDTOs, HttpStatus.OK);
+				new ResponseEntity<>(validPlaylistDTOs, HttpStatus.OK);
 		
 		assertThat(response).isEqualTo(playlistController.read());
 		
@@ -81,7 +81,7 @@ public class playlistControllerUnitTest {
 		when(playlistService.read(1L)).thenReturn(validPlaylistDTO);
 		
 		ResponseEntity<PlaylistDTO> response =
-				new ResponseEntity<PlaylistDTO>(validPlaylistDTO, HttpStatus.OK);
+				new ResponseEntity<>(validPlaylistDTO, HttpStatus.OK);
 		
 		assertThat(response).isEqualTo(playlistController.read(1L));
 		
@@ -95,9 +95,9 @@ public class playlistControllerUnitTest {
 		when(playlistService.create(Mockito.any(Playlist.class))).thenReturn(validPlaylistDTO);
 		
 		ResponseEntity<PlaylistDTO> response = 
-				new ResponseEntity<PlaylistDTO>(validPlaylistDTO, HttpStatus.CREATED);
+				new ResponseEntity<>(validPlaylistDTO, HttpStatus.CREATED);
 		
-		assertThat(response).isEqualTo(playlistController.create(validPlaylist));
+		assertThat(response).isEqualTo(playlistController.create(validPlaylist, "sessid"));
 		
 		verify(playlistService, times(1)).create(Mockito.any(Playlist.class));
 		
@@ -110,7 +110,7 @@ public class playlistControllerUnitTest {
 			 .thenReturn(validPlaylistDTO);
 		
 		ResponseEntity<PlaylistDTO> response =
-				new ResponseEntity<PlaylistDTO>(validPlaylistDTO, HttpStatus.ACCEPTED);
+				new ResponseEntity<>(validPlaylistDTO, HttpStatus.ACCEPTED);
 		
 		assertThat(response).isEqualTo(playlistController.update(validPlaylist, validPlaylist.getId()));
 		
@@ -122,8 +122,8 @@ public class playlistControllerUnitTest {
 		
 		when(playlistService.delete(validPlaylist.getId())).thenReturn(true);
 		
-		ResponseEntity<Boolean> response = 
-				new ResponseEntity<Boolean>(HttpStatus.NO_CONTENT);
+		ResponseEntity<Boolean> response =
+				new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 		assertThat(response).isEqualTo(playlistController.delete(validPlaylist.getId()));
 		

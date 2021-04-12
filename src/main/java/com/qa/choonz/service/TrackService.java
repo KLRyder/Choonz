@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.qa.choonz.rest.mapper.TrackMapper;
+import com.qa.choonz.utils.ActiveSessions;
 import org.springframework.stereotype.Service;
 
 import com.qa.choonz.exception.TrackNotFoundException;
@@ -16,11 +17,13 @@ public class TrackService {
 
     private TrackRepository repo;
     private TrackMapper mapper;
+    private ActiveSessions sessions;
 
-    public TrackService(TrackRepository repo, TrackMapper mapper) {
+    public TrackService(TrackRepository repo, TrackMapper mapper, ActiveSessions sessions) {
         super();
         this.repo = repo;
         this.mapper = mapper;
+        this.sessions = sessions;
     }
 
     public TrackDTO create(Track track) {

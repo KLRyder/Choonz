@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.qa.choonz.rest.mapper.GenreMapper;
+import com.qa.choonz.utils.ActiveSessions;
 import org.springframework.stereotype.Service;
 
 import com.qa.choonz.exception.GenreNotFoundException;
@@ -16,11 +17,13 @@ public class GenreService {
 
     private GenreRepository repo;
     private GenreMapper mapper;
+    private ActiveSessions sessions;
 
-    public GenreService(GenreRepository repo, GenreMapper mapper) {
+    public GenreService(GenreRepository repo, GenreMapper mapper, ActiveSessions sessions) {
         super();
         this.repo = repo;
         this.mapper = mapper;
+        this.sessions = sessions;
     }
 
     public GenreDTO create(Genre genre) {

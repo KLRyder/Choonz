@@ -38,6 +38,4 @@ let getAllTracks = (albumId) => {
 }
 
 console.log("try to run script")
-const queryString3 = window.location.search;
-const urlParams3 = new URLSearchParams(queryString3);
-getAllTracks(urlParams3.get("album_id"));
+getAllTracks(urlParams.get("album_id"));
