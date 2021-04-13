@@ -3,6 +3,9 @@ package com.qa.choonz.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.qa.choonz.persistence.domain.PlaylistLink;
+import com.qa.choonz.persistence.domain.Track;
+import com.qa.choonz.persistence.repository.PlaylistLinkRepository;
 import com.qa.choonz.rest.mapper.PlaylistMapper;
 import org.springframework.stereotype.Service;
 
@@ -10,17 +13,20 @@ import com.qa.choonz.exception.PlaylistNotFoundException;
 import com.qa.choonz.persistence.domain.Playlist;
 import com.qa.choonz.persistence.repository.PlaylistRepository;
 import com.qa.choonz.rest.dto.PlaylistDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PlaylistService {
 
     private PlaylistRepository repo;
+    private PlaylistLinkRepository linkRepo;
     private PlaylistMapper mapper;
 
-    public PlaylistService(PlaylistRepository repo, PlaylistMapper mapper) {
+    public PlaylistService(PlaylistRepository repo, PlaylistMapper mapper, PlaylistLinkRepository linkRepo) {
         super();
         this.repo = repo;
         this.mapper = mapper;
+        this.linkRepo = linkRepo;
     }
 
     public PlaylistDTO create(Playlist playlist) {
@@ -39,10 +45,10 @@ public class PlaylistService {
 
     public PlaylistDTO update(Playlist playlist, long id) {
         Playlist toUpdate = this.repo.findById(id).orElseThrow(PlaylistNotFoundException::new);
-        toUpdate.setName(toUpdate.getName());
-        toUpdate.setDescription(toUpdate.getDescription());
-        toUpdate.setArtwork(toUpdate.getArtwork());
-        toUpdate.setTracks(toUpdate.getTracks());
+        toUpdate.setName(playlist.getName());
+        toUpdate.setDescription(playlist.getDescription());
+        toUpdate.setArtwork(playlist.getArtwork());
+        toUpdate.setTracks(playlist.getTracks());
         Playlist updated = this.repo.save(toUpdate);
         return mapper.mapToDeepDTO(updated);
     }
@@ -52,4 +58,21 @@ public class PlaylistService {
         return !this.repo.existsById(id);
     }
 
+    public boolean add(long id, long track) {
+        var tempPl = new Playlist(id);
+        var tempTrack = new Track(track);
+        if (!linkRepo.existsByPlaylistAndTrack(tempPl, tempTrack)) {
+            linkRepo.save(new PlaylistLink(tempPl, tempTrack));
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean remove(long id, long track) {
+        var tempPl = new Playlist(id);
+        var tempTrack = new Track(track);
+        linkRepo.deleteByPlaylistAndTrack(tempPl, tempTrack);
+        return !linkRepo.existsByPlaylistAndTrack(tempPl, tempTrack);
+    }
 }

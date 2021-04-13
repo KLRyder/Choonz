@@ -19,10 +19,10 @@ let populate = (trackJSON) => {
         .replace("_ALBUM-ID", trackJSON.album.id)
         .replace("_ALBUM-NAME", trackJSON.album.name)
         .replace("track name", trackJSON.name)
-    // .replace("_GENRE-ID", trackJSON.genre.id)
-    // .replace("_GENRE-NAME", trackJSON.genre.name)
+        .replace("_GENRE-ID", trackJSON.genre.id)
+        .replace("_GENRE-NAME", trackJSON.genre.name)
 
-                 
+
     document.getElementById('trackListAccordion').append(node);
 }
 
@@ -36,5 +36,3 @@ let getAllTracks = () => {
         })
         .catch((error) => console.error(`Request failed ${error}`))
 }
-console.log("try to run script")
-getAllTracks();

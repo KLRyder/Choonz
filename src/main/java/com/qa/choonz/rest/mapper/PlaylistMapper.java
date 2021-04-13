@@ -1,9 +1,14 @@
 package com.qa.choonz.rest.mapper;
 
 import com.qa.choonz.persistence.domain.Playlist;
+import com.qa.choonz.persistence.domain.PlaylistLink;
+import com.qa.choonz.persistence.domain.Track;
 import com.qa.choonz.rest.dto.PlaylistDTO;
+import com.qa.choonz.rest.dto.TrackDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -22,7 +27,7 @@ public class PlaylistMapper {
         toReturn.setName(playlist.getName());
         toReturn.setDescription(playlist.getDescription());
         toReturn.setArtwork(playlist.getArtwork());
-        toReturn.setTracks(playlist.getTracks().stream().map(trackMapper::mapToShallowDTO).collect(Collectors.toList()));
+        toReturn.setTracks(playlist.getTracks().stream().map(link -> trackMapper.mapToShallowDTO(link.getTrack())).collect(Collectors.toList()));
         return toReturn;
     }
 

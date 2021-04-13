@@ -16,8 +16,8 @@ public class playlistModelUnitTest {
 	void testEquals() {
 		EqualsVerifier.simple().forClass(Playlist.class)
 			.withPrefabValues(Track.class,
-					new Track(1, "name1", album, null, 300, "lyrics"),
-					new Track(1, "name2", album, null, 300, "lyrics"))
+					new Track(1, "name1", album, 300, "lyrics"),
+					new Track(1, "name2", album, 300, "lyrics"))
 		.verify();
 	}
 	

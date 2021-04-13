@@ -1,17 +1,14 @@
 package com.qa.choonz.persistence.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -26,13 +23,9 @@ public class Artist {
     @Size(max = 100)
     @Column(unique = true)
     private String name;
-    
-    @NotNull
-    @Size(min = 3, max = 100)
-    @Column
-    private String password;
 
-    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Album> albums;
 
     public Artist() {
@@ -40,12 +33,11 @@ public class Artist {
         albums = Collections.emptyList();
     }
 
-   public Artist(long id, @NotNull @Size(max = 100) String name, String password) {
+   public Artist(long id, @NotNull @Size(max = 100) String name) {
 	   super();
 	   this.id = id;
 	   this.name = name;
-	   this.password = password;
-	   this.albums = new ArrayList<Album>();
+	   this.albums = new ArrayList<>();
    }
     
     public Artist(long id, @NotNull @Size(max = 100) String name, List<Album> albums) {
@@ -71,14 +63,6 @@ public class Artist {
         this.name = name;
     }
     
-    public String getPassword() {
-    	return password;
-    }
-    
-    public void setPassword(String password) { 
-    	this.password = password;
-    }
-
     public List<Album> getAlbums() {
         return albums;
     }
@@ -95,7 +79,6 @@ public class Artist {
         Artist artist = (Artist) o;
 
         if (!Objects.equals(getName(), artist.getName())) return false;
-        if(!Objects.equals(getPassword(), artist.getPassword())) return false;
         return Objects.equals(albums, artist.albums);
     }
 
@@ -103,7 +86,6 @@ public class Artist {
     public int hashCode() {
         int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode(): 0);
         result = 31 * result + (albums != null ? albums.hashCode() : 0);
         return result;
     }
@@ -113,7 +95,6 @@ public class Artist {
         return "Artist{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", password=" + password + '\'' +
                 ", albums=" + albums +
                 '}';
     }

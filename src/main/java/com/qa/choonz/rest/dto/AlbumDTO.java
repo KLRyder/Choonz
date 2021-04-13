@@ -7,17 +7,13 @@ import java.util.Objects;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.Track;
-
 public class AlbumDTO {
 
     private long id;
     private String name;
     private List<TrackDTO> tracks;
     private ArtistDTO artist;
-    private GenreDTO genre;
+    private List<GenreDTO> genres;
     private String cover;
 
     public AlbumDTO() {
@@ -25,23 +21,23 @@ public class AlbumDTO {
         // TODO Auto-generated constructor stub
     }
 
-    public AlbumDTO(long id, @NotNull @Size(max=100) String name, ArtistDTO artist, GenreDTO genre, String cover) {
+    public AlbumDTO(long id, @NotNull @Size(max=100) String name, ArtistDTO artist, List<GenreDTO> genres, String cover) {
     	this.id = id;
         this.name = name;
         this.artist = artist;
-        this.genre = genre;
+        this.genres = genres;
         this.cover = cover;
         this.tracks = new ArrayList<TrackDTO>();
         
     }
     
-    public AlbumDTO(long id, String name, List<TrackDTO> tracks, ArtistDTO artist, GenreDTO genre, String cover) {
+    public AlbumDTO(long id, String name, List<TrackDTO> tracks, ArtistDTO artist, List<GenreDTO> genres, String cover) {
         super();
         this.id = id;
         this.name = name;
         this.tracks = tracks;
         this.artist = artist;
-        this.genre = genre;
+        this.genres = genres;
         this.cover = cover;
     }
 
@@ -77,12 +73,12 @@ public class AlbumDTO {
         this.artist = artist;
     }
 
-    public GenreDTO getGenre() {
-        return genre;
+    public List<GenreDTO> getGenres() {
+        return genres;
     }
 
-    public void setGenre(GenreDTO genre) {
-        this.genre = genre;
+    public void setGenres(List<GenreDTO> genres) {
+        this.genres = genres;
     }
 
     public String getCover() {
@@ -104,7 +100,7 @@ public class AlbumDTO {
         if (!Objects.equals(name, albumDTO.name)) return false;
         if (!Objects.equals(tracks, albumDTO.tracks)) return false;
         if (!Objects.equals(artist, albumDTO.artist)) return false;
-        if (!Objects.equals(genre, albumDTO.genre)) return false;
+        if (!Objects.equals(genres, albumDTO.genres)) return false;
         return Objects.equals(cover, albumDTO.cover);
     }
 
@@ -114,7 +110,7 @@ public class AlbumDTO {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
         result = 31 * result + (artist != null ? artist.hashCode() : 0);
-        result = 31 * result + (genre != null ? genre.hashCode() : 0);
+        result = 31 * result + (genres != null ? genres.hashCode() : 0);
         result = 31 * result + (cover != null ? cover.hashCode() : 0);
         return result;
     }
@@ -126,7 +122,7 @@ public class AlbumDTO {
                 ", name='" + name + '\'' +
                 ", tracks=" + tracks +
                 ", artist=" + artist +
-                ", genre=" + genre +
+                ", genre=" + genres +
                 ", cover='" + cover + '\'' +
                 '}';
     }
