@@ -74,16 +74,16 @@
       </div>
       <div class="col-md-2">
         <div class="col">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createTrackModal">Create Track</button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createGenreModal">Create Genre</button>
         </div>
         <div class="col">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createAlbumModal">Create Album</button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createArtistModal">Create Artist</button>  
         </div>
         <div class="col">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createArtistModal">Create Artist</button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createAlbumModal">Create Album</button>
         </div>
         <div class="col">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createGenreModal">Create Genre</button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createTrackModal">Create Track</button>
         </div>
       </div>
     </div>
@@ -96,7 +96,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createTrackModalLabel">create Track</h5>
+          <h5 class="modal-title" id="createTrackModalLabel">Create Track</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -129,7 +129,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" onclick="createTrack()">create</button>
+          <button type="button" class="btn btn-success" onclick="createTrack()">Create</button>
         </div>
       </div>
     </div>
@@ -140,7 +140,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createAlbumModalLabel">create Album</h5>
+          <h5 class="modal-title" id="createAlbumModalLabel">Create Album</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -151,17 +151,23 @@
             </div>
             <div class="mb-3">
               <label for="create-album-artistid" class="col-form-label">Artist ID:</label>
-              <input type="number" class="form-control" id="create-artist-id">
+              <input type="number" class="form-control" id="create-album-artistid">
             </div>
             <div class="mb-3">
               <select class="form-select" id="albumPic" aria-label="Album Cover Picture">
                 <option selected>Album Cover</option>
-                <option value="banana">Banana</option>
-                <option value="choonvana">Choonvana</option>
-                <option value="dSide">Dark Side</option>
-                <option value="fragile">Fragile</option>
-                <option value="stones">Stones</option>
-                <option value="Zeitgeist">Zeitgeist</option>
+                <option value="img/alb/banana.png">Banana</option>
+                <option value="img/alb/ChoonMe.png">ChoonMe</option>
+                <option value="img/alb/ChoonMore.png">ChoonMore</option>
+                <option value="img/alb/Choonvana.png">Choonvana</option>
+                <option value="img/alb/Choonvana2.png">Choonvana Smile</option>
+                <option value="img/alb/cross.png">Cross</option>
+                <option value="img/alb/DSide.png">Dark Side</option>
+                <option value="img/alb/Fragile.png">Fragile</option>
+                <option value="img/alb/Monkies.png">Monkies</option>
+                <option value="img/alb/punks.png">Punks</option>
+                <option value="img/alb/stones.png">Stones</option>
+                <option value="img/alb/Zeitgeist.png">Zeitgeist</option>
               </select>
             </div>
             <input type="hidden" id="artistId" name="artistId" value="0">
@@ -169,7 +175,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" onclick="createAlbum()">create</button>
+          <button type="button" class="btn btn-success" onclick="createAlbum()">Create</button>
         </div>
       </div>
     </div>
@@ -180,7 +186,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createArtistModalLabel">create Artist</h5>
+          <h5 class="modal-title" id="createArtistModalLabel">Create Artist</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -193,7 +199,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" onclick="createArtist()">create</button>
+          <button type="button" class="btn btn-success" onclick="createArtist()">Create</button>
         </div>
       </div>
     </div>
@@ -204,7 +210,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createGenreModalLabel">create Genre</h5>
+          <h5 class="modal-title" id="createGenreModalLabel">Create Genre</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -213,11 +219,15 @@
               <label for="create-genre-name" class="col-form-label">Genre name:</label>
               <input type="text" class="form-control" id="create-genre-name">
             </div>
+            <div class="mb-3">
+              <label for="create-genre-desc" class="col-form-label">Genre description:</label>
+              <input type="text" class="form-control" id="create-genre-desc">
+            </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" onclick="createGenre()">create</button>
+          <button type="button" class="btn btn-success" onclick="createGenre()">Create</button>
         </div>
       </div>
     </div>
@@ -232,6 +242,7 @@
 <!-- /Footer -->
 
 <script src="./js/base.js"></script>
+<script src="./js/admin.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>

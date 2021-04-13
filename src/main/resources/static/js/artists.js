@@ -1,5 +1,5 @@
 function deleteArtist(){
-    fetch("http://localhost:8082/artists/delete/" + urlParams.get("artist_id"), {
+    fetch(apiURL + "artists/delete/" + urlParams.get("artist_id"), {
         method: 'delete'
     }).then(res => {
         if (res.status === 200) {
@@ -14,8 +14,8 @@ function deleteArtist(){
 function updateArtist(){
     let artistName = document.querySelector('#update-artist-name').value;
 
-    fetch("http://localhost:8082/artists/update/" + urlParams.get("artist_id"), {
-        method: 'put',
+    fetch(apiURL + "artists/update/" + urlParams.get("artist_id"), {
+        method: 'post',
         headers: {
             "Content-type": "application/json"
         },

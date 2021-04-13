@@ -12,8 +12,8 @@ let fill = (trackJSON) => {
         .replace("_ALBUM-ID", trackJSON.album.id)
         .replace("_ALBUM-NAME", trackJSON.album.name)
         .replace("_DURATION", trackJSON.duration)
-    // .replace("_GENRE-ID", trackJSON.genre.id)
-    // .replace("_GENRE-NAME", trackJSON.genre.name)
+        .replace("_GENRE-ID", trackJSON.genre.id)
+        .replace("_GENRE-NAME", trackJSON.genre.name)
 
     let fullLyrics = trackJSON.lyrics;
     let splitLyrics = fullLyrics.split(".");

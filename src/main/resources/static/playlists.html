@@ -67,10 +67,17 @@
     <div class="row", id="playlistInfoRow">
       <div class="col-md-3">
         <div class="col">
-          <h4 id="playlistName">PLAYLIST NAME</h4>
+          <img alt="" class="resize-image center-block" id="image1" src="img/alb/Zeitgeist.png"/>
         </div>
       </div>
       <div class="col-md-7">
+        <div class="col">
+          <div class="col">
+            <h4 id="playlistName">PLAYLIST NAME</h4>
+          </div>
+          <div class="col" id="playlistDesc">
+          </div>
+        </div>
       </div>
       <div class="col-md-2">
         <div class="col">
@@ -214,8 +221,21 @@
             <input type="text" class="form-control" id="update-playlist-desc">
           </div>
           <div class="mb-3">
-            <label for="update-playlist-art" class="col-form-label">Playlist Art:</label>
-            <input type="text" class="form-control" id="update-playlist-art">
+            <select class="form-select" id="playlistPic" aria-label="Album Cover Picture">
+              <option selected>Album Cover</option>
+              <option value="img/alb/banana.png">Banana</option>
+              <option value="img/alb/ChoonMe.png">ChoonMe</option>
+              <option value="img/alb/ChoonMore.png">ChoonMore</option>
+              <option value="img/alb/Choonvana.png">Choonvana</option>
+              <option value="img/alb/Choonvana2.png">Choonvana Smile</option>
+              <option value="img/alb/cross.png">Cross</option>
+              <option value="img/alb/DSide.png">Dark Side</option>
+              <option value="img/alb/Fragile.png">Fragile</option>
+              <option value="img/alb/Monkies.png">Monkies</option>
+              <option value="img/alb/punks.png">Punks</option>
+              <option value="img/alb/stones.png">Stones</option>
+              <option value="img/alb/Zeitgeist.png">Zeitgeist</option>
+            </select>
           </div>
         </form>
       </div>
@@ -250,6 +270,8 @@
 </div>
 
 <script src="./js/base.js"></script>
+<script src="./js/tracklistPopulator.js"></script>
+<script src="./js/playlists.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>

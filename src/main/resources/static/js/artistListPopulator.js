@@ -8,7 +8,7 @@ let msn = new Masonry(artistContainer, {
 let displayArtist = artistJSON => {
     let template = document.querySelector('#artistTemplate');
     let clone = template.content.cloneNode(true);
-    let node = clone.getElementById('album_ALBUM-ID');
+    let node = clone.getElementById('artist_ALBUM-ID');
     node.id = 'artist' + artistJSON.id;
 
     // fill in artist info

@@ -62,7 +62,28 @@
 <!-- /Search -->
 
 <!-- Main -->
-<h1>PUT STUFF HERE HOT ARTIST PAGE</h1>
+<section class="artistInfo">
+  <div class="container">
+    <div class="row", id="artistInfoRow">
+      <div class="col-md-3">
+        <div class="col">
+          <h4 id="artistName">Hottest Artists!</h4>
+        </div>
+      </div>
+      <div class="col-md-7">
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+  <h1 class=text-center><u></u></h1>
+  <hr class="my-3">
+  <div class="row" id="artistContainer" style="position: relative; height: 0">
+  </div>
+</div>
 <!-- /Main -->
 
 <!-- Footer -->
@@ -74,13 +95,13 @@
 <!-- /Footer -->
 
 <!-- Templates -->
-<template id="albumTemplate">
-  <div class="col-sm-6 col-lg-4 mb-4 msnry-Card" id="album_ALBUM-ID" style="position: absolute; left: 0; top: 0;">
-    <a id="albumLink_ALBUM-ID" href="albums?album_id=_ALBUM-ID">
+<template id="artistTemplate">
+  <div class="col-sm-6 col-lg-4 mb-4 msnry-Card" id="artist_ARTIST-ID" style="position: absolute; left: 0; top: 0;">
+    <a id="artistLink_ARTIST-ID" href="artists?artist_id=_ARTIST-ID">
       <div class="card bg-dark text-white">
-        <img src="_ALBUM-COVER" class="card-img" alt="ALBUM COVER">
+        <!--<img src="_ARTIST-COVER" class="card-img" alt="ARTIST COVER">-->
         <div class="card-img-overlay">
-          <h5 class="card-title">ALBUM NAME</h5>
+          <h5 class="card-title">ARTIST NAME</h5>
         </div>
       </div>
     </a>
@@ -88,6 +109,8 @@
 </template>
 
 <script src="./js/base.js"></script>
+<script src="./js/artistListPopulator.js"></script>
+<script src="./js/hotArtists.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>

@@ -1,4 +1,4 @@
-let playlistContainer = document.querySelector('#playlistListContainer');
+let playlistContainer = document.querySelector('#playlistContainer');
 let msn = new Masonry(playlistContainer, {
     // options
     percentPosition: true,

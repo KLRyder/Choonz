@@ -1,5 +1,5 @@
 function deleteAlbum(){
-    fetch("http://localhost:8082/albums/delete/" + urlParams.get("album_id"), {
+    fetch(apiURL + "albums/delete/" + urlParams.get("album_id"), {
         method: 'delete'
     }).then(res => {
         if (res.status === 200) {
@@ -13,20 +13,20 @@ function deleteAlbum(){
 
 function updateAlbum(){
     let albumName = document.querySelector('#update-album-name').value;
-    let albumArtistId = document.querySelector('#update-artist-id').value;
+    let artistId = document.querySelector('#update-album-artistid').value;
     let albumCover = document.querySelector('#albumPic').value;
 
-    fetch("http://localhost:8082/albums/update/" + urlParams.get("album_id"), {
-        method: 'put',
+    fetch(apiURL + "albums/update/" + urlParams.get("album_id"), {
+        method: 'post',
         headers: {
             "Content-type": "application/json"
         },
         body: JSON.stringify({
             "name": albumName,
             "artist": {
-              "id": albumArtistId
+              "id": artistId
             },
-            "cover": albumCover
+            "cover": albumCover       
         })
     }).then(res => res.json())
         .then((data) => {
