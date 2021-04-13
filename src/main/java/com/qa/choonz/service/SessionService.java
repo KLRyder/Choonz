@@ -29,6 +29,7 @@ public class SessionService {
             System.err.println("SHA3-256 hashing failed when creating a new user");
             return "Failed: Server security error";
         }
+        details.setRole(UserRole.USER);
         this.repo.save(details);
         return "Success";
     }
@@ -58,6 +59,6 @@ public class SessionService {
 
     public UserDetailsDTO userDetails(String sessID) {
         var session = sessions.getSession(sessID);
-        return (session == null) ? null : new UserDetailsDTO(session.getUsername(), UserRole.USER);
+        return (session == null) ? null : new UserDetailsDTO(session.getUsername(), session.getRole());
     }
 }

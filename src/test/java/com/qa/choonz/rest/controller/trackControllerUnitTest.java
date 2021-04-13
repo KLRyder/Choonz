@@ -89,7 +89,7 @@ public class trackControllerUnitTest {
 		when(trackService.read(1L)).thenReturn(validTrackDTO);
 		
 		ResponseEntity<TrackDTO> response =
-				new ResponseEntity<TrackDTO>(validTrackDTO, HttpStatus.OK);
+				new ResponseEntity<>(validTrackDTO, HttpStatus.OK);
 		
 		assertThat(response).isEqualTo(trackController.read(1L));
 		
@@ -103,8 +103,8 @@ public class trackControllerUnitTest {
 		when(trackService.create(any(Track.class), any(UserDetails.class))).thenReturn(validTrackDTO);
 		when(sessions.getSession(any(String.class))).thenReturn(user);
 		
-		ResponseEntity<TrackDTO> response = 
-				new ResponseEntity<TrackDTO>(validTrackDTO, HttpStatus.CREATED);
+		ResponseEntity<TrackDTO> response =
+				new ResponseEntity<>(validTrackDTO, HttpStatus.CREATED);
 		
 		assertThat(response).isEqualTo(trackController.create(validTrack, "sessID"));
 		
@@ -116,7 +116,7 @@ public class trackControllerUnitTest {
 	@Test
 	void updateGenre() {
 		
-		when(trackService.update(validTrack, validTrack.getId(), any(UserDetails.class)))
+		when(trackService.update(validTrack, validTrack.getId(), user))
 			 .thenReturn(validTrackDTO);
 		when(sessions.getSession(any(String.class))).thenReturn(user);
 		
@@ -125,7 +125,7 @@ public class trackControllerUnitTest {
 		
 		assertThat(response).isEqualTo(trackController.update(validTrack, validTrack.getId(), "sessID"));
 		
-		verify(trackService, times(1)).update(validTrack, validTrack.getId(), any(UserDetails.class));
+		verify(trackService, times(1)).update(validTrack, validTrack.getId(), user);
 		verify(sessions, times(1)).getSession(any(String.class));
 	}
 	

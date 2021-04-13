@@ -51,8 +51,8 @@ public class playlistServiceUnitTest {
 		validPlaylist = new Playlist(1, "Name" ,"PlaylistDescrip", "Artwork", user);
 		validPlaylistDTO = new PlaylistDTO(1, "Name" ,"PlaylistDescrip", "Artwork");
 		
-		validPlaylists = new ArrayList<Playlist>();
-		validPlaylistDTOs = new ArrayList<PlaylistDTO>();
+		validPlaylists = new ArrayList<>();
+		validPlaylistDTOs = new ArrayList<>();
 		validPlaylists.add(validPlaylist);
 		validPlaylistDTOs.add(validPlaylistDTO);
 	}
@@ -124,10 +124,12 @@ public class playlistServiceUnitTest {
 	void deletePlaylist() {
 		
 		when(playlistRepo.existsById(Mockito.any(Long.class))).thenReturn(true, false);
+		when(playlistRepo.findById(Mockito.any(Long.class))).thenReturn(Optional.of(validPlaylist));
 		
 		assertThat(false).isEqualTo(playlistService.delete(validPlaylist.getId(), user));
 		
 		verify(playlistRepo, times(1)).existsById(Mockito.any(Long.class));
+		verify(playlistRepo, times(1)).findById(Mockito.any(Long.class));
 	}
 
 }

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,7 +92,7 @@ public class artistControllerUnitTest {
 	@Test
 	void createGenre() {
 		
-		when(artistService.create(Mockito.any(Artist.class), user)).thenReturn(validArtistDTO);
+		when(artistService.create(validArtist, user)).thenReturn(validArtistDTO);
 		when(sessions.getSession(any(String.class))).thenReturn(user);
 		
 		ResponseEntity<ArtistDTO> response =
@@ -101,7 +100,7 @@ public class artistControllerUnitTest {
 		
 		assertThat(response).isEqualTo(artistController.create(validArtist, "user"));
 		
-		verify(artistService, times(1)).create(Mockito.any(Artist.class), user);
+		verify(artistService, times(1)).create(validArtist, user);
 		verify(sessions, times(1)).getSession(any(String.class));
 		
 	}
@@ -128,7 +127,7 @@ public class artistControllerUnitTest {
 		when(artistService.delete(validArtist.getId(), user)).thenReturn(true);
 		when(sessions.getSession(any(String.class))).thenReturn(user);
 		
-		ResponseEntity<Boolean> response =
+		ResponseEntity<ArtistDTO> response =
 				new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 		assertThat(response).isEqualTo(artistController.delete(validArtist.getId(), "user"));

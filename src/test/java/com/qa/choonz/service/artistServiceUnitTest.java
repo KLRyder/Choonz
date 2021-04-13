@@ -45,8 +45,8 @@ public class artistServiceUnitTest {
 		validArtist = new Artist(1, "Rick");
 		validArtistDTO = new ArtistDTO(1, "Rick");
 		
-		validArtists = new ArrayList<Artist>();
-		validArtistDTOs = new ArrayList<ArtistDTO>();
+		validArtists = new ArrayList<>();
+		validArtistDTOs = new ArrayList<>();
 		validArtists.add(validArtist);
 		validArtistDTOs.add(validArtistDTO);
 
@@ -128,7 +128,6 @@ public class artistServiceUnitTest {
 		assertThat(false).isEqualTo(artistService.delete(validArtist.getId(), user));
 		
 		verify(artistRepo, times(1)).existsById(Mockito.any(Long.class));
-		
 	}
 
 }

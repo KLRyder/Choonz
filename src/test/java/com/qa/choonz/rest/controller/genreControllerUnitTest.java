@@ -102,9 +102,8 @@ public class genreControllerUnitTest {
 		
 		assertThat(response).isEqualTo(genreController.create(validGenre,"user"));
 		
-		verify(genreService, times(1)).create(Mockito.any(Genre.class), user);
+		verify(genreService, times(1)).create(Mockito.any(Genre.class), any(UserDetails.class));
 		verify(sessions, times(1)).getSession(any(String.class));
-		
 	}
 	
 	@Test
@@ -129,7 +128,7 @@ public class genreControllerUnitTest {
 		when(genreService.delete(validGenre.getId(), user)).thenReturn(true);
 		when(sessions.getSession(any(String.class))).thenReturn(user);
 		
-		ResponseEntity<Boolean> response = 
+		ResponseEntity<GenreDTO> response =
 				new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 		assertThat(response).isEqualTo(genreController.delete(validGenre.getId(), "user"));
