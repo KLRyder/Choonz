@@ -2,7 +2,6 @@ package com.qa.choonz.service;
 
 import com.qa.choonz.persistence.domain.UserDetails;
 import com.qa.choonz.persistence.repository.UserRepository;
-import com.qa.choonz.persistence.roles.UserRole;
 import com.qa.choonz.rest.dto.UserDetailsDTO;
 import com.qa.choonz.utils.ActiveSessions;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class SessionService {
             System.err.println("SHA3-256 hashing failed when creating a new user");
             return "Failed: Server security error";
         }
-        details.setRole(UserRole.USER);
+//        details.setRole(UserRole.USER);
         this.repo.save(details);
         return "Success";
     }
