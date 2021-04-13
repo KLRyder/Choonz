@@ -1,7 +1,9 @@
 function addPlaylistTrack(){
     let trackId = document.querySelector('#add-playlist-track').value;
+    console.info("This is track ID:" + trackId)
+    console.info("This is playlist ID:" + urlParams.get("playlist_id"))
 
-    fetch(apiURL + "playlists/add/" + urlParams.get("playlist_id") + "/" + trackId.value, {
+    fetch(apiURL + "playlists/add/" + urlParams.get("playlist_id") + "/" + trackId, {
         method: 'put',
         headers: {
             "Content-type": "application/json"
@@ -17,8 +19,10 @@ function addPlaylistTrack(){
 
 function removePlaylistTrack(){
     let trackId = document.querySelector('#remove-playlist-track').value;
+    console.info("This is track ID:" + trackId)
+    console.info("This is track ID:" + urlParams.get("playlist_id"))
 
-    fetch(apiURL + "playlists/remove/" + urlParams.get("playlist_id") + "/" + trackId.value, {
+    fetch(apiURL + "playlists/remove/" + urlParams.get("playlist_id") + "/" + trackId, {
         method: 'put',
         headers: {
             "Content-type": "application/json"
