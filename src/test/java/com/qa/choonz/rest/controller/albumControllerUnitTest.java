@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,7 +84,6 @@ public class albumControllerUnitTest {
 	void readAllAlbum() {
 		
 		when(albumService.read()).thenReturn(validAlbumDTOs);
-		when(sessions.getSession(any(String.class))).thenReturn(user);
 
 		ResponseEntity<List<AlbumDTO>> response =
 				new ResponseEntity<>(validAlbumDTOs, HttpStatus.OK);
@@ -99,7 +97,6 @@ public class albumControllerUnitTest {
 	void readAlbumByID() {
 		
 		when(albumService.read(1L)).thenReturn(validAlbumDTO);
-		when(sessions.getSession(any(String.class))).thenReturn(user);
 
 		ResponseEntity<AlbumDTO> response =
 				new ResponseEntity<>(validAlbumDTO, HttpStatus.OK);
@@ -113,7 +110,7 @@ public class albumControllerUnitTest {
 	@Test
 	void createAlbum() {
 		
-		when(albumService.create(Mockito.any(Album.class), user)).thenReturn(validAlbumDTO);
+		when(albumService.create(validAlbum, user)).thenReturn(validAlbumDTO);
 		when(sessions.getSession(any(String.class))).thenReturn(user);
 
 		ResponseEntity<AlbumDTO> response = 
@@ -121,7 +118,7 @@ public class albumControllerUnitTest {
 		
 		assertThat(response).isEqualTo(albumController.create(validAlbum, "user"));
 		
-		verify(albumService, times(1)).create(Mockito.any(Album.class), user);
+		verify(albumService, times(1)).create(validAlbum, user);
 		verify(sessions, times(1)).getSession(any(String.class));
 		
 	}

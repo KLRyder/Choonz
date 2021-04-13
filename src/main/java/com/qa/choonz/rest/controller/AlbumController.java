@@ -18,9 +18,10 @@ public class AlbumController {
     private AlbumService service;
     private ActiveSessions sessions;
 
-    public AlbumController(AlbumService service) {
+    public AlbumController(AlbumService service, ActiveSessions sessions) {
         super();
         this.service = service;
+        this.sessions = sessions;
     }
 
     @PostMapping("/create")
@@ -52,7 +53,7 @@ public class AlbumController {
                 new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<AlbumDTO> delete(@PathVariable long id,
                                            @CookieValue(value = "SESSID") String sessID) {
         return this.service.delete(id, sessions.getSession(sessID)) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)

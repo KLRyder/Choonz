@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,10 +38,8 @@ public class playlistControllerUnitTest {
 	@Mock
 	private ActiveSessions sessions;
 
-	private UserDetails user = new UserDetails();
+	private final UserDetails user = new UserDetails();
 
-	
-	private List<Playlist> validPlaylists;
 	private List<PlaylistDTO> validPlaylistDTOs;
 	
 	private Playlist validPlaylist;
@@ -58,8 +55,8 @@ public class playlistControllerUnitTest {
 
 		validPlaylist = new Playlist(1, "Name" ,"PlaylistDescrip", "Artwork", user);
 		validPlaylistDTO = new PlaylistDTO(1, "Name" ,"PlaylistDescrip", "Artwork");
-		
-		validPlaylists = new ArrayList<>();
+
+		List<Playlist> validPlaylists = new ArrayList<>();
 		validPlaylistDTOs = new ArrayList<>();
 		validPlaylists.add(validPlaylist);
 		validPlaylistDTOs.add(validPlaylistDTO);
@@ -94,8 +91,7 @@ public class playlistControllerUnitTest {
 	
 	@Test
 	void createGenre() {
-		
-		when(playlistService.create(Mockito.any(Playlist.class), user)).thenReturn(validPlaylistDTO);
+		when(playlistService.create(validPlaylist, user)).thenReturn(validPlaylistDTO);
 		when(sessions.getSession(any(String.class))).thenReturn(user);
 		
 		ResponseEntity<PlaylistDTO> response = 
@@ -103,7 +99,7 @@ public class playlistControllerUnitTest {
 		
 		assertThat(response).isEqualTo(playlistController.create(validPlaylist, "sessid"));
 		
-		verify(playlistService, times(1)).create(Mockito.any(Playlist.class), user);
+		verify(playlistService, times(1)).create(validPlaylist, user);
 		verify(sessions, times(1)).getSession(any(String.class));
 		
 	}
