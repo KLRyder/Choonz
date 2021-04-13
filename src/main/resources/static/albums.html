@@ -83,10 +83,10 @@
       </div>
       <div class="col-md-2">
         <div class="col">
-          <button class="btn btn-primary" id="updateButton" onclick="updateOne()">Edit Album</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateAlbumModal">Edit Album</button>
         </div>
         <div class="col">
-          <button class="btn btn-danger" id="deleteButton" onclick="deleteOne()">Delete Album</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAlbumModal">Delete Album</button>
         </div>
       </div>
     </div>
@@ -149,7 +149,68 @@
     </div>
   </div>
 </template>
-<!-- Accordian Template -->
+
+<!-- Update Modal-->
+<div class="modal fade" id="updateAlbumModal" tabindex="-1" aria-labelledby="updateAlbumModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateAlbumModalLabel">Update Album</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="updateAlbum(); return false;">
+          <div class="mb-3">
+            <label for="update-album-name" class="col-form-label">Album name:</label>
+            <input type="text" class="form-control" id="update-album-name">
+          </div>
+          <div class="mb-3">
+            <label for="update-album-artistid" class="col-form-label">Artist ID:</label>
+            <input type="number" class="form-control" id="update-artist-id">
+          </div>
+          <div class="mb-3">
+            <select class="form-select" id="albumPic" aria-label="Album Cover Picture">
+              <option selected>Album Cover</option>
+              <option value="banana">Banana</option>
+              <option value="choonvana">Choonvana</option>
+              <option value="dSide">Dark Side</option>
+              <option value="fragile">Fragile</option>
+              <option value="stones">Stones</option>
+              <option value="Zeitgeist">Zeitgeist</option>
+            </select>
+          </div>
+          <input type="hidden" id="artistId" name="artistId" value="0">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="updateAlbum()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteAlbumModal" tabindex="-1" aria-labelledby="deleteAlbumModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteAlbumModalLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="deleteAlbum(); window.location.href='/home'; return false;">
+          <p>You are about to delete the album, this procedure is irreversible.</p>
+          <p>Do you want to proceed?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onclick="deleteAlbum()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="./js/base.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -163,5 +224,6 @@
         crossorigin="anonymous"></script>
 <script src="./js/tracklistPopulator.js"></script>
 <script src="./js/fillAlbumPage.js"></script>
+<script src="./js/albums.js"></script>
 </body>
 </html>

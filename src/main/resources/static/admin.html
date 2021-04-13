@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <title>Choonz Admin</title>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar fixed-top navbar-expand-lg bg-light navbar-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="./">
+      <img class="logo ml-auto" src="../img/Choonz.jpg" width="auto" height="50" alt="Choonz"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar"
+            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      <div class="close-icon py-1">✖</div>
+    </button>
+    <!-- Collapsable section of navbar -->
+    <div class="collapse navbar-collapse" id="collapsingNavbar">
+      <ul class="nav navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/hotTracks">Featured Tracks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/hotArtists">Artists</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/hotPlaylists">Top Playlists</a>
+        </li>
+      </ul>
+      <!-- Rightside of navbar-->
+      <ul class="nav navbar-nav ms-auto" id="rightNavbar">
+        <li class="nav-item" id="finalNavListItem">
+          <a class="nav-link" id="logNavLink" href="/login">Login</a>
+        </li>
+      </ul>
+      <!-- /Rightside of navbar-->
+    </div>
+    <!-- /Collapsable section of navbar -->
+  </div>
+</nav>
+<!-- /Navbar -->
+
+<!-- Search -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg mt-5">
+      <form class="form-inline d-flex justify-content-center md-form form-sm">
+        <input class="form-control form-control-sm mr-1 w-75" type="text" placeholder="Search for music..."
+               aria-label="Search">
+        <button type="submit" id="Search"> Search</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- /Search -->
+
+<!-- Main -->
+<section class="playlistInfo">
+  <div class="container">
+    <div class="row", id="playlistInfoRow">
+      <div class="col-md-4">
+        <div class="col">
+          <h4 id="playlistName">Welcome admin</h4>
+        </div>
+      </div>
+      <div class="col-md-6">
+      </div>
+      <div class="col-md-2">
+        <div class="col">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createTrackModal">Create Track</button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createAlbumModal">Create Album</button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createArtistModal">Create Artist</button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createGenreModal">Create Genre</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /Main -->
+
+<!-- Add Track Modal-->
+<div class="modal fade" id="createTrackModal" tabindex="-1" aria-labelledby="createTrackModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createTrackModalLabel">create Track</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="createTrack(); return false;">
+            <div class="mb-3">
+              <label for="create-track-name" class="col-form-label">Track name:</label>
+              <input type="text" class="form-control" id="create-track-name">
+            </div>
+            <div class="mb-3">
+              <label for="create-track-duration" class="col-form-label">Duration:</label>
+              <input type="number" class="form-control" id="create-track-duration">
+            </div>
+            <div class="mb-3">
+              <label for="create-track-albumid" class="col-form-label">Album ID:</label>
+              <input type="number" class="form-control" id="create-album-id">
+            </div>
+            <div class="mb-3">
+              <label for="create-track-genreid" class="col-form-label">Genre ID:</label>
+              <input type="number" class="form-control" id="create-genre-id">
+            </div>
+            <div class="mb-3">
+              <div class="form-group">
+                <label for="lyricTextBox">Lyrics:</label>
+                <textarea class="form-control" id="lyricsTextBox" rows="10"></textarea>
+              </div>
+            </div>
+            <input type="hidden" id="albumId" name="albumId" value="0">
+            <input type="hidden" id="genreId" name="genreId" value="0">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" onclick="createTrack()">create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Add Album Modal-->
+<div class="modal fade" id="createAlbumModal" tabindex="-1" aria-labelledby="createAlbumModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createAlbumModalLabel">create Album</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="createAlbum(); return false;">
+            <div class="mb-3">
+              <label for="create-album-name" class="col-form-label">Album name:</label>
+              <input type="text" class="form-control" id="create-album-name">
+            </div>
+            <div class="mb-3">
+              <label for="create-album-artistid" class="col-form-label">Artist ID:</label>
+              <input type="number" class="form-control" id="create-artist-id">
+            </div>
+            <div class="mb-3">
+              <select class="form-select" id="albumPic" aria-label="Album Cover Picture">
+                <option selected>Album Cover</option>
+                <option value="banana">Banana</option>
+                <option value="choonvana">Choonvana</option>
+                <option value="dSide">Dark Side</option>
+                <option value="fragile">Fragile</option>
+                <option value="stones">Stones</option>
+                <option value="Zeitgeist">Zeitgeist</option>
+              </select>
+            </div>
+            <input type="hidden" id="artistId" name="artistId" value="0">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" onclick="createAlbum()">create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Add Artist Modal-->
+<div class="modal fade" id="createArtistModal" tabindex="-1" aria-labelledby="createArtistModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createArtistModalLabel">create Artist</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="createArtist(); return false;">
+            <div class="mb-3">
+              <label for="create-artist-name" class="col-form-label">Artist name:</label>
+              <input type="text" class="form-control" id="create-artist-name">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" onclick="createArtist()">create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Add Genre Modal-->
+<div class="modal fade" id="createGenreModal" tabindex="-1" aria-labelledby="createGenreModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createGenreModalLabel">create Genre</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="createGenre(); return false;">
+            <div class="mb-3">
+              <label for="create-genre-name" class="col-form-label">Genre name:</label>
+              <input type="text" class="form-control" id="create-genre-name">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" onclick="createGenre()">create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="container">
+    <span class="text-muted">QA 21JanSDET Team 2 2021</span>
+  </div>
+</div>
+<!-- /Footer -->
+
+<script src="./js/base.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>

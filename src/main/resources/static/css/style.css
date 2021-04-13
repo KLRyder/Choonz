@@ -51,6 +51,11 @@ body {
   width: 60%;
 }
 
+.modal-body {
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
+}
+
 .footer {
   height:24px; 
   width: 100%; 
