@@ -1,7 +1,7 @@
 USE qa_music_project;
 
 INSERT INTO user_details(id, password, role, username)
-VALUES (1, 'pass', 0, 'addy the admin');
+VALUES (1, '0b5463559045234a8c4ae973424ae95d964ab2bf37b199ce7b264992bce3cfa6', 0, 'addy');
 
 INSERT INTO playlist(id, artwork, description, name, creator_id)
 VALUES (1, 'artwork1', 'description1', 'name1', 1);

@@ -28,6 +28,7 @@ public class SessionService {
             System.err.println("SHA3-256 hashing failed when creating a new user");
             return "Failed: Server security error";
         }
+        //TODO uncomment this in production!!!!!!!!
 //        details.setRole(UserRole.USER);
         this.repo.save(details);
         return "Success";
