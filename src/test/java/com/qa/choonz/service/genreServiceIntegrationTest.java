@@ -1,82 +1,91 @@
 package com.qa.choonz.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.qa.choonz.persistence.domain.Genre;
+import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.repository.GenreRepository;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.GenreDTO;
+import com.qa.choonz.rest.mapper.GenreMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.repository.GenreRepository;
-import com.qa.choonz.rest.dto.GenreDTO;
-import com.qa.choonz.rest.mapper.GenreMapper;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class genreServiceIntegrationTest {
-	
-	@Autowired
-	private GenreService genreService;
 
-	@Autowired
-	private GenreRepository genreRepository;
+    @Autowired
+    private GenreService genreService;
 
-	@Autowired
-	private GenreMapper genreMapper;
+    @Autowired
+    private GenreRepository genreRepository;
 
-	@SuppressWarnings("unused")
-	private List<Genre> genres;
-	private List<GenreDTO> genreDTOs;
+    @Autowired
+    private GenreMapper genreMapper;
 
-	private Genre validGenre;
-	@SuppressWarnings("unused")
-	private GenreDTO validGenreDTO;
+    @SuppressWarnings("unused")
+    private List<Genre> genres;
+    private List<GenreDTO> genreDTOs;
 
-	@BeforeEach
-	public void init() {
-		validGenre = new Genre();
+    private Genre validGenre;
+    @SuppressWarnings("unused")
+    private GenreDTO validGenreDTO;
 
-		genres = new ArrayList<Genre>();
-		genreDTOs = new ArrayList<GenreDTO>();
+    private UserDetails user;
 
-		genreRepository.deleteAll();
+    @BeforeEach
+    public void init() {
+        validGenre = new Genre();
 
-		validGenre = genreRepository.save(validGenre);
+        genres = new ArrayList<>();
+        genreDTOs = new ArrayList<>();
 
-		validGenreDTO = genreMapper.mapToDeepDTO(validGenre);
-	}
+        genreRepository.deleteAll();
 
-	@Test
-	public void readAllGenresTest() {
+        validGenre = genreRepository.save(validGenre);
 
-		List<GenreDTO> genresInDB = genreService.read();
+        validGenreDTO = genreMapper.mapToDeepDTO(validGenre);
 
-		assertThat(genreDTOs).isEqualTo(genresInDB);
-	}
+        user = new UserDetails();
+        user.setId(1);
+        user.setRole(UserRole.ADMIN);
+        user.setPassword("pass");
+        user.setUsername("addy the admin");
+    }
 
-	@Test
-	public void readByIdTest() {
+    @Test
+    public void readAllGenresTest() {
 
-		assertThat(validGenreDTO).isEqualTo(genreService.read(validGenre.getId()));
+        List<GenreDTO> genresInDB = genreService.read();
 
-	}
+        assertThat(genreDTOs).isEqualTo(genresInDB);
+    }
 
-	@Test
-	public void updateGenre() {
+    @Test
+    public void readByIdTest() {
 
-		Genre updatedGenre = genreRepository.findAll().get(0);
-		updatedGenre.setName("updated");
-		GenreDTO updatedDTO = genreMapper.mapToShallowDTO(updatedGenre);
-		assertThat(updatedDTO).isEqualTo(genreService.update(updatedGenre, updatedGenre.getId()));
-	}
+        assertThat(validGenreDTO).isEqualTo(genreService.read(validGenre.getId()));
 
-	@Test
-	public void deleteGenre() {
-		
-		assertThat(genreService.delete(validGenre.getId())).isTrue();
-	}
+    }
+
+    @Test
+    public void updateGenre() {
+
+        Genre updatedGenre = genreRepository.findAll().get(0);
+        updatedGenre.setName("updated");
+        GenreDTO updatedDTO = genreMapper.mapToShallowDTO(updatedGenre);
+        assertThat(updatedDTO).isEqualTo(genreService.update(updatedGenre, updatedGenre.getId(), user));
+    }
+
+    @Test
+    public void deleteGenre() {
+
+        assertThat(genreService.delete(validGenre.getId(), user)).isTrue();
+    }
 
 }

@@ -24,6 +24,4 @@ let albumInfoFill = (albumId) => {
 }
 
 console.log("try to run script")
-const queryString2 = window.location.search;
-const urlParams2 = new URLSearchParams(queryString2);
-albumInfoFill(urlParams2.get("album_id"));
+albumInfoFill(urlParams.get("album_id"));

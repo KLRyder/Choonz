@@ -1,15 +1,16 @@
 package com.qa.choonz.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.qa.choonz.exception.TrackNotFoundException;
+import com.qa.choonz.persistence.domain.Track;
+import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.repository.TrackRepository;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.TrackDTO;
 import com.qa.choonz.rest.mapper.TrackMapper;
 import org.springframework.stereotype.Service;
 
-import com.qa.choonz.exception.TrackNotFoundException;
-import com.qa.choonz.persistence.domain.Track;
-import com.qa.choonz.persistence.repository.TrackRepository;
-import com.qa.choonz.rest.dto.TrackDTO;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TrackService {
@@ -23,7 +24,11 @@ public class TrackService {
         this.mapper = mapper;
     }
 
-    public TrackDTO create(Track track) {
+    public TrackDTO create(Track track, UserDetails user) {
+        // ensure only admin can create tracks
+        if (user == null || user.getRole() != UserRole.ADMIN) {
+            return null;
+        }
         Track created = this.repo.save(track);
         return mapper.mapToDeepDTO(created);
     }
@@ -37,7 +42,12 @@ public class TrackService {
         return mapper.mapToDeepDTO(found);
     }
 
-    public TrackDTO update(Track track, long id) {
+    public TrackDTO update(Track track, long id, UserDetails user) {
+        // ensure only admin can edit tracks
+        if (user == null || user.getRole() != UserRole.ADMIN) {
+            return null;
+        }
+
         Track toUpdate = this.repo.findById(id).orElseThrow(TrackNotFoundException::new);
         toUpdate.setName(track.getName());
         toUpdate.setAlbum(track.getAlbum());
@@ -47,7 +57,11 @@ public class TrackService {
         return mapper.mapToDeepDTO(updated);
     }
 
-    public boolean delete(long id) {
+    public boolean delete(long id, UserDetails user) {
+        // ensure only admin can delete tracks
+        if (user == null || user.getRole() != UserRole.ADMIN) {
+            return false;
+        }
         this.repo.deleteById(id);
         return !this.repo.existsById(id);
     }

@@ -1,22 +1,41 @@
 'use strict'
 const apiURL = 'http://localhost:8082/'
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
 
-let username = "Username Here";
-
-function displayLoginDetails(data){
+function displayLoginDetails() {
     /* Displays (if valid) the username, then either login or logout button*/
     console.log("Displaying Login Detail")
     let navbar = document.getElementById('rightNavbar');
     let logLink = document.getElementById('logNavLink');
     let finalItem = document.getElementById('finalNavListItem');
 
+    let uname = 'guest';
     let li = document.createElement('li');
-    li.innerHTML = data;
-    li.className = 'username';
-    /* navbar.appendChild(li); */
-    navbar.insertBefore(li,finalItem);
+    console.log(document.cookie);
+    fetch(apiURL + 'sessions').then(resp => resp.json())
+        .then(data => {
+            uname = data.username;
 
-    logLink.innerText = "Logout";
+            li.innerHTML = uname;
+            li.className = 'username';
+            navbar.insertBefore(li, finalItem);
+            logLink.innerText = "Logout";
+            logLink.onclick = () => {
+                fetch(apiURL + 'sessions/logout', {
+                    method: 'post'
+                })
+            }
+        })
+        .catch(() => {
+                //    put login here
+
+                li.innerHTML = uname;
+                li.className = 'username';
+                navbar.insertBefore(li, finalItem);
+                logLink.innerText = "Login";
+            }
+        )
 }
 
-displayLoginDetails(username);
+displayLoginDetails();

@@ -23,7 +23,7 @@ public class playlistModelUnitTest {
 	
 	@Test
 	void contructorTest() {
-		Playlist newPlaylistModel = new Playlist(1, "name", "description", "artwork");
+		Playlist newPlaylistModel = new Playlist(1, "name", "description", "artwork", null);
 		newPlaylistModel.toString();
 	}
 	

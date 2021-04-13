@@ -1,19 +1,20 @@
 package com.qa.choonz.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.qa.choonz.persistence.domain.PlaylistLink;
-import com.qa.choonz.persistence.domain.Track;
-import com.qa.choonz.persistence.repository.PlaylistLinkRepository;
-import com.qa.choonz.rest.mapper.PlaylistMapper;
-import org.springframework.stereotype.Service;
-
 import com.qa.choonz.exception.PlaylistNotFoundException;
 import com.qa.choonz.persistence.domain.Playlist;
+import com.qa.choonz.persistence.domain.PlaylistLink;
+import com.qa.choonz.persistence.domain.Track;
+import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.repository.PlaylistLinkRepository;
 import com.qa.choonz.persistence.repository.PlaylistRepository;
+import com.qa.choonz.persistence.roles.UserRole;
 import com.qa.choonz.rest.dto.PlaylistDTO;
+import com.qa.choonz.rest.mapper.PlaylistMapper;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PlaylistService {
@@ -29,7 +30,11 @@ public class PlaylistService {
         this.linkRepo = linkRepo;
     }
 
-    public PlaylistDTO create(Playlist playlist) {
+    public PlaylistDTO create(Playlist playlist, UserDetails user) {
+        // ensure only logged in users can create playlist
+        if (user == null) {
+            return null;
+        }
         Playlist created = this.repo.save(playlist);
         return mapper.mapToDeepDTO(created);
     }
@@ -43,25 +48,38 @@ public class PlaylistService {
         return mapper.mapToDeepDTO(found);
     }
 
-    public PlaylistDTO update(Playlist playlist, long id) {
+    public PlaylistDTO update(Playlist playlist, long id, UserDetails user) {
         Playlist toUpdate = this.repo.findById(id).orElseThrow(PlaylistNotFoundException::new);
+
+        // ensure only admin or the playlist creator can edit playlists
+        if (user == null || (user != toUpdate.getCreator() && user.getRole() != UserRole.ADMIN)) {
+            return null;
+        }
+
         toUpdate.setName(playlist.getName());
         toUpdate.setDescription(playlist.getDescription());
         toUpdate.setArtwork(playlist.getArtwork());
-        toUpdate.setTracks(playlist.getTracks());
         Playlist updated = this.repo.save(toUpdate);
         return mapper.mapToDeepDTO(updated);
     }
 
-    public boolean delete(long id) {
+    public boolean delete(long id, UserDetails user) {
+        Playlist toDelete = this.repo.findById(id).orElseThrow(PlaylistNotFoundException::new);
+
+        // ensure only admin or the playlist creator can edit playlists
+        if (user == null || (user != toDelete.getCreator() && user.getRole() != UserRole.ADMIN)) {
+            return false;
+        }
         this.repo.deleteById(id);
         return !this.repo.existsById(id);
     }
 
-    public boolean add(long id, long track) {
-        var tempPl = new Playlist(id);
+    public boolean add(long id, long track, UserDetails user) {
+        var tempPl = this.repo.findById(id).orElseThrow(PlaylistNotFoundException::new);
         var tempTrack = new Track(track);
-        if (!linkRepo.existsByPlaylistAndTrack(tempPl, tempTrack)) {
+        if (!linkRepo.existsByPlaylistAndTrack(tempPl, tempTrack) &&
+                user != null &&
+                (tempPl.getCreator().equals(user) || user.getRole() == UserRole.ADMIN)) {
             linkRepo.save(new PlaylistLink(tempPl, tempTrack));
             return true;
         }
@@ -69,10 +87,14 @@ public class PlaylistService {
     }
 
     @Transactional
-    public boolean remove(long id, long track) {
-        var tempPl = new Playlist(id);
-        var tempTrack = new Track(track);
-        linkRepo.deleteByPlaylistAndTrack(tempPl, tempTrack);
-        return !linkRepo.existsByPlaylistAndTrack(tempPl, tempTrack);
+    public boolean remove(long id, long track, UserDetails user) {
+        var tempPl = this.repo.findById(id).orElseThrow(PlaylistNotFoundException::new);
+
+        if (tempPl.getCreator().equals(user) || user.getRole() == UserRole.ADMIN){
+            var tempTrack = new Track(track);
+            linkRepo.deleteByPlaylistAndTrack(tempPl, tempTrack);
+            return !linkRepo.existsByPlaylistAndTrack(tempPl, tempTrack);
+        }
+        return false;
     }
 }

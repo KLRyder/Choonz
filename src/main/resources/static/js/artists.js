@@ -1,6 +1,3 @@
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-
 let displayArtist = (artistJSON) => {
     document.getElementById('artistName').innerText = artistJSON.name;
     console.log(artistJSON);
