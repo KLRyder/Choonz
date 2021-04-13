@@ -1,5 +1,11 @@
 package com.qa.choonz.rest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qa.choonz.persistence.domain.*;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.TrackDTO;
+import com.qa.choonz.rest.mapper.TrackMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,106 +21,158 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qa.choonz.persistence.domain.Track;
-import com.qa.choonz.rest.dto.TrackDTO;
+import javax.servlet.http.Cookie;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = { "classpath:test-schema.sql", "classpath:test-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"classpath:test-schema.sql", "classpath:test-data.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class trackControllerIntegrationTest {
-	
 
-	@Autowired
-	private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
-	@Autowired
-	private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-	private TrackDTO trackDTO = new TrackDTO();
+    @Autowired
+    private TrackMapper trackMapper;
 
-	@Test
-	public void createTrackTest() throws Exception {
-		Track trackToSave = new Track();
-		TrackDTO expectedTrack = new TrackDTO();
+    private Cookie login;
 
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/track");
+    private Track validTrack;
+    private TrackDTO validTrackDTO;
+    private Album validAlbum;
+    private Genre validGenre;
+    private Artist validArtist;
 
-		mockRequest.contentType(MediaType.APPLICATION_JSON);
-		mockRequest.content(objectMapper.writeValueAsString(trackToSave));
-		mockRequest.accept(MediaType.APPLICATION_JSON);
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isCreated();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content()
-				.json(objectMapper.writeValueAsString(expectedTrack));
-		ResultMatcher headerMatcher = MockMvcResultMatchers.header().string("Location",
-				String.valueOf(expectedTrack.getId()));
+    @BeforeEach
+    public void setup() throws Exception {
+        UserDetails adminUser = new UserDetails();
+        adminUser.setId(1);
+        adminUser.setUsername("addy");
+        adminUser.setPassword("pass");
+        adminUser.setRole(UserRole.ADMIN);
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher).andExpect(headerMatcher);
-	}
 
-	@Test
-	public void readAllTracksTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/track");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/sessions/login");
+        mockRequest.contentType(MediaType.APPLICATION_JSON);
+        mockRequest.content(objectMapper.writeValueAsString(adminUser));
+        mockRequest.accept(MediaType.APPLICATION_JSON);
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(trackDTO));
+        mvc.perform(mockRequest).andDo(result -> login = result.getResponse().getCookies()[0]);
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
-	}
+        validArtist = new Artist(1, "Artist name 1");
+        validAlbum = new Album(1, "Album by artist 1", validArtist, "Cover 1");
+        validGenre = new Genre(1, "Genre name 1", "Genre description 1");
 
-	@Test
-	public void readTrackByIdTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/track/alt");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
-		mockRequest.queryParam("id", "1");
+        validTrack = new Track(1, "name1", validAlbum, 100, "lyrics1");
+        validTrack.setGenre(validGenre);
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(trackDTO));
+        List<Track> tracks = new ArrayList<>();
+        tracks.add(validTrack);
+        validAlbum.setTracks(tracks);
+        validGenre.setTracks(tracks);
+        validArtist.setAlbums(List.of(validAlbum));
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
-	}
+        validTrackDTO = trackMapper.mapToDeepDTO(validTrack);
 
-	@Test
-	public void getTrackByNameTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET,
-				"/track/name/RickRoll");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+        adminUser.setId(1);
+        adminUser.setRole(UserRole.ADMIN);
+        adminUser.setPassword("pass");
+        adminUser.setUsername("addy the admin");
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(trackDTO));
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
 
-	}
+    @Test
+    public void createTrackTest() throws Exception {
+        Track trackToSave = new Track(2, "new name", validAlbum, 4884, "new lyrics");
+        trackToSave.setGenre(validGenre);
+        validAlbum.setTracks(new ArrayList<>());
+        validGenre.setTracks(new ArrayList<>());
+        validArtist.setAlbums(new ArrayList<>());
+        TrackDTO expectedTrack = trackMapper.mapToDeepDTO(trackToSave);
 
-	@Test
-	public void updateTrackTest() throws Exception {
-		Track updatedTrack = new Track();
-		TrackDTO expectedTrack = new TrackDTO();
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/tracks/create");
 
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.PUT, "/track/1");
+        mockRequest.contentType(MediaType.APPLICATION_JSON);
+        mockRequest.content(objectMapper.writeValueAsString(trackToSave));
+        mockRequest.accept(MediaType.APPLICATION_JSON);
+        mockRequest.cookie(login);
 
-		mockRequest.contentType(MediaType.APPLICATION_JSON);
-		mockRequest.content(objectMapper.writeValueAsBytes(updatedTrack));
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isCreated();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content()
+                .json(objectMapper.writeValueAsString(expectedTrack));
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content()
-				.json(objectMapper.writeValueAsString(expectedTrack));
+        System.out.println("test3");
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
 
-	}
+        mvc.perform(mockRequest)
+                .andExpect(statusMatcher)
+                .andExpect(contentMatcher);
+    }
 
-	@Test
-	public void deleteTrackTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/track/1");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+    @Test
+    public void readAllTracksTest() throws Exception {
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/tracks/read");
+        mockRequest.accept(MediaType.APPLICATION_JSON);
+        mockRequest.cookie(login);
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().string("true");
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(List.of(validTrackDTO)));
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
-	}
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
 
+
+    @Test
+    public void readTrackByIdTest() throws Exception {
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/tracks/read/1");
+        mockRequest.accept(MediaType.APPLICATION_JSON);
+
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(validTrackDTO));
+
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
+
+
+    @Test
+    public void updateTrackTest() throws Exception {
+        Track updatedTrack = validTrack;
+        updatedTrack.setName("updated name");
+        updatedTrack.setLyrics("updated lyrics");
+        updatedTrack.setDuration(99999);
+        validAlbum.setTracks(new ArrayList<>());
+        validArtist.setAlbums(new ArrayList<>());
+        validGenre.setTracks(new ArrayList<>());
+        TrackDTO expectedTrack = trackMapper.mapToDeepDTO(updatedTrack);
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/tracks/update/1");
+
+        mockRequest.contentType(MediaType.APPLICATION_JSON);
+        mockRequest.content(objectMapper.writeValueAsBytes(updatedTrack));
+        mockRequest.cookie(login);
+
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().is2xxSuccessful();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content()
+                .json(objectMapper.writeValueAsString(expectedTrack));
+
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+
+    }
+
+    @Test
+    public void deleteTrackTest() throws Exception {
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/tracks/delete/1");
+        mockRequest.accept(MediaType.APPLICATION_JSON);
+        mockRequest.cookie(login);
+
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isNoContent();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content().string("");
+
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
 }

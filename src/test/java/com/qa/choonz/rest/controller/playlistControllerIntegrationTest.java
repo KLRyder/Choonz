@@ -1,5 +1,11 @@
 package com.qa.choonz.rest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qa.choonz.persistence.domain.*;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.PlaylistDTO;
+import com.qa.choonz.rest.mapper.PlaylistMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,104 +21,144 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qa.choonz.persistence.domain.Playlist;
-import com.qa.choonz.rest.dto.PlaylistDTO;
+import javax.servlet.http.Cookie;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = { "classpath:test-schema.sql", "classpath:test-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"classpath:test-schema.sql", "classpath:test-data.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class playlistControllerIntegrationTest {
-	@Autowired
-	private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
-	@Autowired
-	private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-	private PlaylistDTO playlistDTO = new PlaylistDTO();
+    @Autowired
+    private PlaylistMapper mapper;
 
-	@Test
-	public void createPlaylistTest() throws Exception {
-		Playlist playlistToSave = new Playlist();
-		PlaylistDTO expectedPlaylist = new PlaylistDTO();
+    private Cookie login;
 
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/playlist");
+    private Track validTrack;
+    private Album validAlbum;
+    private Genre validGenre;
+    private Artist validArtist;
+    private Playlist validPlaylist;
+    private PlaylistDTO playlistDTO;
+    private PlaylistLink validPlaylistLink;
+    private UserDetails adminUser;
 
-		mockRequest.contentType(MediaType.APPLICATION_JSON);
-		mockRequest.content(objectMapper.writeValueAsString(playlistToSave));
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+    @BeforeEach
+    public void setup() throws Exception {
+        adminUser = new UserDetails();
+        adminUser.setId(1);
+        adminUser.setUsername("addy");
+        adminUser.setPassword("pass");
+        adminUser.setRole(UserRole.ADMIN);
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isCreated();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content()
-				.json(objectMapper.writeValueAsString(expectedPlaylist));
-		ResultMatcher headerMatcher = MockMvcResultMatchers.header().string("Location",
-				String.valueOf(expectedPlaylist.getId()));
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/sessions/login");
+        mockRequest.contentType(MediaType.APPLICATION_JSON);
+        mockRequest.content(objectMapper.writeValueAsString(adminUser));
+        mockRequest.accept(MediaType.APPLICATION_JSON);
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher).andExpect(headerMatcher);
-	}
+        mvc.perform(mockRequest).andDo(result -> login = result.getResponse().getCookies()[0]);
 
-	@Test
-	public void readAllPlaylistsTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/playlist");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+        validArtist = new Artist(1, "Artist name 1");
+        validAlbum = new Album(1, "Album by artist 1", validArtist, "Cover 1");
+        validGenre = new Genre(1, "Genre name 1", "Genre description 1");
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(playlistDTO));
+        validTrack = new Track(1, "name1", validAlbum, 100, "lyrics1");
+        validTrack.setGenre(validGenre);
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
-	}
+        List<Track> tracks = new ArrayList<>();
+        tracks.add(validTrack);
+        validAlbum.setTracks(tracks);
+        validGenre.setTracks(tracks);
 
-	@Test
-	public void readPlaylistByIdTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/playlist/alt");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
-		mockRequest.queryParam("id", "1");
+        validPlaylistLink = new PlaylistLink();
+        validPlaylist = new Playlist(1, "name1", "description1", "artwork1", List.of(validPlaylistLink), adminUser);
+        validPlaylistLink.setPlaylist(validPlaylist);
+        validPlaylistLink.setTrack(validTrack);
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(playlistDTO));
+        playlistDTO = mapper.mapToDeepDTO(validPlaylist);
+    }
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
-	}
+    @Test
+    public void createPlaylistTest() throws Exception {
+        Playlist newPl = new Playlist(2,"new name", "new desc","new art", adminUser);
+        PlaylistDTO expectedPlaylist = mapper.mapToDeepDTO(newPl);
 
-	@Test
-	public void getPlaylistByNameTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET,
-				"/playlist/name/RickRoll");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/playlists/create");
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(playlistDTO));
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+        mockRequest.contentType(MediaType.APPLICATION_JSON);
+        mockRequest.content(objectMapper.writeValueAsString(newPl));
+        mockRequest.accept(MediaType.APPLICATION_JSON);
+        mockRequest.cookie(login);
 
-	}
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isCreated();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content()
+                .json(objectMapper.writeValueAsString(expectedPlaylist));
 
-	@Test
-	public void updatePlaylistTest() throws Exception {
-		Playlist updatedPlaylist = new Playlist();
-		PlaylistDTO expectedPlaylist = new PlaylistDTO();
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
 
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.PUT, "/playlist/1");
+    @Test
+    public void readAllPlaylistsTest() throws Exception {
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/playlists/read");
+        mockRequest.accept(MediaType.APPLICATION_JSON);
 
-		mockRequest.contentType(MediaType.APPLICATION_JSON);
-		mockRequest.content(objectMapper.writeValueAsBytes(updatedPlaylist));
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(List.of(playlistDTO)));
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content()
-				.json(objectMapper.writeValueAsString(expectedPlaylist));
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    @Test
+    public void readPlaylistByIdTest() throws Exception {
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/playlists/read/1");
+        mockRequest.accept(MediaType.APPLICATION_JSON);
+        mockRequest.queryParam("id", "1");
 
-	}
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(playlistDTO));
 
-	@Test
-	public void deletePlaylistTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/playlist/1");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().string("true");
+    @Test
+    public void updatePlaylistTest() throws Exception {
+        validPlaylist.setArtwork("updated");
+        validPlaylist.setName("new name");
+        validPlaylistLink.setPlaylist(null);
+        validGenre.setTracks(new ArrayList<>());
+        validAlbum.setTracks(new ArrayList<>());
+        PlaylistDTO expectedPlaylist = mapper.mapToDeepDTO(validPlaylist);
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
-	}
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/playlists/update/1");
+
+        mockRequest.contentType(MediaType.APPLICATION_JSON);
+        mockRequest.content(objectMapper.writeValueAsBytes(validPlaylist));
+        mockRequest.cookie(login);
+
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().is2xxSuccessful();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content()
+                .json(objectMapper.writeValueAsString(expectedPlaylist));
+
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+
+    }
+
+    @Test
+    public void deletePlaylistTest() throws Exception {
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/playlists/delete/1");
+        mockRequest.accept(MediaType.APPLICATION_JSON);
+        mockRequest.cookie(login);
+
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isNoContent();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content().string("");
+
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
 }
 
