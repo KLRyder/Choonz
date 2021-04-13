@@ -1,3 +1,38 @@
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+function deleteArtist(){
+    fetch("http://localhost:8082/artists/delete/" + urlParams.get("artist_id"), {
+        method: 'delete'
+    }).then(res => {
+        if (res.status === 200) {
+            console.info("Deleted successfully")
+            return;
+        } else {
+            console.error(`Request failed ${res.body}`)
+        }
+    }).catch((error) => console.error(`Request failed ${error}`))
+}
+
+function updateArtist(){
+    let artistName = document.querySelector('#update-artist-name').value;
+
+    fetch("http://localhost:8082/artists/update/" + urlParams.get("artist_id"), {
+        method: 'put',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+            "name": artistName
+        })
+    }).then(res => res.json())
+        .then((data) => {
+            console.info("Updated")
+            return;
+        })
+         .catch((error) => console.error(`Request failed ${error}`))
+}
+
 let displayArtist = (artistJSON) => {
     document.getElementById('artistName').innerText = artistJSON.name;
     console.log(artistJSON);

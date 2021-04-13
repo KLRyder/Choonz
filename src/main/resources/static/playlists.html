@@ -62,7 +62,30 @@
 <!-- /Search -->
 
 <!-- Main -->
-<h1>PUT STUFF HERE PLAYLIST PAGE</h1>
+<section class="playlistInfo">
+  <div class="container">
+    <div class="row", id="playlistInfoRow">
+      <div class="col-md-3">
+        <div class="col">
+          <h4 id="playlistName">PLAYLIST NAME</h4>
+        </div>
+      </div>
+      <div class="col-md-7">
+      </div>
+      <div class="col-md-2">
+        <div class="col">
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTrackModal">Add Track</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updatePlaylistModal">Edit Playlist</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePlaylistModal">Delete Playlist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- /Main -->
 
 <!-- Footer -->
@@ -72,6 +95,52 @@
   </div>
 </div>
 <!-- /Footer -->
+
+<!-- Add Track Modal-->
+<div class="modal fade" id="addTrackModal" tabindex="-1" aria-labelledby="addTrackModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTrackModalLabel">Add Track</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="addPlaylistTrack(); return false;">
+          <div class="mb-3">
+            <label for="add-playlist-track" class="col-form-label">Track Id:</label>
+            <input type="number" class="form-control" id="add-playlist-track">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" onclick="addPlaylistTrack()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deletePlaylistModal" tabindex="-1" aria-labelledby="deletePlaylistModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletePlaylistModalLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="deletePlaylist(); window.location.href='/home'; return false;">
+          <p>You are about to delete the playlist, this procedure is irreversible.</p>
+          <p>Do you want to proceed?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onclick="deletePlaylist()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="./js/base.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

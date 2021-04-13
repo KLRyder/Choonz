@@ -62,7 +62,27 @@
 <!-- /Search -->
 
 <!-- Main -->
-<h1>PUT STUFF HERE GENRE PAGE</h1>
+<section class="genreInfo">
+  <div class="container">
+    <div class="row", id="genreInfoRow">
+      <div class="col-md-3">
+        <div class="col">
+          <h4 id="genreName">GENRE NAME</h4>
+        </div>
+      </div>
+      <div class="col-md-7">
+      </div>
+      <div class="col-md-2">
+        <div class="col">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateGenreModal">Edit Genre</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteGenreModal">Delete Genre</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- /Main -->
 
 <!-- Footer -->
@@ -73,7 +93,54 @@
 </div>
 <!-- /Footer -->
 
+<!-- Update Modal-->
+<div class="modal fade" id="updateGenreModal" tabindex="-1" aria-labelledby="updateGenreModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateGenreModalLabel">Update Genre</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="updateGenre(); return false;">
+          <div class="mb-3">
+            <label for="update-genre-name" class="col-form-label">Genre name:</label>
+            <input type="text" class="form-control" id="update-genre-name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="updateGenre()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteGenreModal" tabindex="-1" aria-labelledby="deleteGenreModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteGenreModalLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="deleteGenre(); window.location.href='/home'; return false;">
+          <p>You are about to delete the genre, this procedure is irreversible.</p>
+          <p>Do you want to proceed?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onclick="deleteGenre()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="./js/base.js"></script>
+<script src="./js/genres.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>

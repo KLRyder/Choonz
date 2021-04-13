@@ -37,7 +37,7 @@ public class AlbumMapper {
         toReturn.setId(album.getId());
         toReturn.setName(album.getName());
         toReturn.setCover(album.getCover());
-        toReturn.setTracks(album.getTracks().stream().map(trackMapper::mapToShallowDTO).collect(Collectors.toList()));
+        toReturn.setTracks(album.getTracks().stream().map(trackMapper::mapToDeepDTO).collect(Collectors.toList()));
         toReturn.setArtist(artistMapper.mapToShallowDTO(album.getArtist()));
         toReturn.setGenres(genres);
         return toReturn;

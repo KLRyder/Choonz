@@ -64,12 +64,36 @@
 <!-- Main -->
 <div class="container"><h1 id="artistName">Artist Name</h1></div>
 
+<section class="artistInfo">
+  <div class="container">
+    <div class="row", id="artistInfoRow">
+      <div class="col-md-3">
+        <div class="col">
+          <h4 id="artistName">Artist Name</h4>
+        </div>
+      </div>
+      <div class="col-md-7">
+      </div>
+      <div class="col-md-2">
+        <div class="col">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateArtistModal">Edit Artist</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteArtistModal">Delete Artist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="container py-5">
   <h1 class=text-center><u>Albums:</u></h1>
   <hr class="my-3">
   <div class="row" id="albumListContainer" style="position: relative; height: 0">
   </div>
 </div>
+
+
 <!-- /Main -->
 
 <!-- Footer -->
@@ -79,6 +103,53 @@
   </div>
 </div>
 <!-- /Footer -->
+
+<!-- Update Modal-->
+<div class="modal fade" id="updateArtistModal" tabindex="-1" aria-labelledby="updateArtistModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateArtistModalLabel">Update Artist</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="updateArtist(); return false;">
+          <div class="mb-3">
+            <label for="update-artist-name" class="col-form-label">Artist name:</label>
+            <input type="text" class="form-control" id="update-artist-name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="updateArtist()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteArtistModal" tabindex="-1" aria-labelledby="deleteArtistModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteArtistModalLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="deleteArtist(); window.location.href='/home'; return false;">
+          <p>You are about to delete the artist, this procedure is irreversible.</p>
+          <p>Do you want to proceed?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onclick="deleteArtist()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
         integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
         async></script>

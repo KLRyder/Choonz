@@ -2,20 +2,25 @@
 
 let fill = (albumJSON) => {
 
-    console.log("Try to fill in information")
     let albumNameText = document.querySelector('#albumName');
     albumNameText.innerHTML = albumNameText.innerHTML.replace("ALBUM NAME", albumJSON.name)
 
     let albumImage = document.getElementById("image1");
     albumImage.src = albumJSON.cover;
+    console.info(albumJSON.cover)
 
     let basicalbumInfo = document.getElementById("albumInfoRow");
     basicalbumInfo.innerHTML = basicalbumInfo.innerHTML.replace("_ARTIST-ID", albumJSON.artist.id)
     .replace("_ARTIST-NAME", albumJSON.artist.name)
+
+    console.log(albumJSON)
+    for (let i =0;i<albumJSON.tracks.length;i++) {
+        populate(albumJSON.tracks[i]);
+    }
+
 }
 
 let albumInfoFill = (albumId) => {
-    console.log("try to read album by Id")
     fetch(apiURL + 'albums/read/' + albumId).then(res => res.json())
         .then((data) => {
             fill(data);
@@ -23,5 +28,6 @@ let albumInfoFill = (albumId) => {
         .catch((error) => console.error(`Request failed ${error}`))
 }
 
-console.log("try to run script")
+let queryString = window.location.search;
+let urlParams = new URLSearchParams(queryString);
 albumInfoFill(urlParams.get("album_id"));
