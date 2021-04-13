@@ -37,7 +37,4 @@ let trackInfoFill = (trackId) => {
         .catch((error) => console.error(`Request failed ${error}`))
 }
 
-console.log("try to run script")
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
 trackInfoFill(urlParams.get("track_id"));

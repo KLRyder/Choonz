@@ -1,6 +1,3 @@
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-
 function deleteArtist(){
     fetch("http://localhost:8082/artists/delete/" + urlParams.get("artist_id"), {
         method: 'delete'

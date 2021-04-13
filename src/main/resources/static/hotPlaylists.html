@@ -62,7 +62,34 @@
 <!-- /Search -->
 
 <!-- Main -->
-<h1>PUT STUFF HERE HOT PLAYLIST PAGE</h1>
+<section class="artistInfo">
+  <div class="container">
+    <div class="row", id="artistInfoRow">
+      <div class="col-md-3">
+        <div class="col">
+          <h4 id="artistName">Artist Name</h4>
+        </div>
+      </div>
+      <div class="col-md-7">
+      </div>
+      <div class="col-md-2">
+        <div class="col">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateArtistModal">Edit Artist</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteArtistModal">Delete Artist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+  <h1 class=text-center><u>Albums:</u></h1>
+  <hr class="my-3">
+  <div class="row" id="albumListContainer" style="position: relative; height: 0">
+  </div>
+</div>
 <!-- /Main -->
 
 <!-- Footer -->
@@ -72,6 +99,20 @@
   </div>
 </div>
 <!-- /Footer -->
+
+<!-- Templates -->
+<template id="albumTemplate">
+  <div class="col-sm-6 col-lg-4 mb-4 msnry-Card" id="album_ALBUM-ID" style="position: absolute; left: 0; top: 0;">
+    <a id="albumLink_ALBUM-ID" href="albums?album_id=_ALBUM-ID">
+      <div class="card bg-dark text-white">
+        <img src="_ALBUM-COVER" class="card-img" alt="ALBUM COVER">
+        <div class="card-img-overlay">
+          <h5 class="card-title">ALBUM NAME</h5>
+        </div>
+      </div>
+    </a>
+  </div>
+</template>
 
 <script src="./js/base.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

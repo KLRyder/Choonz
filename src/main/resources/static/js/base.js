@@ -1,5 +1,7 @@
 'use strict'
 const apiURL = 'http://localhost:8082/'
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
 
 let username = "Username Here";
 

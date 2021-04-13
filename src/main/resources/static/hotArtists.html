@@ -73,6 +73,20 @@
 </div>
 <!-- /Footer -->
 
+<!-- Templates -->
+<template id="albumTemplate">
+  <div class="col-sm-6 col-lg-4 mb-4 msnry-Card" id="album_ALBUM-ID" style="position: absolute; left: 0; top: 0;">
+    <a id="albumLink_ALBUM-ID" href="albums?album_id=_ALBUM-ID">
+      <div class="card bg-dark text-white">
+        <img src="_ALBUM-COVER" class="card-img" alt="ALBUM COVER">
+        <div class="card-img-overlay">
+          <h5 class="card-title">ALBUM NAME</h5>
+        </div>
+      </div>
+    </a>
+  </div>
+</template>
+
 <script src="./js/base.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

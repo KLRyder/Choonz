@@ -74,4 +74,9 @@ public class RouteContoller {
     public String error() {
         return "404.html";
     }
+    
+    @GetMapping(value = "/admin")
+    public String admin() {
+        return "admin.html";
+    }
 }

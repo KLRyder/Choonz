@@ -1,3 +1,41 @@
+function addPlaylistTrack(){
+    let trackId = document.querySelector('#add-playlist-track').value;
+
+    fetch("http://localhost:8082/playlists/add/" + urlParams.get("playlist_id") + "/" + trackId.value, {
+        method: 'put',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+        })
+    }).then(res => res.json())
+        .then((data) => {
+            displayList(data);
+            querySuccess();
+            return;
+        })
+        .catch((error) => console.error(`Request failed ${error}`))
+}
+
+function removePlaylistTrack(){
+    let trackId = document.querySelector('#remove-playlist-track').value;
+
+    fetch("http://localhost:8082/playlists/remove/" + urlParams.get("playlist_id") + "/" + trackId.value, {
+        method: 'put',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+        })
+    }).then(res => res.json())
+        .then((data) => {
+            displayList(data);
+            querySuccess();
+            return;
+        })
+        .catch((error) => console.error(`Request failed ${error}`))
+}
+
 function deletePlaylist(){
     fetch("http://localhost:8082/playlists/delete/" + urlParams.get("playlist_id"), {
         method: 'delete'
@@ -11,7 +49,7 @@ function deletePlaylist(){
     }).catch((error) => console.error(`Request failed ${error}`))
 }
 
-function updateGenre(){
+function updatePlaylist(){
     let playlistName = document.querySelector('#update-playlist-name').value;
     let playlistArt = document.querySelector('#update-playlist-art').value;
     let playlistDesc = document.querySelector('#update-playlist-desc').value;

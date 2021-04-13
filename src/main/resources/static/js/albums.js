@@ -1,22 +1,3 @@
-let updateAlbumModal = document.getElementById('updateAlbumModal');
-
-updateAlbumModal.addEventListener('show.bs.modal', function (event) {
-
-    //Fix code here to fill in update modal
-    //get task information from triggering button
-    //let button = event.relatedTarget;
-    //let listId = button.getAttribute('data-bs-listID');
-    //let listName = button.getAttribute('data-bs-listName');
-
-    // Update the modal's content.
-    //let modalTitle = createTaskModal.querySelector('.modal-title');
-    //let modelListId = createTaskModal.querySelector('#listID');
-
-    //modalTitle.textContent = 'New task: ' + listName;
-    //modelListId.value = listId;
-})
-
-
 function deleteAlbum(){
     fetch("http://localhost:8082/albums/delete/" + urlParams.get("album_id"), {
         method: 'delete'

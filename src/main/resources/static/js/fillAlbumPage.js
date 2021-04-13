@@ -28,6 +28,4 @@ let albumInfoFill = (albumId) => {
         .catch((error) => console.error(`Request failed ${error}`))
 }
 
-let queryString = window.location.search;
-let urlParams = new URLSearchParams(queryString);
 albumInfoFill(urlParams.get("album_id"));
