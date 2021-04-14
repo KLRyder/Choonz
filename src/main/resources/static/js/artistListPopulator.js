@@ -1,5 +1,5 @@
 let artistContainer = document.querySelector('#artistListContainer');
-let msn = new Masonry(artistContainer, {
+let msnArtist = new Masonry(artistContainer, {
     // options
     percentPosition: true,
     itemSelector: '.msnry-Card'
@@ -19,8 +19,8 @@ let displayArtist = artistJSON => {
     node.innerHTML = node.innerHTML.replace("ARTIST NAME", artistJSON.name);
 
     artistContainer.append(node);
-    msn.appended(node);
-    msn.layout();
+    msnArtist.appended(node);
+    msnArtist.layout();
 }
 
 let getAllArtists = () => {

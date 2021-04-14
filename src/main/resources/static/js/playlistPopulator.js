@@ -1,5 +1,5 @@
 let playlistContainer = document.querySelector('#playlistContainer');
-let msn = new Masonry(playlistContainer, {
+let msnPlaylist = new Masonry(playlistContainer, {
     // options
     percentPosition: true,
     itemSelector: '.msnry-Card'
@@ -19,8 +19,8 @@ let displayPlaylist = playlistJSON => {
     node.innerHTML = node.innerHTML.replace("PLAYLIST NAME", playlistJSON.name);
 
     playlistContainer.append(node);
-    msn.appended(node);
-    msn.layout();
+    msnPlaylist.appended(node);
+    msnPlaylist.layout();
 }
 
 let getAllPlaylists = () => {

@@ -1,4 +1,4 @@
-function createPlaylist(){
+function createPlaylist() {
     console.info("Creating playlist")
 
     let playlistName = document.querySelector('#create-playlist-name').value;
@@ -7,18 +7,18 @@ function createPlaylist(){
 
 
     fetch(apiURL + "playlists/create", {
-    method: 'post',
-    headers: {
-        "Content-type": "application/json"
-    },
-    body: JSON.stringify({
-        "name": playlistName,
-        "description": playlistDesc,
-        "artwork": playlistPic
-    })
-}).then(res => res.json())
-    .then((data) => {
-        return;
-    })
-    .catch((error) => console.error(`Request failed ${error}`))
+        method: 'post',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+            "name": playlistName,
+            "description": playlistDesc,
+            "artwork": playlistPic
+        })
+    }).then(res => res.json())
+        .then((data) => {
+            return;
+        })
+        .catch((error) => console.error(`Request failed ${error}`))
 }
