@@ -14,8 +14,11 @@ let populate = (trackJSON) => {
         node.innerHTML = node.innerHTML.replace("_TRACK-ID", trackJSON.id);
     }
 
-    node.innerHTML = node.innerHTML.replace("_ARTIST-ID", trackJSON.artist.id)
-        .replace("_ARTIST-NAME", trackJSON.artist.name)
+    let artistname = trackJSON.artists.length>0?  trackJSON.artists[0].name : "_ARTIST-NAME";
+    let artistid = trackJSON.artists.length>0?  trackJSON.artists[0].id : "_ARTIST-ID";
+
+    node.innerHTML = node.innerHTML.replace("_ARTIST-ID", artistid)
+        .replace("_ARTIST-NAME", artistname)
         .replace("_ALBUM-ID", trackJSON.album.id)
         .replace("_ALBUM-NAME", trackJSON.album.name)
         .replace("track name", trackJSON.name)
