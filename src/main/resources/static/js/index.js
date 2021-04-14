@@ -1,4 +1,6 @@
 function createPlaylist(){
+    console.info("Creating playlist")
+
     let playlistName = document.querySelector('#create-playlist-name').value;
     let playlistDesc = document.querySelector('#create-playlist-desc').value;
     let playlistPic = document.querySelector('#playlistPic').value;

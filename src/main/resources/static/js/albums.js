@@ -1,4 +1,6 @@
 function deleteAlbum(){
+    console.info("Deleting Album")
+
     fetch(apiURL + "albums/delete/" + urlParams.get("album_id"), {
         method: 'delete'
     }).then(res => {
@@ -12,6 +14,8 @@ function deleteAlbum(){
 }
 
 function updateAlbum(){
+console.info("Updating Album")
+
     let albumName = document.querySelector('#update-album-name').value;
     let artistId = document.querySelector('#update-album-artistid').value;
     let albumCover = document.querySelector('#albumPic').value;

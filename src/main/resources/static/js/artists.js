@@ -1,4 +1,6 @@
 function deleteArtist(){
+    console.info("Deleting artist")
+
     fetch(apiURL + "artists/delete/" + urlParams.get("artist_id"), {
         method: 'delete'
     }).then(res => {
@@ -12,6 +14,8 @@ function deleteArtist(){
 }
 
 function updateArtist(){
+console.info("Updating artist")
+
     let artistName = document.querySelector('#update-artist-name').value;
 
     fetch(apiURL + "artists/update/" + urlParams.get("artist_id"), {
