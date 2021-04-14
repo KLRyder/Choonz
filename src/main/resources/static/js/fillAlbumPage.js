@@ -9,12 +9,16 @@ let fill = (albumJSON) => {
     albumImage.src = albumJSON.cover;
     console.info(albumJSON.cover)
 
-    let basicalbumInfo = document.getElementById("albumInfoRow");
-    basicalbumInfo.innerHTML = basicalbumInfo.innerHTML.replace("_ARTIST-ID", albumJSON.artist.id)
-    .replace("_ARTIST-NAME", albumJSON.artist.name)
+    let artists = document.getElementById("artistLinks");
+    for (let i = 0; i < albumJSON.artists.length; i++) {
+        let a = document.createElement('a');
+        a.setAttribute('href', "/artists?artist_id=" + albumJSON.artists[i].id)
+        a.innerHTML = albumJSON.artists[i].name;
+        artists.append(a)
+    }
 
     console.log(albumJSON)
-    for (let i =0;i<albumJSON.tracks.length;i++) {
+    for (let i = 0; i < albumJSON.tracks.length; i++) {
         populate(albumJSON.tracks[i]);
     }
 
