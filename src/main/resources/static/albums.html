@@ -82,6 +82,12 @@
       </div>
       <div class="col-md-2">
         <div class="col">
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addArtistModal">Add Artist</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#removeArtistModal">Remove Artist</button>
+        </div>
+        <div class="col">
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateAlbumModal">Edit Album</button>
         </div>
         <div class="col">
@@ -148,6 +154,54 @@
     </div>
   </div>
 </template>
+
+<!-- Add Artist Modal-->
+<div class="modal fade" id="addArtistModal" tabindex="-1" aria-labelledby="addArtistModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addArtistModalLabel">Add Artist</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="addAlbumArtist(); return false;">
+          <div class="mb-3">
+            <label for="add-album-artist" class="col-form-label">Artist Id:</label>
+            <input type="number" class="form-control" id="add-album-artist">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" onclick="addAlbumArtist()" data-bs-dismiss="modal">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Artist Modal-->
+<div class="modal fade" id="removeArtistModal" tabindex="-1" aria-labelledby="removeArtistModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="removeArtistModalLabel">Remove Artist</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="removeAlbumArtist(); return false;">
+          <div class="mb-3">
+            <label for="remove-album-artist" class="col-form-label">Artist Id:</label>
+            <input type="number" class="form-control" id="remove-album-artist">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-warning" onclick="removeAlbumArtist()" data-bs-dismiss="modal">Remove</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Update Modal-->
 <div class="modal fade" id="updateAlbumModal" tabindex="-1" aria-labelledby="updateAlbumModalLabel" aria-hidden="true">
