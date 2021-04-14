@@ -31,6 +31,7 @@ public class SessionController {
             sessionCookie.setSecure(true);
             sessionCookie.setMaxAge(60*60);
             sessionCookie.setDomain("localhost");
+            sessionCookie.setPath("/");
             response.addCookie(sessionCookie);
             return new ResponseEntity<>("success", HttpStatus.OK);
         } else return new ResponseEntity<>("fail", HttpStatus.OK);
