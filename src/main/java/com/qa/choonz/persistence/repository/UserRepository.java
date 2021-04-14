@@ -10,4 +10,5 @@ import javax.validation.constraints.NotNull;
 public interface UserRepository extends JpaRepository<UserDetails, Long> {
     boolean existsByUsername(@NotNull String username);
     UserDetails findByUsername(@NotNull String username);
+
 }

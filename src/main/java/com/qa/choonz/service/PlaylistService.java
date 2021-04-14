@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -96,5 +97,9 @@ public class PlaylistService {
             return !linkRepo.existsByPlaylistAndTrack(tempPl, tempTrack);
         }
         return false;
+    }
+
+    public Set<Playlist> read(String term) {
+        return Set.copyOf(repo.findAllByNameContaining(term));
     }
 }
