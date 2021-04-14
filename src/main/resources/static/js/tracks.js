@@ -1,5 +1,5 @@
 function deleteTrack(){
-    fetch("http://localhost:8082/tracks/delete/" + urlParams.get("track_id"), {
+    fetch(apiURL + "tracks/delete/" + urlParams.get("track_id"), {
         method: 'delete'
     }).then(res => {
         if (res.status === 200) {
@@ -18,18 +18,18 @@ function updateTrack(){
     let trackDuration = document.querySelector('#update-track-duration').value;
     let trackLyrics = document.querySelector('#lyricsTextBox').value;
 
-    fetch("http://localhost:8082/tracks/update/" + urlParams.get("track_id"), {
-        method: 'put',
+    fetch(apiURL + "tracks/update/" + urlParams.get("track_id"), {
+        method: 'post',
         headers: {
             "Content-type": "application/json"
         },
         body: JSON.stringify({
             "name": trackName,
-            "album": {
-              "id": trackAlbumId
-            },
             "genre": {
               "id": trackGenreId
+            },
+            "album": {
+              "id": trackAlbumId
             },
             "duration": trackDuration,
             "lyrics": trackLyrics
