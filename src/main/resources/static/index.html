@@ -62,7 +62,35 @@
 <!-- /Search -->
 
 <!-- Main -->
-<h1>PUT STUFF HERE INDEX PAGE</h1>
+<section class="playlistInfo">
+  <div class="container">
+    <div class="row", id="playlistInfoRow">
+      <div class="col-md-4">
+        <div class="col">
+          <h4 id="playlistName">Welcome to Choonz!</h4>
+        </div>
+      </div>
+      <div class="col-md-6">
+      </div>
+      <div class="col-md-2">
+        <div class="col">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createPlaylistModal">Create New Playlist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container align-items-center">
+  <div class="container mx-5 align-items-center" id="mainMessage">
+    <div class="card p-3">
+      <div class="card-body">
+        <div class="card-title">
+          <h5>Your playlists:</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- /Main -->
 
 <!-- Footer -->
@@ -73,7 +101,53 @@
 </div>
 <!-- /Footer -->
 
+<!-- Add Playlist Modal-->
+<div class="modal fade" id="createPlaylistModal" tabindex="-1" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createPlaylistModalLabel">Create Album</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="createPlaylist(); return false;">
+          <div class="mb-3">
+            <label for="create-playlist-name" class="col-form-label">Playlist name:</label>
+            <input type="text" class="form-control" id="create-playlist-name">
+          </div>
+          <div class="mb-3">
+            <label for="create-playlist-desc" class="col-form-label">Playlist description:</label>
+            <input type="text" class="form-control" id="create-playlist-desc">
+          </div>
+          <div class="mb-3">
+            <select class="form-select" id="playlistPic" aria-label="Playlist Cover Picture">
+              <option selected>Playlist Picture</option>
+              <option value="img/alb/banana.png">Banana</option>
+              <option value="img/alb/ChoonMe.png">ChoonMe</option>
+              <option value="img/alb/ChoonMore.png">ChoonMore</option>
+              <option value="img/alb/Choonvana.png">Choonvana</option>
+              <option value="img/alb/Choonvana2.png">Choonvana Smile</option>
+              <option value="img/alb/cross.png">Cross</option>
+              <option value="img/alb/DSide.png">Dark Side</option>
+              <option value="img/alb/Fragile.png">Fragile</option>
+              <option value="img/alb/Monkies.png">Monkies</option>
+              <option value="img/alb/punks.png">Punks</option>
+              <option value="img/alb/stones.png">Stones</option>
+              <option value="img/alb/Zeitgeist.png">Zeitgeist</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" onclick="createPlaylist()">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="./js/base.js"></script>
+<script src="./js/index.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -85,3 +159,4 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
+

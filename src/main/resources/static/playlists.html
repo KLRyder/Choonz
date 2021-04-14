@@ -67,14 +67,24 @@
     <div class="row", id="playlistInfoRow">
       <div class="col-md-3">
         <div class="col">
-          <h4 id="playlistName">PLAYLIST NAME</h4>
+          <img alt="" class="resize-image center-block" id="image1" src="img/alb/Zeitgeist.png"/>
         </div>
       </div>
       <div class="col-md-7">
+        <div class="col">
+          <div class="col">
+            <h4 id="playlistName">PLAYLIST NAME</h4>
+          </div>
+          <div class="col" id="playlistDesc">
+          </div>
+        </div>
       </div>
       <div class="col-md-2">
         <div class="col">
           <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTrackModal">Add Track</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#removeTrackModal">Remove Track</button>
         </div>
         <div class="col">
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updatePlaylistModal">Edit Playlist</button>
@@ -86,6 +96,20 @@
     </div>
   </div>
 </section>
+<div class="container align-items-center">
+  <div class="container mx-5 align-items-center" id="trackList">
+    <div class="card p-3">
+      <div class="card-body">
+        <div class="card-title">
+          <h5>Track List:</h5>
+        </div>
+        <div class="accordion accordion-flush" id="trackListAccordion">
+          <!--tracks go here-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- /Main -->
 
 <!-- Footer -->
@@ -95,6 +119,40 @@
   </div>
 </div>
 <!-- /Footer -->
+
+<!-- Accordian Template -->
+<template id="trackTemplate">
+  <div class="accordion-item" id="track_TRACK-ID">
+    <h2 class="accordion-header" id="trackHeader_TRACK-ID">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseTrack_TRACK-ID" aria-expanded="false" aria-controls="collapseTrack_TRACK-ID">
+        track name
+      </button>
+    </h2>
+    <div id="collapseTrack_TRACK-ID" class="accordion-collapse collapse" aria-labelledby="trackHeader_TRACK-ID"
+         data-bs-parent="#trackListAccordion">
+      <div class="accordion-body">
+        <div class="row text-center">
+          <div class="col">
+            Artist:&nbsp;
+            <a href="/artists?artist_id=_ARTIST-ID"> _ARTIST-NAME</a>
+          </div>
+          <div class="col">
+            Album:&nbsp;
+            <a href="/albums?album_id=_ALBUM-ID"> _ALBUM-NAME</a>
+          </div>
+          <div class="col">
+            <a href="/tracks?track_id=_TRACK-ID">Lyrics</a>
+          </div>
+          <div class="col">
+            Genre:&nbsp;
+            <a href="/genres?genre_id=_GENRE-ID">_GENRE-NAME</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <!-- Add Track Modal-->
 <div class="modal fade" id="addTrackModal" tabindex="-1" aria-labelledby="addTrackModalLabel" aria-hidden="true">
@@ -115,6 +173,75 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-success" onclick="addPlaylistTrack()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Track Modal-->
+<div class="modal fade" id="removeTrackModal" tabindex="-1" aria-labelledby="removeTrackModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="removeTrackModalLabel">Remove Track</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="removePlaylistTrack(); return false;">
+          <div class="mb-3">
+            <label for="remove-playlist-track" class="col-form-label">Track Id:</label>
+            <input type="number" class="form-control" id="remove-playlist-track">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-warning" onclick="removePlaylistTrack()">Remove</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Playlist Modal-->
+<div class="modal fade" id="updatePlaylistModal" tabindex="-1" aria-labelledby="updatePlaylistModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updatePlaylistModalLabel">Update Playlist</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="updatePlaylist(); return false;">
+          <div class="mb-3">
+            <label for="update-playlist-name" class="col-form-label">Playlist Name:</label>
+            <input type="text" class="form-control" id="update-playlist-name">
+          </div>
+          <div class="mb-3">
+            <label for="update-playlist-desc" class="col-form-label">Playlist Description:</label>
+            <input type="text" class="form-control" id="update-playlist-desc">
+          </div>
+          <div class="mb-3">
+            <select class="form-select" id="playlistPic" aria-label="Album Cover Picture">
+              <option selected>Album Cover</option>
+              <option value="img/alb/banana.png">Banana</option>
+              <option value="img/alb/ChoonMe.png">ChoonMe</option>
+              <option value="img/alb/ChoonMore.png">ChoonMore</option>
+              <option value="img/alb/Choonvana.png">Choonvana</option>
+              <option value="img/alb/Choonvana2.png">Choonvana Smile</option>
+              <option value="img/alb/cross.png">Cross</option>
+              <option value="img/alb/DSide.png">Dark Side</option>
+              <option value="img/alb/Fragile.png">Fragile</option>
+              <option value="img/alb/Monkies.png">Monkies</option>
+              <option value="img/alb/punks.png">Punks</option>
+              <option value="img/alb/stones.png">Stones</option>
+              <option value="img/alb/Zeitgeist.png">Zeitgeist</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="updatePlaylist()">Update</button>
       </div>
     </div>
   </div>
@@ -143,6 +270,8 @@
 </div>
 
 <script src="./js/base.js"></script>
+<script src="./js/tracklistPopulator.js"></script>
+<script src="./js/playlists.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>

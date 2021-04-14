@@ -62,7 +62,28 @@
 <!-- /Search -->
 
 <!-- Main -->
-<h1>PUT STUFF HERE HOT PLAYLIST PAGE</h1>
+<section class="playlistInfo">
+  <div class="container">
+    <div class="row", id="playlistInfoRow">
+      <div class="col-md-3">
+        <div class="col">
+          <h4 id="playlistName">Hottest Playlists!</h4>
+        </div>
+      </div>
+      <div class="col-md-7">
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+  <h1 class=text-center><u></u></h1>
+  <hr class="my-3">
+  <div class="row" id="playlistContainer" style="position: relative; height: 0">
+  </div>
+</div>
 <!-- /Main -->
 
 <!-- Footer -->
@@ -73,7 +94,23 @@
 </div>
 <!-- /Footer -->
 
+<!-- Templates -->
+<template id="playlistTemplate">
+  <div class="col-sm-6 col-lg-4 mb-4 msnry-Card" id="playlist_PLAYLIST-ID" style="position: absolute; left: 0; top: 0;">
+    <a id="playlistLink_PLAYLIST-ID" href="playlists?playlist_id=_PLAYLIST-ID">
+      <div class="card bg-dark text-white">
+        <!--<img src="_PLAYLIST-COVER" class="card-img" alt="PLAYLIST COVER">-->
+        <div class="card-img-overlay">
+          <h5 class="card-title">PLAYLIST NAME</h5>
+        </div>
+      </div>
+    </a>
+  </div>
+</template>
+
 <script src="./js/base.js"></script>
+<script src="./js/playlistPopulator.js"></script>
+<script src="./js/hotPlaylists.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>

@@ -29,3 +29,29 @@ function updateGenre(){
         })
          .catch((error) => console.error(`Request failed ${error}`))
 }
+
+let fill = (genreJSON) => {
+
+    let genreNameText = document.querySelector('#genreName');
+    genreNameText.innerHTML = genreNameText.innerHTML.replace("GENRE NAME", genreJSON.name)
+
+    document.getElementById("genreDesc").innerHTML = genreJSON.description;
+
+    /* Get tracks by genre
+    console.log(genreJSON)
+    for (let i =0;i<albumJSON.tracks.length;i++) {
+        populate(albumJSON.tracks[i]);
+    }
+    */
+
+}
+
+let genreInfoFill = (genreId) => {
+    fetch(apiURL + 'genres/read/' + genreId).then(res => res.json())
+        .then((data) => {
+            fill(data);
+        })
+        .catch((error) => console.error(`Request failed ${error}`))
+}
+
+genreInfoFill(urlParams.get("genre_id"));

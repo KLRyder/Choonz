@@ -1,24 +1,5 @@
-let updateAlbumModal = document.getElementById('updateAlbumModal');
-
-updateAlbumModal.addEventListener('show.bs.modal', function (event) {
-
-    //Fix code here to fill in update modal
-    //get task information from triggering button
-    //let button = event.relatedTarget;
-    //let listId = button.getAttribute('data-bs-listID');
-    //let listName = button.getAttribute('data-bs-listName');
-
-    // Update the modal's content.
-    //let modalTitle = createTaskModal.querySelector('.modal-title');
-    //let modelListId = createTaskModal.querySelector('#listID');
-
-    //modalTitle.textContent = 'New task: ' + listName;
-    //modelListId.value = listId;
-})
-
-
 function deleteAlbum(){
-    fetch("http://localhost:8082/albums/delete/" + urlParams.get("album_id"), {
+    fetch(apiURL + "albums/delete/" + urlParams.get("album_id"), {
         method: 'delete'
     }).then(res => {
         if (res.status === 200) {
@@ -32,20 +13,20 @@ function deleteAlbum(){
 
 function updateAlbum(){
     let albumName = document.querySelector('#update-album-name').value;
-    let albumArtistId = document.querySelector('#update-artist-id').value;
+    let artistId = document.querySelector('#update-album-artistid').value;
     let albumCover = document.querySelector('#albumPic').value;
 
-    fetch("http://localhost:8082/albums/update/" + urlParams.get("album_id"), {
-        method: 'put',
+    fetch(apiURL + "albums/update/" + urlParams.get("album_id"), {
+        method: 'post',
         headers: {
             "Content-type": "application/json"
         },
         body: JSON.stringify({
             "name": albumName,
             "artist": {
-              "id": albumArtistId
+              "id": artistId
             },
-            "cover": albumCover
+            "cover": albumCover       
         })
     }).then(res => res.json())
         .then((data) => {
