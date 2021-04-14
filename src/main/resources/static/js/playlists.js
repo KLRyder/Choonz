@@ -1,4 +1,6 @@
 function addPlaylistTrack(){
+    console.info("Adding track to playlist")
+
     let trackId = document.querySelector('#add-playlist-track').value;
     console.info("This is track ID:" + trackId)
     console.info("This is playlist ID:" + urlParams.get("playlist_id"))
@@ -18,6 +20,8 @@ function addPlaylistTrack(){
 }
 
 function removePlaylistTrack(){
+    console.info("Removing track from playlist")
+
     let trackId = document.querySelector('#remove-playlist-track').value;
     console.info("This is track ID:" + trackId)
     console.info("This is track ID:" + urlParams.get("playlist_id"))
@@ -37,6 +41,8 @@ function removePlaylistTrack(){
 }
 
 function deletePlaylist(){
+    console.info("Deleting playlist")
+
     fetch(apiURL + "playlists/delete/" + urlParams.get("playlist_id"), {
         method: 'delete'
     }).then(res => {
@@ -50,6 +56,8 @@ function deletePlaylist(){
 }
 
 function updatePlaylist(){
+    console.info("Updating playlist")
+
     let playlistName = document.querySelector('#update-playlist-name').value;
     let playlistArt = document.querySelector('#playlistPic').value;
     let playlistDesc = document.querySelector('#update-playlist-desc').value;

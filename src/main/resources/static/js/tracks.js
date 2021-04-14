@@ -1,4 +1,6 @@
 function deleteTrack(){
+    console.info("Deleting track")
+
     fetch(apiURL + "tracks/delete/" + urlParams.get("track_id"), {
         method: 'delete'
     }).then(res => {
@@ -12,6 +14,8 @@ function deleteTrack(){
 }
 
 function updateTrack(){
+    console.info("Updating track")
+
     let trackName = document.querySelector('#update-track-name').value;
     let trackAlbumId = document.querySelector('#update-album-id').value;
     let trackGenreId = document.querySelector('#update-genre-id').value;

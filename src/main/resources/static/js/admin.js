@@ -1,4 +1,6 @@
 function createTrack(){
+    console.info("Creating Track")
+
     let trackName = document.querySelector('#create-track-name').value;
     let genreId = document.querySelector('#create-genre-id').value;
     let albumId = document.querySelector('#create-album-id').value;
@@ -29,6 +31,8 @@ function createTrack(){
 }
 
 function createAlbum(){
+    console.info("Creating Album")
+
     let albumName = document.querySelector('#create-album-name').value;
     let artistId = document.querySelector('#create-album-artistid').value;
     let albumPic = document.querySelector('#albumPic').value;
@@ -53,6 +57,8 @@ function createAlbum(){
 }
 
 function createArtist(){
+    console.info("Creating Artist")
+
     let artistName = document.querySelector('#create-artist-name').value;
 
     fetch(apiURL + "artists/create", {
@@ -71,6 +77,8 @@ function createArtist(){
 }
 
 function createGenre(){
+    console.info("Creating genre")
+
     let genreName = document.querySelector('#create-genre-name').value;
     let genreDesc = document.querySelector('#create-genre-desc').value;
 

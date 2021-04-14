@@ -1,4 +1,6 @@
 function deleteGenre(){
+    console.info("Deleting genre")
+
     fetch("http://localhost:8082/genres/delete/" + urlParams.get("genre_id"), {
         method: 'delete'
     }).then(res => {
@@ -12,6 +14,8 @@ function deleteGenre(){
 }
 
 function updateGenre(){
+    console.info("Updating genre")
+
     let genreName = document.querySelector('#update-genre-name').value;
 
     fetch("http://localhost:8082/genres/update/" + urlParams.get("genre_id"), {
