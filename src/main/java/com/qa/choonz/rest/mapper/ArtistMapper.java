@@ -1,7 +1,7 @@
 package com.qa.choonz.rest.mapper;
 
-import com.qa.choonz.persistence.domain.Album;
 import com.qa.choonz.persistence.domain.Artist;
+import com.qa.choonz.persistence.domain.ArtistAlbumLink;
 import com.qa.choonz.rest.dto.ArtistDTO;
 import com.qa.choonz.rest.dto.TrackDTO;
 import org.springframework.stereotype.Component;
@@ -25,11 +25,11 @@ public class ArtistMapper {
         ArtistDTO toReturn = new ArtistDTO();
         List<TrackDTO> tracks = new ArrayList<>();
 
-        for (Album album : artist.getAlbums()) {
-            tracks.addAll(album.getTracks().stream().map(trackMapper::mapToShallowDTO).collect(Collectors.toList()));
+        for (ArtistAlbumLink album : artist.getAlbums()) {
+            tracks.addAll(album.getAlbum().getTracks().stream().map(trackMapper::mapToShallowDTO).collect(Collectors.toList()));
         }
 
-        toReturn.setAlbums(artist.getAlbums().stream().map(albumMapper::mapToShallowDTO).collect(Collectors.toList()));
+        toReturn.setAlbums(artist.getAlbums().stream().map(link -> albumMapper.mapToShallowDTO(link.getAlbum())).collect(Collectors.toList()));
         toReturn.setTracks(tracks);
         toReturn.setId(artist.getId());
         toReturn.setName(artist.getName());

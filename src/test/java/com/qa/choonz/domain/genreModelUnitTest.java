@@ -1,13 +1,11 @@
 package com.qa.choonz.domain;
 
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.Track;
+import com.qa.choonz.persistence.domain.*;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class genreModelUnitTest {
 
@@ -17,8 +15,8 @@ public class genreModelUnitTest {
     void testEquals() {
         EqualsVerifier.simple().forClass(Genre.class)
                 .withPrefabValues(Album.class,
-                        new Album(1, "name1", artist, "cover"),
-                        new Album(2, "name2", artist, "cover"))
+                        new Album(1, "name1", List.of(new ArtistAlbumLink()), "cover"),
+                        new Album(2, "name2", List.of(new ArtistAlbumLink()), "cover"))
                 .withPrefabValues(
                         Track.class,
 						new Track(1, "track1", null, 1, "lyrics 1"),

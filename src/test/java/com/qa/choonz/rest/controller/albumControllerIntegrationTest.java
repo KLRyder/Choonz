@@ -44,6 +44,7 @@ public class albumControllerIntegrationTest {
 
 	private Cookie login;
 
+	private ArtistAlbumLink validLink;
 	private Track validTrack;
 	private Album validAlbum;
 	private Genre validGenre;
@@ -65,9 +66,13 @@ public class albumControllerIntegrationTest {
 
 		mvc.perform(mockRequest).andDo(result -> login = result.getResponse().getCookies()[0]);
 
+		validLink = new ArtistAlbumLink(1);
 		validArtist = new Artist(1, "Artist name 1");
-		validAlbum = new Album(1, "Album by artist 1", validArtist, "Cover 1");
+		validAlbum = new Album(1, "Album by artist 1", List.of(validLink), "Cover 1");
 		validGenre = new Genre(1, "Genre name 1", "Genre description 1");
+		validArtist.setAlbums(List.of(validLink));
+		validLink.setAlbum(validAlbum);
+		validLink.setArtist(validArtist);
 
 		validTrack = new Track(1, "name1", validAlbum, 100, "lyrics1");
 		validTrack.setGenre(validGenre);
@@ -81,7 +86,7 @@ public class albumControllerIntegrationTest {
 
 	@Test
 	public void createAlbumTest() throws Exception {
-		Album albumToSave = new Album(2, "test", new ArrayList<>(), validArtist, "test");
+		Album albumToSave = new Album(2, "test", new ArrayList<>(), List.of(validLink), "test");
 		AlbumDTO expectedAlbum = mapper.mapToDeepDTO(albumToSave);
 
 		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/albums/create");

@@ -1,9 +1,6 @@
 package com.qa.choonz.rest.controller;
 
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.domain.*;
 import com.qa.choonz.persistence.roles.UserRole;
 import com.qa.choonz.rest.dto.AlbumDTO;
 import com.qa.choonz.rest.dto.ArtistDTO;
@@ -60,20 +57,23 @@ public class albumControllerUnitTest {
 		
 		Artist artist = new Artist(1, "Rick");
 		ArtistDTO artistDTO = new ArtistDTO(1, "Rick");
+		ArtistAlbumLink link = new ArtistAlbumLink();
 		
 		Genre genre = new Genre(1, "Name", "GenDescrip");
 		GenreDTO genreDTO = new GenreDTO(1, "Name", "GenDescrip");
 		List<GenreDTO> genreDTOS = new ArrayList<>();
 		genreDTOS.add(genreDTO);
-		
-		validAlbum = new Album(1, "Name", artist,"Cover");
-		validAlbumDTO = new AlbumDTO(1, "Name", artistDTO, genreDTOS, "Cover");
+
+		validAlbum = new Album(1, "Name", List.of(link),"Cover");
+		validAlbumDTO = new AlbumDTO(1, "Name", List.of(artistDTO), genreDTOS, "Cover");
 		
 		validAlbums = new ArrayList<>();
 		validAlbumDTOs = new ArrayList<>();
 		validAlbums.add(validAlbum);
 		validAlbumDTOs.add(validAlbumDTO);
 
+		link.setAlbum(validAlbum);
+		link.setArtist(artist);
 		user.setId(1);
 		user.setRole(UserRole.ADMIN);
 		user.setPassword("pass");

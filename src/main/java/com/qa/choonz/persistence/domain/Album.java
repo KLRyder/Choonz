@@ -3,14 +3,13 @@ package com.qa.choonz.persistence.domain;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 public class Album {
@@ -27,8 +26,9 @@ public class Album {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Track> tracks;
 
-    @ManyToOne(targetEntity = Artist.class, fetch = FetchType.LAZY)
-    private Artist artist;
+    @OneToMany(targetEntity = ArtistAlbumLink.class, fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<ArtistAlbumLink> artists;
 
     @NotNull
     private String cover;
@@ -36,23 +36,28 @@ public class Album {
     public Album() {
         super();
         tracks = Collections.emptyList();
+        artists = Collections.emptyList();
     }
 
-    public Album(long id, @NotNull @Size(max=100) String name, Artist artist, String cover) {
+    public Album(long id, @NotNull @Size(max=100) String name, List<ArtistAlbumLink> artists, String cover) {
     	this.id = id;
         this.name = name;
-        this.artist = artist;
+        this.artists = artists;
         this.cover = cover;
         this.tracks = new ArrayList<>();
     }
     
-    public Album(long id, @NotNull @Size(max = 100) String name, List<Track> tracks, Artist artist, String cover) {
+    public Album(long id, @NotNull @Size(max = 100) String name, List<Track> tracks, List<ArtistAlbumLink> artists, String cover) {
         super();
         this.id = id;
         this.name = name;
         this.tracks = tracks;
-        this.artist = artist;
+        this.artists = artists;
         this.cover = cover;
+    }
+
+    public Album(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -79,12 +84,12 @@ public class Album {
         this.tracks = tracks;
     }
 
-    public Artist getArtist() {
-        return artist;
+    public List<ArtistAlbumLink> getArtists() {
+        return artists;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public void setArtists(List<ArtistAlbumLink> artists) {
+        this.artists = artists;
     }
 
     public String getCover() {
@@ -104,7 +109,7 @@ public class Album {
 
         if (!Objects.equals(name, album.name)) return false;
         if (!Objects.equals(tracks, album.tracks)) return false;
-        if (!Objects.equals(artist, album.artist)) return false;
+        if (!Objects.equals(artists, album.artists)) return false;
         return Objects.equals(cover, album.cover);
     }
 
@@ -113,7 +118,7 @@ public class Album {
         int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
-        result = 31 * result + (artist != null ? artist.hashCode() : 0);
+        result = 31 * result + (artists != null ? artists.hashCode() : 0);
         result = 31 * result + (cover != null ? cover.hashCode() : 0);
         return result;
     }
@@ -124,7 +129,7 @@ public class Album {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", tracks=" + tracks +
-                ", artist=" + artist +
+                ", artist=" + artists +
                 ", cover='" + cover + '\'' +
                 '}';
     }

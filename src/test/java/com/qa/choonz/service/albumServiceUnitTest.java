@@ -1,9 +1,6 @@
 package com.qa.choonz.service;
 
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.domain.*;
 import com.qa.choonz.persistence.repository.AlbumRepository;
 import com.qa.choonz.persistence.roles.UserRole;
 import com.qa.choonz.rest.dto.AlbumDTO;
@@ -50,11 +47,12 @@ public class albumServiceUnitTest {
 	GenreDTO genreDTO = new GenreDTO(1, "Name", "GenDescrip");
 	List<GenreDTO> genreDTOS = new ArrayList<>();
 	private UserDetails user = new UserDetails();
+	ArtistAlbumLink link;
 	
 	@BeforeEach
 	void init() {
 		
-		Artist artist = new Artist(1, "Rick");
+		artist = new Artist(1, "Rick");
 		ArtistDTO artistDTO = new ArtistDTO(1, "Rick");
 		
 		Genre genre = new Genre(1, "Name", "GenDescrip");
@@ -62,8 +60,12 @@ public class albumServiceUnitTest {
 		genreDTOS.clear();
 		genreDTOS.add(genreDTO);
 
-		validAlbum = new Album(1, "Name", artist, "Cover");
-		validAlbumDTO = new AlbumDTO(1, "Name", artistDTO, genreDTOS, "Cover");
+		link = new ArtistAlbumLink();
+
+		validAlbum = new Album(1, "Name", List.of(link), "Cover");
+		validAlbumDTO = new AlbumDTO(1, "Name", List.of(artistDTO), genreDTOS, "Cover");
+		link.setAlbum(validAlbum);
+		link.setArtist(artist);
 
 		validAlbums = new ArrayList<>();
 		validAlbumDTOs = new ArrayList<>();
@@ -118,8 +120,8 @@ public class albumServiceUnitTest {
 	@Test
 	void updateAlbum() {
 		
-		Album updateAlbum = new Album(1, "newName", artist, "newCover");
-		AlbumDTO updateAlbumDTO = new AlbumDTO(1, "newName", artistDTO, genreDTOS, "newCover");
+		Album updateAlbum = new Album(1, "newName", List.of(link), "newCover");
+		AlbumDTO updateAlbumDTO = new AlbumDTO(1, "newName", List.of(artistDTO), genreDTOS, "newCover");
 		
 		when(albumRepo.findById(Mockito.any(Long.class)))
 			 .thenReturn(Optional.of(validAlbum));

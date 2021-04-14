@@ -39,6 +39,8 @@ public class artistServiceIntegrationTest {
 
     private UserDetails user;
     private Album validAlbum;
+    private Genre validGenre;
+    private ArtistAlbumLink validLink;
 
     @BeforeEach
     public void init() {
@@ -47,9 +49,13 @@ public class artistServiceIntegrationTest {
         artists = new ArrayList<>();
         artistDTOs = new ArrayList<>();
 
+        validLink = new ArtistAlbumLink(1);
         validArtist = new Artist(1, "Artist name 1");
-        validAlbum = new Album(1, "Album by artist 1", validArtist, "Cover 1");
-        Genre validGenre = new Genre(1, "Genre name 1", "Genre description 1");
+        validAlbum = new Album(1, "Album by artist 1", List.of(validLink), "Cover 1");
+        validGenre = new Genre(1, "Genre name 1", "Genre description 1");
+        validArtist.setAlbums(List.of(validLink));
+        validLink.setAlbum(validAlbum);
+        validLink.setArtist(validArtist);
 
         Track validTrack = new Track(1, "name1", validAlbum, 100, "lyrics1");
         validTrack.setGenre(validGenre);
@@ -58,7 +64,7 @@ public class artistServiceIntegrationTest {
         tracks.add(validTrack);
         validAlbum.setTracks(tracks);
         validGenre.setTracks(tracks);
-        validArtist.setAlbums(List.of(validAlbum));
+        validArtist.setAlbums(List.of(validLink));
 
         validArtistDTO = artistMapper.mapToDeepDTO(validArtist);
         artists.add(validArtist);

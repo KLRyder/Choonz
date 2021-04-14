@@ -1,20 +1,18 @@
 package com.qa.choonz.domain;
 
+import com.qa.choonz.persistence.domain.*;
 import org.junit.jupiter.api.Test;
 
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.Playlist;
-import com.qa.choonz.persistence.domain.Track;
-
 import nl.jqno.equalsverifier.EqualsVerifier;
+
+import java.util.List;
 
 public class albumModelUnitTest {
 	
 	private final Artist artist = new Artist();
 	private final Playlist playlist = new Playlist();
 	private final Album album = new Album();
+	private final ArtistAlbumLink link = new ArtistAlbumLink();
 	
 	@Test
 	void testEquals() { 
@@ -33,7 +31,7 @@ public class albumModelUnitTest {
 	
 	@Test
 	void constructorTest() {
-		Album newAlbumModel = new Album(1, "name", artist, "cover");
+		Album newAlbumModel = new Album(1, "name", List.of(link), "cover");
 		newAlbumModel.toString();
 	}
 
