@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-  <title>Choonz Music Login</title>
+  <title>Choonz Music Create Account</title>
 </head>
 
 <body>
@@ -62,27 +62,25 @@
 <!-- /Search -->
 
 <!-- Main -->
-<section class="loginInfo">
+<section class="createInfo">
   <div class="container">
-    <div class="row", id="loginInfoRow">
+    <div class="row", id="createInfoRow">
       <div class="col-md-4">
       </div>
       <div class="col-md-4">
         <div class="container align-items-center">
-          <form onsubmit="tryLogin(); return false;">
+          <form onsubmit="tryCreate(); return false;">
             <div class="mb-3">
               <label for="Username" class="form-label">Username</label>
               <input type="text" class="form-control" id="Username" aria-describedby="usernameHelp">
-              <div id="usernameHelp" class="form-text">Click <a href="/create">here</a> to create an account with us.</div>
             </div>
             <div class="mb-4">
               <label for="password" class="form-label">Password</label>
               <input type="password" class="form-control" id="password">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Create Account</button>
           </form>
         </div>
-        <button type="button" class="btn btn-danger" onclick="cookies()">test</button>
       </div>
       <div class="col-md-3">
       </div>
@@ -100,6 +98,24 @@
 </div>
 <!-- /Footer -->
 
+<!-- Success Modal -->
+<div class="modal fade" id="createAccountSuccessModal" tabindex="-1" aria-labelledby="createAccountSuccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createAccountSuccessModalLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Account created</p>
+        <p>Redirecting to Login Page</p>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="./js/base.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -110,6 +126,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
-<script src="./js/login.js"></script>
+<script src="./js/create.js"></script>
 </body>
 </html>

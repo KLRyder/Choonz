@@ -79,4 +79,9 @@ public class RouteContoller {
     public String admin() {
         return "admin.html";
     }
+    
+    @GetMapping(value = "/create")
+    public String create() {
+        return "create.html";
+    }
 }
