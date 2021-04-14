@@ -1,3 +1,37 @@
+function addAlbumArtist(){
+    let artistId = document.querySelector('#add-album-artist').value;
+
+    fetch(apiURL + "albums/add/" + urlParams.get("album_id") + "/" + artistId, {
+        method: 'put',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+        })
+    }).then(res => res.json())
+        .then((data) => {
+            return;
+        })
+        .catch((error) => console.error(`Request failed ${error}`))
+}
+
+function removeAlbumArtist(){
+    let artistId = document.querySelector('#remove-album-artist').value;
+
+    fetch(apiURL + "albums/remove/" + urlParams.get("album_id") + "/" + artistId, {
+        method: 'put',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+        })
+    }).then(res => res.json())
+        .then((data) => {
+            return;
+        })
+        .catch((error) => console.error(`Request failed ${error}`))
+}
+
 function deleteAlbum(){
     console.info("Deleting Album")
 
