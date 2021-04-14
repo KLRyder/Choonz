@@ -1,0 +1,35 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1618401514511,29,Create User Controller,200,"Number of samples in transaction : 1, number of failing samples : 0",setUp Thread Group 1-1,,true,,426,274,1,1,null,0,57,20
+1618401514567,29,Create User Request,201,,setUp Thread Group 1-1,text,true,,426,274,1,1,http://localhost:8082/sessions,28,0,20
+1618401514612,73,Login Controller,200,"Number of samples in transaction : 1, number of failing samples : 0",Single CRUD Test Group 1-1,,true,,544,263,1,1,null,0,1009,2
+1618401515617,73,Login HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,544,263,1,1,http://localhost:8082/sessions/login,73,0,2
+1618401515695,36,Create Controller,200,"Number of samples in transaction : 5, number of failing samples : 0",Single CRUD Test Group 1-1,,true,,2781,1832,1,1,null,0,5104,0
+1618401516708,16,Create Playlist HTTP Request,201,,Single CRUD Test Group 1-1,text,true,,562,403,1,1,http://localhost:8082/playlists/create,7,0,0
+1618401517784,6,Create Genre HTTP Request,201,,Single CRUD Test Group 1-1,text,true,,511,331,1,1,http://localhost:8082/genres/create,5,0,0
+1618401518799,5,Create Artists HTTP Request,201,,Single CRUD Test Group 1-1,text,true,,474,319,1,1,http://localhost:8082/artists/create,4,0,0
+1618401519814,4,Create Album HTTP Request,201,,Single CRUD Test Group 1-1,text,true,,554,377,1,1,http://localhost:8082/albums/create,4,0,0
+1618401520829,5,Create Track HTTP Request,201,,Single CRUD Test Group 1-1,text,true,,680,402,1,1,http://localhost:8082/tracks/create,5,0,0
+1618401520836,22,Read Controller,200,"Number of samples in transaction : 5, number of failing samples : 0",Single CRUD Test Group 1-1,,true,,3772,1194,1,1,null,0,5049,0
+1618401521843,4,Read Playlist HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,564,241,1,1,http://localhost:8082/playlists/read,4,0,0
+1618401522858,5,Read Genre HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,728,238,1,1,http://localhost:8082/genres/read,5,0,0
+1618401523873,5,Read Artist HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,691,239,1,1,http://localhost:8082/artists/read,4,0,0
+1618401524888,4,Read Album HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,1012,238,1,1,http://localhost:8082/albums/read,4,0,0
+1618401525903,4,Read Track HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,777,238,1,1,http://localhost:8082/tracks/read,4,0,0
+1618401525908,23,Read By ID Controller,200,"Number of samples in transaction : 5, number of failing samples : 0",Single CRUD Test Group 1-1,,true,,3762,1209,1,1,null,0,5050,0
+1618401526917,5,Read Playlist By ID HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,562,244,1,1,http://localhost:8082/playlists/read/12,5,0,0
+1618401527932,5,Read Genre By ID HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,726,241,1,1,http://localhost:8082/genres/read/12,5,0,0
+1618401528947,5,Read Artist By ID HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,689,242,1,1,http://localhost:8082/artists/read/12,4,0,0
+1618401529962,4,Read Album By ID HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,1010,241,1,1,http://localhost:8082/albums/read/12,4,0,0
+1618401530977,4,Read Track By ID HTTP Request,200,,Single CRUD Test Group 1-1,text,true,,775,241,1,1,http://localhost:8082/tracks/read/12,4,0,0
+1618401530982,39,Update Controller,200,"Number of samples in transaction : 5, number of failing samples : 0",Single CRUD Test Group 1-1,,true,,3587,1785,1,1,null,0,5052,0
+1618401531991,6,Update Playlist HTTP Request,202,,Single CRUD Test Group 1-1,text,true,,512,353,1,1,http://localhost:8082/playlists/update/12,6,0,0
+1618401533006,14,Update Genre HTTP Request,202,,Single CRUD Test Group 1-1,text,true,,716,323,1,1,http://localhost:8082/genres/update/12,14,0,0
+1618401534036,7,Update Artist HTTP Request,202,,Single CRUD Test Group 1-1,text,true,,689,320,1,1,http://localhost:8082/artists/update/12,6,0,0
+1618401535051,6,Update Album HTTP Request,202,,Single CRUD Test Group 1-1,text,true,,974,384,1,1,http://localhost:8082/albums/update/12,6,0,0
+1618401536066,6,Update Track HTTP Request,202,,Single CRUD Test Group 1-1,text,true,,696,405,1,1,http://localhost:8082/tracks/update/12,6,0,0
+1618401536073,33,Delete Controller,200,"Number of samples in transaction : 5, number of failing samples : 0",Single CRUD Test Group 1-1,,true,,1750,1329,1,1,null,0,5041,0
+1618401537081,7,Delete Track HTTP Request,204,,Single CRUD Test Group 1-1,,true,,350,265,1,1,http://localhost:8082/tracks/delete/12,0,0,0
+1618401538096,6,Delete Album HTTP Request,204,,Single CRUD Test Group 1-1,,true,,350,265,1,1,http://localhost:8082/albums/delete/12,0,0,0
+1618401539110,7,Delete Artist HTTP Request,204,,Single CRUD Test Group 1-1,,true,,350,266,1,1,http://localhost:8082/artists/delete/12,0,0,0
+1618401540125,6,Delete Genre HTTP Request,204,,Single CRUD Test Group 1-1,,true,,350,265,1,1,http://localhost:8082/genres/delete/12,0,0,0
+1618401541140,7,Delete Playlist HTTP Request,204,,Single CRUD Test Group 1-1,,true,,350,268,1,1,http://localhost:8082/playlists/delete/12,0,0,0

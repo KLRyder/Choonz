@@ -28,7 +28,7 @@ public class SessionController {
         if (sessionId != null) {
             Cookie sessionCookie = new Cookie("SESSID", sessionId);
             sessionCookie.setHttpOnly(false);
-            sessionCookie.setSecure(true);
+            sessionCookie.setSecure(false);
             sessionCookie.setMaxAge(60*60);
             sessionCookie.setDomain("localhost");
             sessionCookie.setPath("/");
