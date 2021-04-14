@@ -1,82 +1,101 @@
 package com.qa.choonz.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.qa.choonz.persistence.domain.*;
+import com.qa.choonz.persistence.repository.AlbumRepository;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.AlbumDTO;
+import com.qa.choonz.rest.mapper.AlbumMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.repository.AlbumRepository;
-import com.qa.choonz.rest.dto.AlbumDTO;
-import com.qa.choonz.rest.mapper.AlbumMapper;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
+@Sql(scripts = {"classpath:test-schema.sql", "classpath:test-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class albumServiceIntegrationTest {
 
-	@Autowired
-	private AlbumService albumService;
+    @Autowired
+    private AlbumService albumService;
 
-	@Autowired
-	private AlbumRepository albumRepository;
+    @Autowired
+    private AlbumRepository albumRepository;
 
-	@Autowired
-	private AlbumMapper albumMapper;
+    @Autowired
+    private AlbumMapper albumMapper;
 
-	@SuppressWarnings("unused")
-	private List<Album> albums;
-	private List<AlbumDTO> albumDTOs;
+    private List<Album> albums;
+    private List<AlbumDTO> albumDTOs;
 
-	private Album validAlbum;
-	@SuppressWarnings("unused")
-	private AlbumDTO validAlbumDTO;
+    private Album validAlbum;
+    private AlbumDTO validAlbumDTO;
 
-	@BeforeEach
-	public void init() {
-		validAlbum = new Album();
+    private Artist validArtist;
+    private Genre validGenre;
 
-		albums = new ArrayList<Album>();
-		albumDTOs = new ArrayList<AlbumDTO>();
+    private UserDetails user;
 
-		albumRepository.deleteAll();
+    @BeforeEach
+    public void init() {
+        validAlbum = new Album();
 
-		validAlbum = albumRepository.save(validAlbum);
+        albums = new ArrayList<>();
+        albumDTOs = new ArrayList<>();
 
-		validAlbumDTO = albumMapper.mapToDeepDTO(validAlbum);
-	}
+        validArtist = new Artist(1, "Artist name 1");
+        validAlbum = new Album(1, "Album by artist 1", validArtist, "Cover 1");
+        validGenre = new Genre(1, "Genre name 1", "Genre description 1");
 
-	@Test
-	public void readAllAlbumsTest() {
+        Track validTrack = new Track(1, "name1", validAlbum, 100, "lyrics1");
+        validTrack.setGenre(validGenre);
 
-		List<AlbumDTO> albumsInDB = albumService.read();
+        List<Track> tracks = new ArrayList<>();
+        tracks.add(validTrack);
+        validAlbum.setTracks(tracks);
+        validGenre.setTracks(tracks);
 
-		assertThat(albumDTOs).isEqualTo(albumsInDB);
-	}
+        validAlbumDTO = albumMapper.mapToDeepDTO(validAlbum);
 
-	@Test
-	public void readByIdTest() {
+        albums.add(validAlbum);
+        albumDTOs.add(validAlbumDTO);
 
-		assertThat(validAlbumDTO).isEqualTo(albumService.read(validAlbum.getId()));
+        user = new UserDetails();
+        user.setId(1);
+        user.setRole(UserRole.ADMIN);
+        user.setPassword("pass");
+        user.setUsername("addy the admin");
+    }
 
-	}
+    @Test
+    public void readAllAlbumsTest() {
+        assertThat(albumService.read()).isEqualTo(albumDTOs);
+    }
 
-	@Test
-	public void updateAlbum() {
+    @Test
+    public void readByIdTest() {
+        assertThat(albumService.read(validAlbum.getId())).isEqualTo(validAlbumDTO);
+    }
 
-		Album updatedAlbum = albumRepository.findAll().get(0);
-		updatedAlbum.setName("updated");
-		AlbumDTO updatedDTO = albumMapper.mapToShallowDTO(updatedAlbum);
-		assertThat(updatedDTO).isEqualTo(albumService.update(updatedAlbum, updatedAlbum.getId()));
-	}
+    @Test
+    public void updateAlbum() {
 
-	@Test
-	public void deleteAlbum() {
-		
-		assertThat(albumService.delete(validAlbum.getId())).isTrue();
-	}
+        Album updatedAlbum = albumRepository.findAll().get(0);
+        updatedAlbum.setName("updated");
+        AlbumDTO updatedDTO = albumMapper.mapToDeepDTO(updatedAlbum);
+        assertThat(albumService.update(updatedAlbum, updatedAlbum.getId(), user)).isEqualTo(updatedDTO);
+    }
+
+    @Test
+    public void deleteAlbum() {
+
+        assertThat(albumService.delete(validAlbum.getId(), user)).isTrue();
+    }
 
 }

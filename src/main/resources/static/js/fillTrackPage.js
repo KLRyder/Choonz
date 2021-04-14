@@ -37,4 +37,5 @@ let trackInfoFill = (trackId) => {
         .catch((error) => console.error(`Request failed ${error}`))
 }
 
+console.log("try to run script")
 trackInfoFill(urlParams.get("track_id"));

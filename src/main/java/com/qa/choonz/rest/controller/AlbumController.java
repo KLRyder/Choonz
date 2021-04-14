@@ -1,21 +1,14 @@
 package com.qa.choonz.rest.controller;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.qa.choonz.persistence.domain.Album;
 import com.qa.choonz.rest.dto.AlbumDTO;
 import com.qa.choonz.service.AlbumService;
+import com.qa.choonz.utils.ActiveSessions;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/albums")
@@ -23,15 +16,21 @@ import com.qa.choonz.service.AlbumService;
 public class AlbumController {
 
     private AlbumService service;
+    private ActiveSessions sessions;
 
-    public AlbumController(AlbumService service) {
+    public AlbumController(AlbumService service, ActiveSessions sessions) {
         super();
         this.service = service;
+        this.sessions = sessions;
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AlbumDTO> create(@RequestBody Album album) {
-        return new ResponseEntity<>(this.service.create(album), HttpStatus.CREATED);
+    public ResponseEntity<AlbumDTO> create(@RequestBody Album album,
+                                           @CookieValue(value = "SESSID") String sessID) {
+        var created = this.service.create(album, sessions.getSession(sessID));
+        if (created != null) {
+            return new ResponseEntity<>(created, HttpStatus.CREATED);
+        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("/read")
@@ -39,10 +38,6 @@ public class AlbumController {
         return new ResponseEntity<>(this.service.read(), HttpStatus.OK);
     }
 
-    @GetMapping("/read/artist/{id}")
-    public ResponseEntity<List<AlbumDTO>> readByAlbum(@PathVariable long id) {
-        return new ResponseEntity<>(this.service.readByAlbum(id), HttpStatus.OK);
-    }
 
     @GetMapping("/read/{id}")
     public ResponseEntity<AlbumDTO> read(@PathVariable long id) {
@@ -50,14 +45,19 @@ public class AlbumController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<AlbumDTO> update(@RequestBody Album album, @PathVariable long id) {
-        return new ResponseEntity<>(this.service.update(album, id), HttpStatus.ACCEPTED);
+    public ResponseEntity<AlbumDTO> update(@RequestBody Album album, @PathVariable long id,
+                                           @CookieValue(value = "SESSID") String sessID) {
+        var updated = this.service.update(album, id, sessions.getSession(sessID));
+        return (updated != null) ?
+                new ResponseEntity<>(updated, HttpStatus.ACCEPTED) :
+                new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<AlbumDTO> delete(@PathVariable long id) {
-        return this.service.delete(id) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<AlbumDTO> delete(@PathVariable long id,
+                                           @CookieValue(value = "SESSID") String sessID) {
+        return this.service.delete(id, sessions.getSession(sessID)) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
 }

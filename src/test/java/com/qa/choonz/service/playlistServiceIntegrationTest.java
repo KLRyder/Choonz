@@ -1,82 +1,95 @@
 package com.qa.choonz.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.qa.choonz.persistence.domain.*;
+import com.qa.choonz.persistence.repository.PlaylistRepository;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.PlaylistDTO;
+import com.qa.choonz.rest.mapper.PlaylistMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.qa.choonz.persistence.domain.Playlist;
-import com.qa.choonz.persistence.repository.PlaylistRepository;
-import com.qa.choonz.rest.dto.PlaylistDTO;
-import com.qa.choonz.rest.mapper.PlaylistMapper;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
+@Sql(scripts = {"classpath:test-schema.sql", "classpath:test-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class playlistServiceIntegrationTest {
-	
-	@Autowired
-	private PlaylistService playlistService;
 
-	@Autowired
-	private PlaylistRepository playlistRepository;
+    @Autowired
+    private PlaylistService playlistService;
 
-	@Autowired
-	private PlaylistMapper playlistMapper;
+    @Autowired
+    private PlaylistRepository playlistRepository;
 
-	@SuppressWarnings("unused")
-	private List<Playlist> playlists;
-	private List<PlaylistDTO> playlistDTOs;
+    @Autowired
+    private PlaylistMapper playlistMapper;
 
-	private Playlist validPlaylist;
-	@SuppressWarnings("unused")
-	private PlaylistDTO validPlaylistDTO;
+    private Playlist validPlaylist;
+    private PlaylistDTO validPlaylistDTO;
 
-	@BeforeEach
-	public void init() {
-		validPlaylist = new Playlist();
+    private UserDetails user;
 
-		playlists = new ArrayList<Playlist>();
-		playlistDTOs = new ArrayList<PlaylistDTO>();
+    @BeforeEach
+    public void init() {
 
-		playlistRepository.deleteAll();
+        Artist validArtist = new Artist(1, "Artist name 1");
+        Album validAlbum = new Album(1, "Album by artist 1", validArtist, "Cover 1");
+        Genre validGenre = new Genre(1, "Genre name 1", "Genre description 1");
 
-		validPlaylist = playlistRepository.save(validPlaylist);
+        Track validTrack = new Track(1, "name1", validAlbum, 100, "lyrics1");
+        validTrack.setGenre(validGenre);
 
-		validPlaylistDTO = playlistMapper.mapToDeepDTO(validPlaylist);
-	}
+        List<Track> tracks = new ArrayList<>();
+        tracks.add(validTrack);
+        validAlbum.setTracks(tracks);
+        validGenre.setTracks(tracks);
 
-	@Test
-	public void readAllPlaylistsTest() {
+        user = new UserDetails();
+        user.setId(1);
+        user.setRole(UserRole.ADMIN);
+        user.setPassword("pass");
+        user.setUsername("addy the admin");
 
-		List<PlaylistDTO> playlistsInDB = playlistService.read();
+        PlaylistLink pll = new PlaylistLink();
+        validPlaylist = new Playlist(1L,"name1","description1","artwork1",List.of(pll),user);
+        pll.setTrack(validTrack);
+        pll.setPlaylist(validPlaylist);
+        validPlaylistDTO = playlistMapper.mapToDeepDTO(validPlaylist);
+    }
 
-		assertThat(playlistDTOs).isEqualTo(playlistsInDB);
-	}
+    @Test
+    public void readAllPlaylistsTest() {
 
-	@Test
-	public void readByIdTest() {
+        assertThat(playlistService.read()).isEqualTo(List.of(validPlaylistDTO));
+    }
 
-		assertThat(validPlaylistDTO).isEqualTo(playlistService.read(validPlaylist.getId()));
+    @Test
+    public void readByIdTest() {
 
-	}
+        assertThat(playlistService.read(validPlaylist.getId())).isEqualTo(validPlaylistDTO);
 
-	@Test
-	public void updatePlaylist() {
+    }
 
-		Playlist updatedPlaylist = playlistRepository.findAll().get(0);
-		updatedPlaylist.setName("updated");
-		PlaylistDTO updatedDTO = playlistMapper.mapToShallowDTO(updatedPlaylist);
-		assertThat(updatedDTO).isEqualTo(playlistService.update(updatedPlaylist, updatedPlaylist.getId()));
-	}
+    @Test
+    public void updatePlaylist() {
 
-	@Test
-	public void deletePlaylist() {
-		
-		assertThat(playlistService.delete(validPlaylist.getId())).isTrue();
-	}
+        Playlist updatedPlaylist = playlistRepository.findAll().get(0);
+        updatedPlaylist.setName("updated");
+        PlaylistDTO updatedDTO = playlistMapper.mapToDeepDTO(updatedPlaylist);
+        assertThat(playlistService.update(updatedPlaylist, updatedPlaylist.getId(), user)).isEqualTo(updatedDTO);
+    }
+
+    @Test
+    public void deletePlaylist() {
+
+        assertThat(playlistService.delete(validPlaylist.getId(), user)).isTrue();
+    }
 
 }

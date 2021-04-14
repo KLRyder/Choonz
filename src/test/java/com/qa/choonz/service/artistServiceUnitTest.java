@@ -1,14 +1,11 @@
 package com.qa.choonz.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.qa.choonz.persistence.domain.Artist;
+import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.repository.ArtistRepository;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.ArtistDTO;
+import com.qa.choonz.rest.mapper.ArtistMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,10 +14,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.repository.ArtistRepository;
-import com.qa.choonz.rest.dto.ArtistDTO;
-import com.qa.choonz.rest.mapper.ArtistMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 public class artistServiceUnitTest {
@@ -39,16 +38,22 @@ public class artistServiceUnitTest {
 	
 	private Artist validArtist;
 	private ArtistDTO validArtistDTO;
+	private UserDetails user = new UserDetails();
 	
 	@BeforeEach
 	void init() {
 		validArtist = new Artist(1, "Rick");
 		validArtistDTO = new ArtistDTO(1, "Rick");
 		
-		validArtists = new ArrayList<Artist>();
-		validArtistDTOs = new ArrayList<ArtistDTO>();
+		validArtists = new ArrayList<>();
+		validArtistDTOs = new ArrayList<>();
 		validArtists.add(validArtist);
 		validArtistDTOs.add(validArtistDTO);
+
+		user.setId(1);
+		user.setRole(UserRole.ADMIN);
+		user.setPassword("pass");
+		user.setUsername("addy the admin");
 	}
 	
 	@Test
@@ -83,7 +88,7 @@ public class artistServiceUnitTest {
 		when(artistRepo.save(Mockito.any(Artist.class))).thenReturn(validArtist);
 		when(artistMapper.mapToDeepDTO(Mockito.any(Artist.class))).thenReturn(validArtistDTO);
 		
-		assertThat(validArtistDTO).isEqualTo(artistService.create(validArtist));
+		assertThat(validArtistDTO).isEqualTo(artistService.create(validArtist, user));
 		
 		verify(artistRepo, times(1)).save(Mockito.any(Artist.class));
 		verify(artistMapper, times(1)).mapToDeepDTO(Mockito.any(Artist.class));		
@@ -105,7 +110,7 @@ public class artistServiceUnitTest {
 		when(artistMapper.mapToDeepDTO(Mockito.any(Artist.class)))
 			.thenReturn(updateArtistDTO);
 		
-		ArtistDTO testArtistDTO = artistService.update(updateArtist, validArtist.getId());
+		ArtistDTO testArtistDTO = artistService.update(updateArtist, validArtist.getId(), user);
 		
 		assertThat(updateArtistDTO).isEqualTo(testArtistDTO);
 		
@@ -120,10 +125,9 @@ public class artistServiceUnitTest {
 		
 		when(artistRepo.existsById(Mockito.any(Long.class))).thenReturn(true, false);
 		
-		assertThat(false).isEqualTo(artistService.delete(validArtist.getId()));
+		assertThat(false).isEqualTo(artistService.delete(validArtist.getId(), user));
 		
 		verify(artistRepo, times(1)).existsById(Mockito.any(Long.class));
-		
 	}
 
 }

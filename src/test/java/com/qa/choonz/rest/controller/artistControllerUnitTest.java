@@ -1,27 +1,27 @@
 package com.qa.choonz.rest.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.qa.choonz.persistence.domain.Artist;
+import com.qa.choonz.persistence.domain.UserDetails;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.ArtistDTO;
+import com.qa.choonz.rest.mapper.ArtistMapper;
+import com.qa.choonz.service.ArtistService;
+import com.qa.choonz.utils.ActiveSessions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.rest.dto.ArtistDTO;
-import com.qa.choonz.rest.mapper.ArtistMapper;
-import com.qa.choonz.service.ArtistService;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 public class artistControllerUnitTest {
@@ -34,20 +34,29 @@ public class artistControllerUnitTest {
 	
 	@Mock
 	private ArtistMapper artistMapper;
+
+	@Mock
+	private ActiveSessions sessions;
 	
 	private List<Artist> validArtists;
 	private List<ArtistDTO> validArtistDTOs;
 	
 	private Artist validArtist;
 	private ArtistDTO validArtistDTO;
+	private UserDetails user = new UserDetails();
 	
 	@BeforeEach
 	void init() {
+		user.setId(1);
+		user.setRole(UserRole.ADMIN);
+		user.setPassword("pass");
+		user.setUsername("addy the admin");
+
 		validArtist = new Artist(1, "Rick");
 		validArtistDTO = new ArtistDTO(1, "Rick");
 		
-		validArtists = new ArrayList<Artist>();
-		validArtistDTOs = new ArrayList<ArtistDTO>();
+		validArtists = new ArrayList<>();
+		validArtistDTOs = new ArrayList<>();
 		validArtists.add(validArtist);
 		validArtistDTOs.add(validArtistDTO);
 		
@@ -58,8 +67,8 @@ public class artistControllerUnitTest {
 		
 		when(artistService.read()).thenReturn(validArtistDTOs);
 		
-		ResponseEntity<List<ArtistDTO>> response = 
-				new ResponseEntity<List<ArtistDTO>>(validArtistDTOs, HttpStatus.OK);
+		ResponseEntity<List<ArtistDTO>> response =
+				new ResponseEntity<>(validArtistDTOs, HttpStatus.OK);
 		
 		assertThat(response).isEqualTo(artistController.read());
 		
@@ -72,7 +81,7 @@ public class artistControllerUnitTest {
 		when(artistService.read(1L)).thenReturn(validArtistDTO);
 		
 		ResponseEntity<ArtistDTO> response =
-				new ResponseEntity<ArtistDTO>(validArtistDTO, HttpStatus.OK);
+				new ResponseEntity<>(validArtistDTO, HttpStatus.OK);
 		
 		assertThat(response).isEqualTo(artistController.read(1L));
 		
@@ -83,42 +92,48 @@ public class artistControllerUnitTest {
 	@Test
 	void createGenre() {
 		
-		when(artistService.create(Mockito.any(Artist.class))).thenReturn(validArtistDTO);
+		when(artistService.create(validArtist, user)).thenReturn(validArtistDTO);
+		when(sessions.getSession(any(String.class))).thenReturn(user);
 		
-		ResponseEntity<ArtistDTO> response = 
-				new ResponseEntity<ArtistDTO>(validArtistDTO, HttpStatus.CREATED);
+		ResponseEntity<ArtistDTO> response =
+				new ResponseEntity<>(validArtistDTO, HttpStatus.CREATED);
 		
-		assertThat(response).isEqualTo(artistController.create(validArtist));
+		assertThat(response).isEqualTo(artistController.create(validArtist, "user"));
 		
-		verify(artistService, times(1)).create(Mockito.any(Artist.class));
+		verify(artistService, times(1)).create(validArtist, user);
+		verify(sessions, times(1)).getSession(any(String.class));
 		
 	}
 	
 	@Test
 	void updateGenre() {
 		
-		when(artistService.update(validArtist, validArtist.getId()))
+		when(artistService.update(validArtist, validArtist.getId(), user))
 			 .thenReturn(validArtistDTO);
+		when(sessions.getSession(any(String.class))).thenReturn(user);
 		
 		ResponseEntity<ArtistDTO> response =
-				new ResponseEntity<ArtistDTO>(validArtistDTO, HttpStatus.ACCEPTED);
+				new ResponseEntity<>(validArtistDTO, HttpStatus.ACCEPTED);
 		
-		assertThat(response).isEqualTo(artistController.update(validArtist, validArtist.getId()));
+		assertThat(response).isEqualTo(artistController.update(validArtist, validArtist.getId(), "user"));
 		
-		verify(artistService, times(1)).update(validArtist, validArtist.getId());
+		verify(artistService, times(1)).update(validArtist, validArtist.getId(), user);
+		verify(sessions, times(1)).getSession(any(String.class));
 	}
 	
 	@Test
 	void deleteGenre() {
 		
-		when(artistService.delete(validArtist.getId())).thenReturn(true);
+		when(artistService.delete(validArtist.getId(), user)).thenReturn(true);
+		when(sessions.getSession(any(String.class))).thenReturn(user);
 		
-		ResponseEntity<Boolean> response = 
-				new ResponseEntity<Boolean>(HttpStatus.NO_CONTENT);
+		ResponseEntity<ArtistDTO> response =
+				new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
-		assertThat(response).isEqualTo(artistController.delete(validArtist.getId()));
+		assertThat(response).isEqualTo(artistController.delete(validArtist.getId(), "user"));
 		
-		verify(artistService, times(1)).delete(validArtist.getId());
+		verify(artistService, times(1)).delete(validArtist.getId(), user);
+		verify(sessions, times(1)).getSession(any(String.class));
 	}
 
 }

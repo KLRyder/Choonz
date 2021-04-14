@@ -1,5 +1,11 @@
 package com.qa.choonz.rest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qa.choonz.persistence.domain.*;
+import com.qa.choonz.persistence.roles.UserRole;
+import com.qa.choonz.rest.dto.ArtistDTO;
+import com.qa.choonz.rest.mapper.ArtistMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,102 +21,142 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.rest.dto.ArtistDTO;
+import javax.servlet.http.Cookie;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = { "classpath:test-schema.sql", "classpath:test-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"classpath:test-schema.sql", "classpath:test-data.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class artistControllerIntegrationTest {
-	
-	@Autowired
-	private MockMvc mvc;
 
-	@Autowired
-	private ObjectMapper objectMapper;
+    @Autowired
+    private MockMvc mvc;
 
-	private ArtistDTO artistDTO = new ArtistDTO();
-	
-	@Test
-	public void createArtistTest() throws Exception {
-		Artist artistToSave = new Artist();
-		ArtistDTO expectedArtist = new ArtistDTO();
+    @Autowired
+    private ObjectMapper objectMapper;
 
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/artist");
+    @Autowired
+    private ArtistMapper mapper;
 
-		mockRequest.contentType(MediaType.APPLICATION_JSON);
-		mockRequest.content(objectMapper.writeValueAsString(artistToSave));
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+    private Cookie login;
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isCreated();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content()
-				.json(objectMapper.writeValueAsString(expectedArtist));
-		ResultMatcher headerMatcher = MockMvcResultMatchers.header().string("Location",
-				String.valueOf(expectedArtist.getId()));
+    private Track validTrack;
+    private Album validAlbum;
+    private Genre validGenre;
+    private Artist validArtist;
+    private ArtistDTO artistDTO;
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher).andExpect(headerMatcher);
-	}
-	
-	@Test
-	public void readAllArtistsTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/artist");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+    @BeforeEach
+    public void setup() throws Exception {
+        UserDetails adminUser = new UserDetails();
+        adminUser.setId(1);
+        adminUser.setUsername("addy");
+        adminUser.setPassword("pass");
+        adminUser.setRole(UserRole.ADMIN);
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(artistDTO));
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/sessions/login");
+        mockRequest.contentType(MediaType.APPLICATION_JSON);
+        mockRequest.content(objectMapper.writeValueAsString(adminUser));
+        mockRequest.accept(MediaType.APPLICATION_JSON);
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
-	}
-	@Test
-	public void readArtistByIdTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/artist/alt");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
-		mockRequest.queryParam("id", "1");
+        mvc.perform(mockRequest).andDo(result -> login = result.getResponse().getCookies()[0]);
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(artistDTO));
+        validArtist = new Artist(1, "Artist name 1");
+        validAlbum = new Album(1, "Album by artist 1", validArtist, "Cover 1");
+        validGenre = new Genre(1, "Genre name 1", "Genre description 1");
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
-	}
-	@Test
-	public void getArtistByNameTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET,
-				"/artist/name/RickRoll");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+        validTrack = new Track(1, "name1", validAlbum, 100, "lyrics1");
+        validTrack.setGenre(validGenre);
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(artistDTO));
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+        List<Track> tracks = new ArrayList<>();
+        tracks.add(validTrack);
+        validAlbum.setTracks(tracks);
+        validGenre.setTracks(tracks);
+        validArtist.setAlbums(List.of(validAlbum));
 
-	}
+        artistDTO = mapper.mapToDeepDTO(validArtist);
 
-	@Test
-	public void updateArtistTest() throws Exception {
-		Artist updatedArtist = new Artist();
-		ArtistDTO expectedArtist = new ArtistDTO();
+        adminUser.setId(1);
+        adminUser.setRole(UserRole.ADMIN);
+        adminUser.setPassword("pass");
+        adminUser.setUsername("addy the admin");
+    }
 
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.PUT, "/artist/1");
+    @Test
+    public void createArtistTest() throws Exception {
+        Artist artistToSave = new Artist(2,"new artist");
+        ArtistDTO expectedArtist = mapper.mapToDeepDTO(artistToSave);
 
-		mockRequest.contentType(MediaType.APPLICATION_JSON);
-		mockRequest.content(objectMapper.writeValueAsBytes(updatedArtist));
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/artists/create");
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content()
-				.json(objectMapper.writeValueAsString(expectedArtist));
+        mockRequest.contentType(MediaType.APPLICATION_JSON);
+        mockRequest.content(objectMapper.writeValueAsString(artistToSave));
+        mockRequest.accept(MediaType.APPLICATION_JSON);
+        mockRequest.cookie(login);
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isCreated();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content()
+                .json(objectMapper.writeValueAsString(expectedArtist));
 
-	}
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
 
-	@Test
-	public void deleteArtistTest() throws Exception {
-		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/artist/1");
-		mockRequest.accept(MediaType.APPLICATION_JSON);
+    @Test
+    public void readAllArtistsTest() throws Exception {
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/artists/read");
+        mockRequest.accept(MediaType.APPLICATION_JSON);
 
-		ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
-		ResultMatcher contentMatcher = MockMvcResultMatchers.content().string("true");
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(List.of(artistDTO)));
 
-		mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
-	}
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
+
+    @Test
+    public void readArtistByIdTest() throws Exception {
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.GET, "/artists/read/1");
+        mockRequest.accept(MediaType.APPLICATION_JSON);
+        mockRequest.queryParam("id", "1");
+
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isOk();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(artistDTO));
+
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
+
+    @Test
+    public void updateArtistTest() throws Exception {
+        Artist updatedArtist = validArtist;
+        validArtist.setName("updatedName");
+        validGenre.setTracks(new ArrayList<>());
+        validTrack.setAlbum(null);
+        validAlbum.setArtist(null);
+        ArtistDTO expectedArtist = mapper.mapToDeepDTO(validArtist);
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/artists/update/1");
+
+        mockRequest.contentType(MediaType.APPLICATION_JSON);
+        mockRequest.content(objectMapper.writeValueAsBytes(updatedArtist));
+        mockRequest.cookie(login);
+
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().is2xxSuccessful();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content()
+                .json(objectMapper.writeValueAsString(expectedArtist));
+
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+
+    }
+
+    @Test
+    public void deleteArtistTest() throws Exception {
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/artists/delete/1");
+        mockRequest.accept(MediaType.APPLICATION_JSON);
+        mockRequest.cookie(login);
+
+        ResultMatcher statusMatcher = MockMvcResultMatchers.status().isNoContent();
+        ResultMatcher contentMatcher = MockMvcResultMatchers.content().string("");
+
+        mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
+    }
 }
