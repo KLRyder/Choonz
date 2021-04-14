@@ -1,21 +1,13 @@
 package com.qa.choonz.rest.dto;
 
-import org.junit.jupiter.api.Test;
-
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.Playlist;
-import com.qa.choonz.persistence.domain.Track;
-
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class trackDTOUnitTest {
 	
-	private final ArtistDTO artist = new ArtistDTO();
 	private final List<GenreDTO> genres = new ArrayList<>();
 	private final AlbumDTO album = new AlbumDTO();
 	private final PlaylistDTO playlist = new PlaylistDTO();
@@ -24,8 +16,8 @@ public class trackDTOUnitTest {
 	void testEquals() {
 		EqualsVerifier.simple().forClass(TrackDTO.class)
 			.withPrefabValues(AlbumDTO.class,
-					new AlbumDTO(1, "name1", artist, genres, "cover"),
-					new AlbumDTO(1, "name2", artist, genres, "cover"))
+					new AlbumDTO(1, "name1", new ArrayList<>(), genres, "cover"),
+					new AlbumDTO(1, "name2", new ArrayList<>(), genres, "cover"))
 			
 			.withPrefabValues(PlaylistDTO.class,
 					new PlaylistDTO(1, "name", "description", "artwork"),
@@ -43,9 +35,8 @@ public class trackDTOUnitTest {
 	
 	@Test
 	void constructorTest() {
-		TrackDTO newTrackModel = new TrackDTO(1, "name", album, playlist, 300, "lyrics", artist, new GenreDTO());
+		TrackDTO newTrackModel = new TrackDTO(1, "name", album, playlist, 300, "lyrics", new ArrayList<>(), new GenreDTO());
 		newTrackModel.toString();
 	}
-
 
 }

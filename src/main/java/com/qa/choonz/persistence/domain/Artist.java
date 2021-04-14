@@ -3,14 +3,13 @@ package com.qa.choonz.persistence.domain;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 public class Artist {
@@ -26,7 +25,7 @@ public class Artist {
 
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY, orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Album> albums;
+    private List<ArtistAlbumLink> albums;
 
     public Artist() {
         super();
@@ -40,11 +39,15 @@ public class Artist {
 	   this.albums = new ArrayList<>();
    }
     
-    public Artist(long id, @NotNull @Size(max = 100) String name, List<Album> albums) {
+    public Artist(long id, @NotNull @Size(max = 100) String name, List<ArtistAlbumLink> albums) {
         super();
         this.id = id;
         this.name = name;
         this.albums = albums;
+    }
+
+    public Artist(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -63,11 +66,11 @@ public class Artist {
         this.name = name;
     }
     
-    public List<Album> getAlbums() {
+    public List<ArtistAlbumLink> getAlbums() {
         return albums;
     }
 
-    public void setAlbums(List<Album> albums) {
+    public void setAlbums(List<ArtistAlbumLink> albums) {
         this.albums = albums;
     }
 

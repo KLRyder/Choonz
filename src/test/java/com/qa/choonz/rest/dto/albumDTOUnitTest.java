@@ -1,27 +1,23 @@
 package com.qa.choonz.rest.dto;
 
-import org.junit.jupiter.api.Test;
-
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.common.input.LineSeparatorDetector;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class albumDTOUnitTest {
 	
-	private final ArtistDTO artist = new ArtistDTO();
 	private final GenreDTO genre = new GenreDTO();
-	private final List<GenreDTO> genreDTOS = new ArrayList<GenreDTO>();
+	private final List<GenreDTO> genreDTOS = new ArrayList<>();
 	private final PlaylistDTO playlist = new PlaylistDTO();
-	private final AlbumDTO album = new AlbumDTO();
-	
+
 	@Test
 	void testEquals() { 
 		EqualsVerifier.simple().forClass(AlbumDTO.class)
 			.withPrefabValues(TrackDTO.class,
-					new TrackDTO(1, "name", null, playlist, 300, "lyrics", artist, genre),
-					new TrackDTO(2, "name", null, playlist, 300, "lyrics", artist, genre))
+					new TrackDTO(1, "name", null, playlist, 300, "lyrics", new ArrayList<>(), genre),
+					new TrackDTO(2, "name", null, playlist, 300, "lyrics", new ArrayList<>(), genre))
 			.withPrefabValues(ArtistDTO.class,
 					new ArtistDTO(1, "name1"),
 					new ArtistDTO(2, "name2"))	
@@ -34,7 +30,7 @@ public class albumDTOUnitTest {
 	@Test
 	void constructorTest() {
 		genreDTOS.add(genre);
-		AlbumDTO newAlbumModel = new AlbumDTO(1, "name", artist, genreDTOS, "cover");
+		AlbumDTO newAlbumModel = new AlbumDTO(1, "name", new ArrayList<>(), genreDTOS, "cover");
 		newAlbumModel.toString();
 	}
 

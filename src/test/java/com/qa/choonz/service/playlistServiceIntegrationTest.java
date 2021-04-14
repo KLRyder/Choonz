@@ -33,15 +33,23 @@ public class playlistServiceIntegrationTest {
 
     private Playlist validPlaylist;
     private PlaylistDTO validPlaylistDTO;
+    private ArtistAlbumLink validLink;
+    private Album validAlbum;
+    private Genre validGenre;
+    private Artist validArtist;
 
     private UserDetails user;
 
     @BeforeEach
     public void init() {
 
-        Artist validArtist = new Artist(1, "Artist name 1");
-        Album validAlbum = new Album(1, "Album by artist 1", validArtist, "Cover 1");
-        Genre validGenre = new Genre(1, "Genre name 1", "Genre description 1");
+        validLink = new ArtistAlbumLink(1);
+        validArtist = new Artist(1, "Artist name 1");
+        validAlbum = new Album(1, "Album by artist 1", List.of(validLink), "Cover 1");
+        validGenre = new Genre(1, "Genre name 1", "Genre description 1");
+        validArtist.setAlbums(List.of(validLink));
+        validLink.setAlbum(validAlbum);
+        validLink.setArtist(validArtist);
 
         Track validTrack = new Track(1, "name1", validAlbum, 100, "lyrics1");
         validTrack.setGenre(validGenre);

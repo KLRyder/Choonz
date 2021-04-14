@@ -46,6 +46,7 @@ public class artistControllerIntegrationTest {
     private Genre validGenre;
     private Artist validArtist;
     private ArtistDTO artistDTO;
+    private ArtistAlbumLink validLink;
 
     @BeforeEach
     public void setup() throws Exception {
@@ -62,9 +63,13 @@ public class artistControllerIntegrationTest {
 
         mvc.perform(mockRequest).andDo(result -> login = result.getResponse().getCookies()[0]);
 
+        validLink = new ArtistAlbumLink(1);
         validArtist = new Artist(1, "Artist name 1");
-        validAlbum = new Album(1, "Album by artist 1", validArtist, "Cover 1");
+        validAlbum = new Album(1, "Album by artist 1", List.of(validLink), "Cover 1");
         validGenre = new Genre(1, "Genre name 1", "Genre description 1");
+        validArtist.setAlbums(List.of(validLink));
+        validLink.setAlbum(validAlbum);
+        validLink.setArtist(validArtist);
 
         validTrack = new Track(1, "name1", validAlbum, 100, "lyrics1");
         validTrack.setGenre(validGenre);
@@ -73,7 +78,6 @@ public class artistControllerIntegrationTest {
         tracks.add(validTrack);
         validAlbum.setTracks(tracks);
         validGenre.setTracks(tracks);
-        validArtist.setAlbums(List.of(validAlbum));
 
         artistDTO = mapper.mapToDeepDTO(validArtist);
 
@@ -129,10 +133,12 @@ public class artistControllerIntegrationTest {
     public void updateArtistTest() throws Exception {
         Artist updatedArtist = validArtist;
         validArtist.setName("updatedName");
+        ArtistDTO expectedArtist = mapper.mapToDeepDTO(validArtist);
+        //prevent infinite recursion
         validGenre.setTracks(new ArrayList<>());
         validTrack.setAlbum(null);
-        validAlbum.setArtist(null);
-        ArtistDTO expectedArtist = mapper.mapToDeepDTO(validArtist);
+        validAlbum.setArtists(new ArrayList<>());
+        validArtist.setAlbums(new ArrayList<>());
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/artists/update/1");
 

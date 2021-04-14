@@ -60,4 +60,18 @@ public class AlbumController {
                 : new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @PutMapping("/add/{albumID}/{artistID}")
+    public ResponseEntity<AlbumDTO> addArtist(@PathVariable long albumID, @PathVariable long artistID,
+                                              @CookieValue(value = "SESSID") String sessID) {
+        return this.service.add(albumID, artistID, sessions.getSession(sessID)) ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    @PutMapping("/remove/{albumID}/{artistID}")
+    public ResponseEntity<AlbumDTO> removeArtist(@PathVariable long albumID, @PathVariable long artistID,
+                                                 @CookieValue(value = "SESSID") String sessID) {
+        return this.service.remove(albumID, artistID, sessions.getSession(sessID)) ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
 }

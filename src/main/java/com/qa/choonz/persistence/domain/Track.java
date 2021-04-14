@@ -1,10 +1,9 @@
 package com.qa.choonz.persistence.domain;
 
-import java.util.Objects;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @Entity
 public class Track {
@@ -26,6 +25,7 @@ public class Track {
     // in seconds
     private int duration;
 
+    @Size(max = 10000)
     private String lyrics;
 
     public Track() {

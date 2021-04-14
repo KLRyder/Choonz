@@ -1,14 +1,9 @@
 package com.qa.choonz.rest.dto;
 
-import java.util.Objects;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.qa.choonz.persistence.domain.Album;
-import com.qa.choonz.persistence.domain.Artist;
-import com.qa.choonz.persistence.domain.Genre;
-import com.qa.choonz.persistence.domain.Playlist;
+import java.util.List;
+import java.util.Objects;
 
 public class TrackDTO {
 
@@ -18,7 +13,7 @@ public class TrackDTO {
     private PlaylistDTO playlist;
     private int duration;
     private String lyrics;
-    private ArtistDTO artist;
+    private List<ArtistDTO> artists;
     private GenreDTO genre;
 
     public TrackDTO() {
@@ -26,9 +21,9 @@ public class TrackDTO {
         // TODO Auto-generated constructor stub
     }
     
-    public TrackDTO(long id, @NotNull @Size(max = 100) String name, 
-    				AlbumDTO album, PlaylistDTO playlist, int duration,
-    				String lyrics, ArtistDTO artist, GenreDTO genre) {
+    public TrackDTO(long id, @NotNull @Size(max = 100) String name,
+                    AlbumDTO album, PlaylistDTO playlist, int duration,
+                    String lyrics, List<ArtistDTO> artists, GenreDTO genre) {
     	super();
     	this.id = id;
         this.name = name;
@@ -36,7 +31,7 @@ public class TrackDTO {
         this.playlist = playlist;
         this.duration = duration;
         this.lyrics = lyrics;
-        this.artist = artist;
+        this.artists = artists;
         this.genre = genre;
     	
     }
@@ -89,12 +84,12 @@ public class TrackDTO {
         this.lyrics = lyrics;
     }
 
-    public ArtistDTO getArtist() {
-        return artist;
+    public List<ArtistDTO> getArtists() {
+        return artists;
     }
 
-    public void setArtist(ArtistDTO artist) {
-        this.artist = artist;
+    public void setArtists(List<ArtistDTO> artist) {
+        this.artists = artist;
     }
 
     public GenreDTO getGenre() {
@@ -118,7 +113,7 @@ public class TrackDTO {
         if (!Objects.equals(album, trackDTO.album)) return false;
         if (!Objects.equals(playlist, trackDTO.playlist)) return false;
         if (!Objects.equals(lyrics, trackDTO.lyrics)) return false;
-        if (!Objects.equals(artist, trackDTO.artist)) return false;
+        if (!Objects.equals(artists, trackDTO.artists)) return false;
         return Objects.equals(genre, trackDTO.genre);
     }
 
@@ -130,7 +125,7 @@ public class TrackDTO {
         result = 31 * result + (playlist != null ? playlist.hashCode() : 0);
         result = 31 * result + duration;
         result = 31 * result + (lyrics != null ? lyrics.hashCode() : 0);
-        result = 31 * result + (artist != null ? artist.hashCode() : 0);
+        result = 31 * result + (artists != null ? artists.hashCode() : 0);
         result = 31 * result + (genre != null ? genre.hashCode() : 0);
         return result;
     }
@@ -144,7 +139,7 @@ public class TrackDTO {
                 ", playlist=" + playlist +
                 ", duration=" + duration +
                 ", lyrics='" + lyrics + '\'' +
-                ", artist=" + artist +
+                ", artist=" + artists +
                 ", genre=" + genre +
                 '}';
     }

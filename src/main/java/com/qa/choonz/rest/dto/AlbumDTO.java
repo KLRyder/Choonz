@@ -1,42 +1,44 @@
 package com.qa.choonz.rest.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 public class AlbumDTO {
 
     private long id;
     private String name;
     private List<TrackDTO> tracks;
-    private ArtistDTO artist;
+    private List<ArtistDTO> artists;
     private List<GenreDTO> genres;
     private String cover;
 
     public AlbumDTO() {
         super();
         // TODO Auto-generated constructor stub
+        tracks = new ArrayList<>();
+        artists = new ArrayList<>();
+        genres = new ArrayList<>();
     }
 
-    public AlbumDTO(long id, @NotNull @Size(max=100) String name, ArtistDTO artist, List<GenreDTO> genres, String cover) {
+    public AlbumDTO(long id, @NotNull @Size(max=100) String name, List<ArtistDTO> artists, List<GenreDTO> genres, String cover) {
     	this.id = id;
         this.name = name;
-        this.artist = artist;
+        this.artists = artists;
         this.genres = genres;
         this.cover = cover;
-        this.tracks = new ArrayList<TrackDTO>();
+        this.tracks = new ArrayList<>();
         
     }
     
-    public AlbumDTO(long id, String name, List<TrackDTO> tracks, ArtistDTO artist, List<GenreDTO> genres, String cover) {
+    public AlbumDTO(long id, String name, List<TrackDTO> tracks, List<ArtistDTO> artists, List<GenreDTO> genres, String cover) {
         super();
         this.id = id;
         this.name = name;
         this.tracks = tracks;
-        this.artist = artist;
+        this.artists = artists;
         this.genres = genres;
         this.cover = cover;
     }
@@ -65,12 +67,12 @@ public class AlbumDTO {
         this.tracks = tracks;
     }
 
-    public ArtistDTO getArtist() {
-        return artist;
+    public List<ArtistDTO> getArtists() {
+        return artists;
     }
 
-    public void setArtist(ArtistDTO artist) {
-        this.artist = artist;
+    public void setArtists(List<ArtistDTO> artists) {
+        this.artists = artists;
     }
 
     public List<GenreDTO> getGenres() {
@@ -99,7 +101,7 @@ public class AlbumDTO {
         if (id != albumDTO.id) return false;
         if (!Objects.equals(name, albumDTO.name)) return false;
         if (!Objects.equals(tracks, albumDTO.tracks)) return false;
-        if (!Objects.equals(artist, albumDTO.artist)) return false;
+        if (!Objects.equals(artists, albumDTO.artists)) return false;
         if (!Objects.equals(genres, albumDTO.genres)) return false;
         return Objects.equals(cover, albumDTO.cover);
     }
@@ -109,7 +111,7 @@ public class AlbumDTO {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
-        result = 31 * result + (artist != null ? artist.hashCode() : 0);
+        result = 31 * result + (artists != null ? artists.hashCode() : 0);
         result = 31 * result + (genres != null ? genres.hashCode() : 0);
         result = 31 * result + (cover != null ? cover.hashCode() : 0);
         return result;
@@ -121,7 +123,7 @@ public class AlbumDTO {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", tracks=" + tracks +
-                ", artist=" + artist +
+                ", artist=" + artists +
                 ", genre=" + genres +
                 ", cover='" + cover + '\'' +
                 '}';

@@ -40,9 +40,13 @@ public class trackServiceIntegrationTest {
 
     @BeforeEach
     public void init() {
+        ArtistAlbumLink link = new ArtistAlbumLink();
         Artist validArtist = new Artist(1, "Artist name 1");
-        Album validAlbum = new Album(1, "Album by artist 1", validArtist, "Cover 1");
+        Album validAlbum = new Album(1, "Album by artist 1", List.of(link), "Cover 1");
         Genre validGenre = new Genre(1, "Genre name 1", "Genre description 1");
+
+        link.setArtist(validArtist);
+        link.setAlbum(validAlbum);
 
         validTrack = new Track(1, "name1", validAlbum, 100, "lyrics1");
         validTrack.setGenre(validGenre);

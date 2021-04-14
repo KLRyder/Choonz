@@ -4,6 +4,9 @@ import com.qa.choonz.persistence.domain.Track;
 import com.qa.choonz.rest.dto.TrackDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 @Component
 public class TrackMapper {
     private AlbumMapper albumMapper;
@@ -14,7 +17,7 @@ public class TrackMapper {
     public TrackDTO mapToDeepDTO(Track track) {
         //if mappers have not been initialised yet, initialise them
         if (albumMapper == null || genreMapper == null ||
-            artistMapper == null || playlistMapper == null){
+                artistMapper == null || playlistMapper == null) {
             artistMapper = new ArtistMapper();
             albumMapper = new AlbumMapper();
             genreMapper = new GenreMapper();
@@ -29,7 +32,9 @@ public class TrackMapper {
         toReturn.setDuration(track.getDuration());
         toReturn.setLyrics(track.getLyrics());
         toReturn.setAlbum(albumMapper.mapToShallowDTO(track.getAlbum()));
-        toReturn.setArtist((track.getAlbum() == null || track.getAlbum().getArtist() == null) ? null: artistMapper.mapToShallowDTO(track.getAlbum().getArtist()));
+        toReturn.setArtists((track.getAlbum() == null || track.getAlbum().getArtists().size() == 0)
+                ? new ArrayList<>()
+                : track.getAlbum().getArtists().stream().map(link -> artistMapper.mapToShallowDTO(link.getArtist())).collect(Collectors.toList()));
         toReturn.setGenre(genreMapper.mapToShallowDTO(track.getGenre()));
 //        toReturn.setPlaylist(playlistMapper.mapToShallowDTO(track.getPlaylist()));
         return toReturn;
