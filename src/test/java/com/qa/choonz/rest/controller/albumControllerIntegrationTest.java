@@ -86,7 +86,7 @@ public class albumControllerIntegrationTest {
 
 	@Test
 	public void createAlbumTest() throws Exception {
-		Album albumToSave = new Album(2, "test", new ArrayList<>(), List.of(validLink), "test");
+		Album albumToSave = new Album(2, "test", new ArrayList<>(), new ArrayList<>(), "test");
 		AlbumDTO expectedAlbum = mapper.mapToDeepDTO(albumToSave);
 
 		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/albums/create");
@@ -131,10 +131,13 @@ public class albumControllerIntegrationTest {
 		Album updatedAlbum = validAlbum;
 		updatedAlbum.setName("updated");
 		updatedAlbum.setCover("updated");
-		validTrack.setAlbum(null);
+		AlbumDTO expectedAlbum = mapper.mapToDeepDTO(updatedAlbum);
+		// prevent infinite recursion when converting to JSON
 		validGenre.setTracks(new ArrayList<>());
 		validArtist.setAlbums(new ArrayList<>());
-		AlbumDTO expectedAlbum = mapper.mapToDeepDTO(updatedAlbum);
+		validAlbum.setArtists(new ArrayList<>());
+		validAlbum.setTracks(new ArrayList<>());
+
 
 		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/albums/update/1");
 

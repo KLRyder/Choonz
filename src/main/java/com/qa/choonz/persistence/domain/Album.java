@@ -26,7 +26,7 @@ public class Album {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Track> tracks;
 
-    @OneToMany(targetEntity = ArtistAlbumLink.class, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY, orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ArtistAlbumLink> artists;
 

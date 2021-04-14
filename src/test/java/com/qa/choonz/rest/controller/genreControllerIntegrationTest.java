@@ -45,6 +45,7 @@ public class genreControllerIntegrationTest {
     private Album validAlbum;
     private Genre validGenre;
     private Artist validArtist;
+    private ArtistAlbumLink validLink;
     private GenreDTO genreDTO;
 
     @BeforeEach
@@ -126,8 +127,11 @@ public class genreControllerIntegrationTest {
     public void updateGenreTest() throws Exception {
         validGenre.setName("updated");
         validGenre.setDescription("description");
+        // prevent infinite recursion when parsing into JSON
         validTrack.setGenre(null);
         validAlbum.setTracks(new ArrayList<>());
+        validLink.setArtist(null);
+        validLink.setAlbum(null);
         GenreDTO expectedGenre = mapper.mapToDeepDTO(validGenre);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/genres/update/1");

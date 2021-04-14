@@ -94,10 +94,12 @@ public class trackControllerIntegrationTest {
     public void createTrackTest() throws Exception {
         Track trackToSave = new Track(2, "new name", validAlbum, 4884, "new lyrics");
         trackToSave.setGenre(validGenre);
+        TrackDTO expectedTrack = trackMapper.mapToDeepDTO(trackToSave);
+        //prevent infinite recursion with JSON
         validAlbum.setTracks(new ArrayList<>());
         validGenre.setTracks(new ArrayList<>());
         validArtist.setAlbums(new ArrayList<>());
-        TrackDTO expectedTrack = trackMapper.mapToDeepDTO(trackToSave);
+        validAlbum.setArtists(new ArrayList<>());
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/tracks/create");
 
@@ -146,13 +148,16 @@ public class trackControllerIntegrationTest {
     @Test
     public void updateTrackTest() throws Exception {
         Track updatedTrack = validTrack;
+        validAlbum.setArtists(new ArrayList<>());
         updatedTrack.setName("updated name");
         updatedTrack.setLyrics("updated lyrics");
         updatedTrack.setDuration(99999);
+        TrackDTO expectedTrack = trackMapper.mapToDeepDTO(updatedTrack);
+        //prevent infinite recursion with JSON
         validAlbum.setTracks(new ArrayList<>());
         validArtist.setAlbums(new ArrayList<>());
         validGenre.setTracks(new ArrayList<>());
-        TrackDTO expectedTrack = trackMapper.mapToDeepDTO(updatedTrack);
+
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/tracks/update/1");
 
@@ -164,6 +169,7 @@ public class trackControllerIntegrationTest {
         ResultMatcher contentMatcher = MockMvcResultMatchers.content()
                 .json(objectMapper.writeValueAsString(expectedTrack));
 
+        System.out.println(expectedTrack);
         mvc.perform(mockRequest).andExpect(statusMatcher).andExpect(contentMatcher);
 
     }

@@ -31,6 +31,7 @@ public class SessionController {
             sessionCookie.setSecure(true);
             sessionCookie.setMaxAge(60*60);
             sessionCookie.setDomain("localhost");
+            sessionCookie.setPath("/");
             response.addCookie(sessionCookie);
             return new ResponseEntity<>("success", HttpStatus.OK);
         } else return new ResponseEntity<>("fail", HttpStatus.OK);
@@ -42,12 +43,12 @@ public class SessionController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDetailsDTO> getUsername(@CookieValue(value = "SESSID", required = true) String sessID) {
+    public ResponseEntity<UserDetailsDTO> getUsername(@CookieValue(value = "SESSID") String sessID) {
         return new ResponseEntity<>(service.userDetails(sessID), HttpStatus.CREATED);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> endSession(@CookieValue(value = "SESSID", required = true) String sessID){
+    public ResponseEntity<String> endSession(@CookieValue(value = "SESSID") String sessID){
         Cookie sessionCookie = new Cookie("SESSID", null);
         sessionCookie.setMaxAge(0);
         Cookie usernameCookie = new Cookie("U_NAME", null);

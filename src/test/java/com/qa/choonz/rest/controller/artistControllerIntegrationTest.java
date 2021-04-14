@@ -133,10 +133,12 @@ public class artistControllerIntegrationTest {
     public void updateArtistTest() throws Exception {
         Artist updatedArtist = validArtist;
         validArtist.setName("updatedName");
+        ArtistDTO expectedArtist = mapper.mapToDeepDTO(validArtist);
+        //prevent infinite recursion
         validGenre.setTracks(new ArrayList<>());
         validTrack.setAlbum(null);
         validAlbum.setArtists(new ArrayList<>());
-        ArtistDTO expectedArtist = mapper.mapToDeepDTO(validArtist);
+        validArtist.setAlbums(new ArrayList<>());
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/artists/update/1");
 

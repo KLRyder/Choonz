@@ -4,6 +4,7 @@ import com.qa.choonz.persistence.domain.Track;
 import com.qa.choonz.rest.dto.TrackDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,7 +33,7 @@ public class TrackMapper {
         toReturn.setLyrics(track.getLyrics());
         toReturn.setAlbum(albumMapper.mapToShallowDTO(track.getAlbum()));
         toReturn.setArtists((track.getAlbum() == null || track.getAlbum().getArtists().size() == 0)
-                ? null
+                ? new ArrayList<>()
                 : track.getAlbum().getArtists().stream().map(link -> artistMapper.mapToShallowDTO(link.getArtist())).collect(Collectors.toList()));
         toReturn.setGenre(genreMapper.mapToShallowDTO(track.getGenre()));
 //        toReturn.setPlaylist(playlistMapper.mapToShallowDTO(track.getPlaylist()));

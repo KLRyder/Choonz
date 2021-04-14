@@ -23,10 +23,11 @@ public class AlbumService {
     private AlbumMapper mapper;
     private ArtistAlbumLinkRepository linkRepo;
 
-    public AlbumService(AlbumRepository repo, AlbumMapper mapper) {
+    public AlbumService(AlbumRepository repo, AlbumMapper mapper, ArtistAlbumLinkRepository linkRepo) {
         super();
         this.repo = repo;
         this.mapper = mapper;
+        this.linkRepo = linkRepo;
     }
 
     public AlbumDTO create(Album album, UserDetails user) {

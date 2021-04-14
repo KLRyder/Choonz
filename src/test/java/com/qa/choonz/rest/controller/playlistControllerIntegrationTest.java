@@ -136,8 +136,11 @@ public class playlistControllerIntegrationTest {
         validPlaylist.setArtwork("updated");
         validPlaylist.setName("new name");
         validPlaylistLink.setPlaylist(null);
+        // prevent infinite recursion when parsing into JSON
         validGenre.setTracks(new ArrayList<>());
         validAlbum.setTracks(new ArrayList<>());
+        validLink.setArtist(null);
+        validLink.setAlbum(null);
         PlaylistDTO expectedPlaylist = mapper.mapToDeepDTO(validPlaylist);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/playlists/update/1");

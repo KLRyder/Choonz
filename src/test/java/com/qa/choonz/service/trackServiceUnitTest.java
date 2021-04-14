@@ -119,7 +119,7 @@ public class trackServiceUnitTest {
 		
 		assertThat(updateTrackDTO).isEqualTo(testTrackDTO);
 		
-		verify(trackRepo, times(1)).findById(Mockito.any(Long.class));
+		verify(trackRepo, times(2)).findById(Mockito.any(Long.class));
 		verify(trackRepo, times(1)).save(Mockito.any(Track.class));
 		verify(trackMapper, times(1)).mapToDeepDTO(Mockito.any(Track.class));
 		
