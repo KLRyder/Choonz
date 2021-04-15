@@ -50,7 +50,6 @@ function updateAlbum() {
     console.info("Updating Album")
 
     let albumName = document.querySelector('#update-album-name').value;
-    let artistId = document.querySelector('#update-album-artistid').value;
     let albumCover = document.querySelector('#albumPic').value;
 
     fetch(apiURL + "albums/update/" + urlParams.get("album_id"), {
@@ -60,9 +59,6 @@ function updateAlbum() {
         },
         body: JSON.stringify({
             "name": albumName,
-            "artist": {
-                "id": artistId
-            },
             "cover": albumCover
         })
     }).then(res => res.json())

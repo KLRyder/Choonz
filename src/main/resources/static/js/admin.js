@@ -34,7 +34,6 @@ function createAlbum(){
     console.info("Creating Album")
 
     let albumName = document.querySelector('#create-album-name').value;
-    let artistId = document.querySelector('#create-album-artistid').value;
     let albumPic = document.querySelector('#albumPic').value;
 
     fetch(apiURL + "albums/create", {
@@ -44,9 +43,6 @@ function createAlbum(){
     },
     body: JSON.stringify({
         "name": albumName,
-        "artist": {
-          "id": artistId
-        },
         "cover": albumPic
     })
 }).then(res => res.json())
