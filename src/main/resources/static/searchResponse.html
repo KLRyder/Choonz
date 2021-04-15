@@ -95,16 +95,10 @@
       </div>
     </div>
     <div id = "playlistList" class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 33.3333%; top: 310px;">
-      <div class="container mx-5 align-items-center" id="playlistListInner">
-        <div class="card p-3">
-          <div class="card-body">
-            <div class="card-title">
-              <h5>Track List:</h5>
-            </div>
-            <div class="accordion accordion-flush" id="playlistListAccordion">
-              <!--tracks go here-->
-            </div>
-          </div>
+      <div class="container py-5">
+        <h1 class=text-center><u></u></h1>
+        <hr class="my-3">
+        <div class="row" id="playlistContainer" style="position: relative; height: 0">
         </div>
       </div>
     </div>
@@ -162,6 +156,19 @@
         <img src="_ALBUM-COVER" class="card-img" alt="ALBUM COVER">
         <div class="card-img-overlay">
           <h5 class="card-title">ALBUM NAME</h5>
+        </div>
+      </div>
+    </a>
+  </div>
+</template>
+
+<template id="playlistTemplate">
+  <div class="col-sm-6 col-lg-4 mb-4 msnry-Card" id="playlist_PLAYLIST-ID" style="position: absolute; left: 0; top: 0;">
+    <a id="playlistLink_PLAYLIST-ID" href="playlists?playlist_id=_PLAYLIST-ID">
+      <div class="card bg-dark text-white">
+        <img src="_PLAYLIST-COVER" class="card-img" alt="PLAYLIST COVER">
+        <div class="card-img-overlay">
+          <h5 class="card-title">PLAYLIST NAME</h5>
         </div>
       </div>
     </a>

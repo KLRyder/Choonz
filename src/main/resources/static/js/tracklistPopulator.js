@@ -1,10 +1,7 @@
 'use strict'
 
 let populate = (trackJSON) => {
-    console.log("try to populate with")
-    console.log(trackJSON)
     let template = document.querySelector('#trackTemplate');
-    console.log(template)
     let trackClone = template.content.cloneNode(true);
 
     let node = trackClone.getElementById("track_TRACK-ID");
