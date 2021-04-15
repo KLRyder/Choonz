@@ -154,8 +154,8 @@ TrackService
 
 ### Development Team
 
-- [**Kieran Ryder**](https://github.com/KLRyder) - **Backend overhall/Everything Java, Bootstrap abuse, album ~~plagiarist~~ *artist***
-- [**Vicente Conte Couto**](https://github.com/ecoutoo) - **scrum master, frontend, acceptance testing**
+- [**Kieran Ryder**](https://github.com/KLRyder) - **Backend overhall/Everything Java, Bootstrap Abuse, Album ~~plagiarist~~ *artist***
+- [**Vicente Conte Couto**](https://github.com/ecoutoo) - **Scrum Master, Frontend, Acceptance Testing**
 - [**Tom Hoey**](https://github.com/TomHoey) - **Junit, Nonfunctional testing, Moral Support**
 - [**Berkan Irice**](https://github.com/BerkanQA) - ****
 
