@@ -32,7 +32,7 @@ public class GenreDTO {
         this.name = name;
         this.description = description;
         this.albums = albums;
-        this.tracks = new ArrayList<TrackDTO>();
+        this.tracks = new ArrayList<>();
     }
 
     public long getId() {

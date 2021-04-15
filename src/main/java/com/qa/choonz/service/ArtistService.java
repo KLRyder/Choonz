@@ -10,6 +10,7 @@ import com.qa.choonz.rest.mapper.ArtistMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,5 +58,9 @@ public class ArtistService {
 
         this.repo.deleteById(id);
         return !this.repo.existsById(id);
+    }
+
+    public Set<Artist> read(String term) {
+        return Set.copyOf(repo.findAllByNameContaining(term));
     }
 }

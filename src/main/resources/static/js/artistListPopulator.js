@@ -1,26 +1,23 @@
-let artistContainer = document.querySelector('#artistListContainer');
-let msn = new Masonry(artistContainer, {
-    // options
-    percentPosition: true,
-    itemSelector: '.msnry-Card'
-});
+'use strict'
 
 let displayArtist = artistJSON => {
     let template = document.querySelector('#artistTemplate');
-    let clone = template.content.cloneNode(true);
-    let node = clone.getElementById('artist_ALBUM-ID');
-    node.id = 'artist' + artistJSON.id;
+    let artistClone = template.content.cloneNode(true);
 
-    // fill in artist info
-    for (let i = 0; i < 2; i++) {
+    let node = artistClone.getElementById("artist_ARTIST-ID");
+    node.id = 'artist-' + artistJSON.id;
+
+    for (let i = 0; i < 7; i++) {
         node.innerHTML = node.innerHTML.replace("_ARTIST-ID", artistJSON.id);
     }
 
-    node.innerHTML = node.innerHTML.replace("ARTIST NAME", artistJSON.name);
+    let artistname = artistJSON.name;
+    let artistid = artistJSON.id;
 
-    artistContainer.append(node);
-    msn.appended(node);
-    msn.layout();
+    node.innerHTML = node.innerHTML.replace("_ARTIST-ID", artistid)
+        .replace("_ARTIST-NAME", artistname).replace("artist name", artistname)
+
+    document.getElementById('artistListAccordion').append(node);
 }
 
 let getAllArtists = () => {

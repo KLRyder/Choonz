@@ -1,5 +1,5 @@
 let albumContainer = document.querySelector('#albumListContainer');
-let msn = new Masonry(albumContainer, {
+let msnAlbum = new Masonry(albumContainer, {
     // options
     percentPosition: true,
     itemSelector: '.msnry-Card'
@@ -20,8 +20,8 @@ let displayAlbum = albumJSON => {
         .replace("_ALBUM-COVER", albumJSON.cover);
 
     albumContainer.append(node);
-    msn.appended(node);
-    msn.layout();
+    msnAlbum.appended(node);
+    msnAlbum.layout();
 }
 
 let getAllAlbums = () => {

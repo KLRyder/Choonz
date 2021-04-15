@@ -1,20 +1,19 @@
-function deleteArtist(){
+function deleteArtist() {
     console.info("Deleting artist")
 
     fetch(apiURL + "artists/delete/" + urlParams.get("artist_id"), {
         method: 'delete'
     }).then(res => {
-        if (res.status === 200) {
-            console.info("Deleted successfully")
-            return;
+        if (res.status === 204) {
+            window.location.href = "/";
         } else {
             console.error(`Request failed ${res.body}`)
         }
     }).catch((error) => console.error(`Request failed ${error}`))
 }
 
-function updateArtist(){
-console.info("Updating artist")
+function updateArtist() {
+    console.info("Updating artist")
 
     let artistName = document.querySelector('#update-artist-name').value;
 
@@ -28,25 +27,26 @@ console.info("Updating artist")
         })
     }).then(res => res.json())
         .then((data) => {
-            console.info("Updated")
-            return;
+            displayArtist(data, false)
         })
-         .catch((error) => console.error(`Request failed ${error}`))
+        .catch((error) => console.error(`Request failed ${error}`))
 }
 
-let displayArtist = (artistJSON) => {
+let displayArtist = (artistJSON, albums) => {
     document.getElementById('artistName').innerText = artistJSON.name;
     console.log(artistJSON);
-    for (let i = 0; i < artistJSON.albums.length; i++) {
-        console.log(artistJSON.albums[i]);
-        displayAlbum(artistJSON.albums[i]);
+    if (albums) {
+        for (let i = 0; i < artistJSON.albums.length; i++) {
+            console.log(artistJSON.albums[i]);
+            displayAlbum(artistJSON.albums[i]);
+        }
     }
 }
 
 let getArtist = (artist_id) => {
     fetch(apiURL + 'artists/read/' + artist_id).then(res => res.json())
         .then((data) => {
-            displayArtist(data);
+            displayArtist(data, true);
         })
         .catch((error) => {
             console.log(error)

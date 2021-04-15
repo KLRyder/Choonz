@@ -10,6 +10,7 @@ import com.qa.choonz.rest.mapper.GenreMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,4 +61,7 @@ public class GenreService {
         return !this.repo.existsById(id);
     }
 
+    public Set<Genre> read(String term) {
+        return Set.copyOf(repo.findAllByNameContaining(term));
+    }
 }

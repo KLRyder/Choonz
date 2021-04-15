@@ -5,14 +5,12 @@ const urlParams = new URLSearchParams(queryString);
 
 function displayLoginDetails() {
     /* Displays (if valid) the username, then either login or logout button*/
-    console.log("Displaying Login Detail")
     let navbar = document.getElementById('rightNavbar');
     let logLink = document.getElementById('logNavLink');
     let finalItem = document.getElementById('finalNavListItem');
 
     let uname = 'guest';
     let li = document.createElement('li');
-    console.log(document.cookie);
     fetch(apiURL + 'sessions').then(resp => resp.json())
         .then(data => {
             uname = data.username;
@@ -36,6 +34,13 @@ function displayLoginDetails() {
                 logLink.innerText = "Login";
             }
         )
+}
+
+function searchBarSubmit(){
+    let searchbar = document.getElementById("searchbar");
+    let strictBox = document.getElementById("strictBox");
+    // console.log("/searchResponse?term="+searchbar.value);
+    window.location.href = "/searchResponse?term="+searchbar.value+"&strict="+strictBox.checked;
 }
 
 displayLoginDetails();

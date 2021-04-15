@@ -43,9 +43,9 @@ public class PlaylistController {
         return new ResponseEntity<>(this.service.read(id), HttpStatus.OK);
     }
 
-    @GetMapping("/read/user/{id}")
-    public ResponseEntity<List<PlaylistDTO>> readByUser(@PathVariable long id){
-        return new ResponseEntity<>(this.service.readByUser(id), HttpStatus.OK);
+    @GetMapping("/read/user")
+    public ResponseEntity<List<PlaylistDTO>> readByUser(@CookieValue(value = "SESSID") String sessID){
+        return new ResponseEntity<>(this.service.readByUser(sessions.getSession(sessID)), HttpStatus.OK);
     }
 
     @PostMapping("/update/{id}")

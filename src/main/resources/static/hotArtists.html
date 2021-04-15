@@ -15,7 +15,7 @@
 <nav class="navbar fixed-top navbar-expand-lg bg-light navbar-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="./">
-      <img class="logo ml-auto" src="../img/Choonz.jpg" width="auto" height="50" alt="Choonz"></a>
+      <img class="logo ml-auto" src="../img/Choonz.png" width="auto" height="50" alt="Choonz"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar"
             aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -51,10 +51,16 @@
 <div class="container">
   <div class="row">
     <div class="col-lg mt-5">
-      <form class="form-inline d-flex justify-content-center md-form form-sm">
+      <form class="form-inline d-flex justify-content-center md-form form-sm" onsubmit="searchBarSubmit();return false;">
         <input class="form-control form-control-sm mr-1 w-75" type="text" placeholder="Search for music..."
-               aria-label="Search">
-        <button type="submit" id="Search"> Search</button>
+               aria-label="Search" id = "searchbar">
+        <button type="submit" id="Search" onsubmit="searchBarSubmit();return false;"> Search</button>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" value="" id="strictBox">
+          <label class="form-check-label" for="strictBox">
+            strict search
+          </label>
+        </div>
       </form>
     </div>
   </div>
@@ -62,26 +68,18 @@
 <!-- /Search -->
 
 <!-- Main -->
-<section class="artistInfo">
-  <div class="container">
-    <div class="row", id="artistInfoRow">
-      <div class="col-md-3">
-        <div class="col">
-          <h4 id="artistName">Hottest Artists!</h4>
+<div class="container align-items-center">
+  <div class="container mx-5 align-items-center" id="artistList">
+    <div class="card p-3">
+      <div class="card-body">
+        <div class="card-title">
+          <h5>Hottest Artists!:</h5>
+        </div>
+        <div class="accordion accordion-flush" id="artistListAccordion">
+          <!--tracks go here-->
         </div>
       </div>
-      <div class="col-md-7">
-      </div>
-      <div class="col-md-2">
-      </div>
     </div>
-  </div>
-</section>
-
-<div class="container py-5">
-  <h1 class=text-center><u></u></h1>
-  <hr class="my-3">
-  <div class="row" id="artistListContainer" style="position: relative; height: 0">
   </div>
 </div>
 <!-- /Main -->
@@ -96,17 +94,27 @@
 
 <!-- Templates -->
 <template id="artistTemplate">
-  <div class="col-sm-6 col-lg-4 mb-4 msnry-Card" id="artist_ARTIST-ID" style="position: absolute; left: 0; top: 0;">
-    <a id="artistLink_ARTIST-ID" href="artists?artist_id=_ARTIST-ID">
-      <div class="card bg-dark text-white">
-        <!--<img src="_ARTIST-COVER" class="card-img" alt="ARTIST COVER">-->
-        <div class="card-img-overlay">
-          <h5 class="card-title">ARTIST NAME</h5>
+  <div class="accordion-item" id="artist_ARTIST-ID">
+    <h2 class="accordion-header" id="artistHeader_ARTIST-ID">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseArtist_ARTIST-ID" aria-expanded="false" aria-controls="collapseArtist_ARTIST-ID">
+        artist name
+      </button>
+    </h2>
+    <div id="collapseArtist_ARTIST-ID" class="accordion-collapse collapse" aria-labelledby="artistHeader_ARTIST-ID"
+         data-bs-parent="#artistListAccordion">
+      <div class="accordion-body">
+        <div class="row text-center">
+          <div class="col">
+            Artist:&nbsp;
+            <a href="/artists?artist_id=_ARTIST-ID"> View page</a>
+          </div>
         </div>
       </div>
-    </a>
+    </div>
   </div>
 </template>
+
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
         integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
         async></script>

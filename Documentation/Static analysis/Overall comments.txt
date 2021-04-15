@@ -1,0 +1,1 @@
+the real issue here is security. There are some big holes here, Cross site scriptiong and lack of SSL, but we dont have time to learn how to fix this before deadline.

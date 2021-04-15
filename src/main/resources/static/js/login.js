@@ -12,13 +12,7 @@ let tryLogin = () =>{
         })
     }).then(res => console.log(res))
         .then(() => {console.log("login")
-            // window.location.href = "/home";
+            window.location.href = "/";
         })
         .catch((error) => console.error(error));
-}
-
-let cookies =() =>{
-    fetch(apiURL + 'sessions/logout', {
-        method: 'post'
-    })
 }

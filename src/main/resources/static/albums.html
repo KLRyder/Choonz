@@ -15,7 +15,7 @@
 <nav class="navbar fixed-top navbar-expand-lg bg-light navbar-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="./">
-      <img class="logo ml-auto" src="../img/Choonz.jpg" width="auto" height="50" alt="Choonz"></a>
+      <img class="logo ml-auto" src="../img/Choonz.png" width="auto" height="50" alt="Choonz"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar"
             aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -51,10 +51,16 @@
 <div class="container">
   <div class="row">
     <div class="col-lg mt-5">
-      <form class="form-inline d-flex justify-content-center md-form form-sm">
+      <form class="form-inline d-flex justify-content-center md-form form-sm" onsubmit="searchBarSubmit();return false;">
         <input class="form-control form-control-sm mr-1 w-75" type="text" placeholder="Search for music..."
-               aria-label="Search">
-        <button type="submit" id="Search"> Search</button>
+               aria-label="Search" id = "searchbar">
+        <button type="submit" id="Search" onsubmit="searchBarSubmit();return false;"> Search</button>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" value="" id="strictBox">
+          <label class="form-check-label" for="strictBox">
+            strict search
+          </label>
+        </div>
       </form>
     </div>
   </div>
@@ -65,7 +71,7 @@
 
 <section class="albumInfo">
   <div class="container">
-    <div class="row" , id="albumInfoRow">
+    <div class="row"  id="albumInfoRow">
       <div class="col-md-3">
         <div class="col">
           <img alt="" class="resize-image center-block" id="image1" src="img/alb/Zeitgeist.png"/>
@@ -121,7 +127,7 @@
 </div>
 <!-- /Footer -->
 
-<!-- Accordian Template -->
+<!-- Accordion Template -->
 <template id="trackTemplate">
   <div class="accordion-item" id="track_TRACK-ID">
     <h2 class="accordion-header" id="trackHeader_TRACK-ID">
@@ -218,10 +224,6 @@
             <input type="text" class="form-control" id="update-album-name">
           </div>
           <div class="mb-3">
-            <label for="update-album-artistid" class="col-form-label">Artist ID:</label>
-            <input type="number" class="form-control" id="update-album-artistid">
-          </div>
-          <div class="mb-3">
             <select class="form-select" id="albumPic" aria-label="Album Cover Picture">
               <option selected>Album Cover</option>
               <option value="img/alb/banana.png">Banana</option>
@@ -282,7 +284,6 @@
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
 <script src="./js/tracklistPopulator.js"></script>
-<script src="./js/fillAlbumPage.js"></script>
 <script src="./js/albums.js"></script>
 </body>
 </html>

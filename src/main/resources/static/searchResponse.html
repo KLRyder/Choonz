@@ -8,6 +8,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <title>Choonz Music Search</title>
+  <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+          integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+          async></script>
 </head>
 
 <body>
@@ -15,7 +18,7 @@
 <nav class="navbar fixed-top navbar-expand-lg bg-light navbar-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="./">
-      <img class="logo ml-auto" src="../img/Choonz.jpg" width="auto" height="50" alt="Choonz"></a>
+      <img class="logo ml-auto" src="../img/Choonz.png" width="auto" height="50" alt="Choonz"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar"
             aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -51,10 +54,16 @@
 <div class="container">
   <div class="row">
     <div class="col-lg mt-5">
-      <form class="form-inline d-flex justify-content-center md-form form-sm">
+      <form class="form-inline d-flex justify-content-center md-form form-sm" onsubmit="searchBarSubmit();return false;">
         <input class="form-control form-control-sm mr-1 w-75" type="text" placeholder="Search for music..."
-               aria-label="Search">
-        <button type="submit" id="Search"> Search</button>
+               aria-label="Search" id = "searchbar">
+        <button type="submit" id="Search" onsubmit="searchBarSubmit();return false;"> Search</button>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" value="" id="strictBox">
+          <label class="form-check-label" for="strictBox">
+            strict search
+          </label>
+        </div>
       </form>
     </div>
   </div>
@@ -62,7 +71,65 @@
 <!-- /Search -->
 
 <!-- Main -->
-<h1>PUT STUFF HERE SEARCH RESULTS PAGE</h1>
+<div class="container"><h1 id="artistName">Search Results:</h1></div>
+<div class="container py-5">
+  <div class="row" style="position: relative; height: 0;">
+    <div id="artistList" class="col-12 mb-4 msn-list" >
+      <div class="container mx-5 align-items-center" id="artistListinner">
+        <div class="card p-3">
+          <div class="card-body">
+            <div class="card-title">
+              <h5>Artists:</h5>
+            </div>
+            <div class="accordion accordion-flush" id="artistListAccordion">
+              <!--tracks go here-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="trackList" class="col-12 mb-4 msn-list" >
+      <div class="container mx-5 align-items-center" id="trackListInner">
+        <div class="card p-3">
+          <div class="card-body">
+            <div class="card-title">
+              <h5>Track List:</h5>
+            </div>
+            <div class="accordion accordion-flush" id="trackListAccordion">
+              <!--tracks go here-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="albumList" class="col-12 mb-4  msn-list" >
+      <h1 class=text-center><u>Albums:</u></h1>
+      <hr class="my-3">
+      <div class="row" id="albumListContainer" style="position: relative; height: 0">
+      </div>
+    </div>
+    <div id="genreList" class="col-12 mb-4 msn-list" >
+      <div class="container mx-5 align-items-center" id="genreListinner">
+        <div class="card p-3">
+          <div class="card-body">
+            <div class="card-title">
+              <h5>Genre:</h5>
+            </div>
+            <div class="accordion accordion-flush" id="genreListAccordion">
+              <!--genre go here-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="playlistList" class="col-12 mb-4 msn-list" >
+      <h1 class=text-center><u>Playlists:</u></h1>
+      <hr class="my-3">
+      <div class="row" id="playlistContainer" style="position: relative; height: 0">
+      </div>
+    </div>
+  </div>
+</div>
 <!-- /Main -->
 
 <!-- Footer -->
@@ -73,7 +140,115 @@
 </div>
 <!-- /Footer -->
 
+
+<!-- Templates -->
+<template id="trackTemplate">
+  <div class="accordion-item" id="track_TRACK-ID">
+    <h2 class="accordion-header" id="trackHeader_TRACK-ID">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseTrack_TRACK-ID" aria-expanded="false" aria-controls="collapseTrack_TRACK-ID">
+        track name
+      </button>
+    </h2>
+    <div id="collapseTrack_TRACK-ID" class="accordion-collapse collapse" aria-labelledby="trackHeader_TRACK-ID"
+         data-bs-parent="#trackListAccordion">
+      <div class="accordion-body">
+        <div class="row text-center">
+          <div class="col">
+            Artist:&nbsp;
+            <a href="/artists?artist_id=_ARTIST-ID"> _ARTIST-NAME</a>
+          </div>
+          <div class="col">
+            Album:&nbsp;
+            <a href="/albums?album_id=_ALBUM-ID"> _ALBUM-NAME</a>
+          </div>
+          <div class="col">
+            <a href="/tracks?track_id=_TRACK-ID">Lyrics</a>
+          </div>
+          <div class="col">
+            Genre:&nbsp;
+            <a href="/genres?genre_id=_GENRE-ID">_GENRE-NAME</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="albumTemplate">
+  <div class="col-sm-6 col-lg-4 mb-4 msnry-Card" id="album_ALBUM-ID" style="position: absolute; left: 0; top: 0;">
+    <a id="albumLink_ALBUM-ID" href="albums?album_id=_ALBUM-ID">
+      <div class="card bg-dark text-white">
+        <img src="_ALBUM-COVER" class="card-img" alt="ALBUM COVER">
+        <div class="card-img-overlay">
+          <h5 class="card-title">ALBUM NAME</h5>
+        </div>
+      </div>
+    </a>
+  </div>
+</template>
+
+<template id="playlistTemplate">
+  <div class="col-sm-6 col-lg-4 mb-4 msnry-Card" id="playlist_PLAYLIST-ID" style="position: absolute; left: 0; top: 0;">
+    <a id="playlistLink_PLAYLIST-ID" href="playlists?playlist_id=_PLAYLIST-ID">
+      <div class="card bg-dark text-white">
+        <img src="_PLAYLIST-COVER" class="card-img" alt="PLAYLIST COVER">
+        <div class="card-img-overlay">
+          <h5 class="card-title">PLAYLIST NAME</h5>
+        </div>
+      </div>
+    </a>
+  </div>
+</template>
+
+<template id="artistTemplate">
+  <div class="accordion-item" id="artist_ARTIST-ID">
+    <h2 class="accordion-header" id="artistHeader_ARTIST-ID">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseArtist_ARTIST-ID" aria-expanded="false" aria-controls="collapseArtist_ARTIST-ID">
+        genre name
+      </button>
+    </h2>
+    <div id="collapseArtist_ARTIST-ID" class="accordion-collapse collapse" aria-labelledby="artistHeader_ARTIST-ID"
+         data-bs-parent="#artistListAccordion">
+      <div class="accordion-body">
+        <div class="row text-center">
+          <div class="col">
+            Artist:&nbsp;
+            <a href="/artists?artist_id=_ARTIST-ID"> View page</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="genreTemplate">
+  <div class="accordion-item" id="genre_GENRE-ID">
+    <h2 class="accordion-header" id="genreHeader_GENRE-ID">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseGenre_GENRE-ID" aria-expanded="false" aria-controls="collapseGenre_GENRE-ID">
+        artist name
+      </button>
+    </h2>
+    <div id="collapseGenre_GENRE-ID" class="accordion-collapse collapse" aria-labelledby="genreHeader_GENRE-ID"
+         data-bs-parent="#genreListAccordion">
+      <div class="accordion-body">
+        <div class="row text-center">
+          <div class="col">
+            Genre:&nbsp;
+            <a href="/genres?genre_id=_GENRE-ID"> View page</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- /Templates -->
+
 <script src="./js/base.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -83,5 +258,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
+<script src="./js/playlistPopulator.js"></script>
+<script src="./js/tracklistPopulator.js"></script>
+<script src="./js/albumListPopulator.js"></script>
+<script src="./js/artistListPopulator.js"></script>
+<script src="./js/genreListPopulator.js"></script>
+<script src="./js/searchResponse.js"></script>
 </body>
 </html>
