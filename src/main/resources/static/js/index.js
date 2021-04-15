@@ -17,8 +17,8 @@ function createPlaylist() {
             "artwork": playlistPic
         })
     }).then(res => res.json())
-        .then((data) => {
-            return;
+        .then(() => {
+            location.reload();
         })
         .catch((error) => console.error(`Request failed ${error}`))
 }
