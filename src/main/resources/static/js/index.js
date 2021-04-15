@@ -22,3 +22,5 @@ function createPlaylist() {
         })
         .catch((error) => console.error(`Request failed ${error}`))
 }
+
+getPlaylistByUser()

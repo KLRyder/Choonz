@@ -16,7 +16,8 @@ let displayPlaylist = playlistJSON => {
         node.innerHTML = node.innerHTML.replace("_PLAYLIST-ID", playlistJSON.id);
     }
 
-    node.innerHTML = node.innerHTML.replace("PLAYLIST NAME", playlistJSON.name);
+    node.innerHTML = node.innerHTML.replace("PLAYLIST NAME", playlistJSON.name)
+        .replace("_PLAYLIST-COVER", playlistJSON.artwork);
 
     playlistContainer.append(node);
     msnPlaylist.appended(node);
@@ -33,9 +34,10 @@ let getAllPlaylists = () => {
         .catch((error) => console.error(`Request failed ${error}`))
 }
 
-let getPlaylistByUser = (user_id) => {
-    fetch(apiURL + 'playlists/read/user/' + user_id).then(res => res.json())
+let getPlaylistByUser = () => {
+    fetch(apiURL + 'playlists/read/user').then(res => res.json())
         .then((data) => {
+            console.log(data)
             for (let i = 0; i < data.length; i++) {
                 displayPlaylist(data[i]);
             }

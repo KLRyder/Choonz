@@ -23,6 +23,13 @@ public class UserDetails {
 
     private UserRole role;
 
+    public UserDetails(long id) {
+        this.id=id;
+    }
+
+    public UserDetails() {
+    }
+
     public UserRole getRole() {
         return role;
     }
