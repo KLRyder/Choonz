@@ -24,12 +24,6 @@ public class ActiveSessions {
         return key.toString();
     }
 
-    public void testUsers(){
-        for (UserDetails user: sessions.values()) {
-            System.out.println(user);
-        }
-    }
-
     public String endSession(String sessID){
         sessions.remove(UUID.fromString(sessID));
         return "none";

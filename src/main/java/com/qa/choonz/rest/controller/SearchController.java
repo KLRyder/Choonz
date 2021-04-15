@@ -44,7 +44,6 @@ public class SearchController {
 
     @GetMapping()
     public ResponseEntity<SearchResults> search(@RequestParam String term, @RequestParam boolean strict) {
-        System.out.println("start");
         Set<Album> albums = new HashSet<>();
         Set<Track> tracks = new HashSet<>();
 

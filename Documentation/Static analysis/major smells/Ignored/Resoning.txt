@@ -1,0 +1,2 @@
+We dont have time to set up a logger so displaying errors directly to the console is the best we can do.
+constructor lenght isnt an issue as this is auto generated code for spring to deal with.

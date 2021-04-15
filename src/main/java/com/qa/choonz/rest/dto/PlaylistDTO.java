@@ -1,11 +1,10 @@
 package com.qa.choonz.rest.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 
 public class PlaylistDTO {
@@ -27,7 +26,7 @@ public class PlaylistDTO {
     	this.name = name;
     	this.description = description;
     	this.artwork = artwork;
-    	this.tracks = new ArrayList<TrackDTO>();
+    	this.tracks = new ArrayList<>();
     	
     }
 

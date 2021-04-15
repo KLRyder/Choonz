@@ -1,11 +1,10 @@
 package com.qa.choonz.rest.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 public class ArtistDTO {
 
@@ -23,7 +22,7 @@ public class ArtistDTO {
  	   super();
  	   this.id = id;
  	   this.name = name;
- 	   this.albums = new ArrayList<AlbumDTO>();
+ 	   this.albums = new ArrayList<>();
     }
     
     public ArtistDTO(long id, String name, List<AlbumDTO> albums) {

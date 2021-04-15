@@ -32,11 +32,10 @@ public class TrackMapper {
         toReturn.setDuration(track.getDuration());
         toReturn.setLyrics(track.getLyrics());
         toReturn.setAlbum(albumMapper.mapToShallowDTO(track.getAlbum()));
-        toReturn.setArtists((track.getAlbum() == null || track.getAlbum().getArtists().size() == 0)
+        toReturn.setArtists((track.getAlbum() == null || track.getAlbum().getArtists().isEmpty())
                 ? new ArrayList<>()
                 : track.getAlbum().getArtists().stream().map(link -> artistMapper.mapToShallowDTO(link.getArtist())).collect(Collectors.toList()));
         toReturn.setGenre(genreMapper.mapToShallowDTO(track.getGenre()));
-//        toReturn.setPlaylist(playlistMapper.mapToShallowDTO(track.getPlaylist()));
         return toReturn;
     }
 

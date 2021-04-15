@@ -36,7 +36,7 @@ public class SessionService {
 
     public String authenticate(UserDetails details) {
         if (!repo.existsByUsername(details.getUsername())) {
-            System.out.println("no user");
+            System.err.println("no user");
             return null;
         }
         try {

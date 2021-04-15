@@ -1,14 +1,9 @@
 package com.qa.choonz.rest.mapper;
 
 import com.qa.choonz.persistence.domain.Playlist;
-import com.qa.choonz.persistence.domain.PlaylistLink;
-import com.qa.choonz.persistence.domain.Track;
 import com.qa.choonz.rest.dto.PlaylistDTO;
-import com.qa.choonz.rest.dto.TrackDTO;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Component

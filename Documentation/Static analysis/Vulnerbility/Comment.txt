@@ -1,0 +1,1 @@
+Really dont have time to make incoming DTOs and mappers from them to the entities. The security implecations of this *Should* be fine as the data is prossesed safly I think but this is No.1 on the agenda for improvments
