@@ -13,8 +13,8 @@ function addPlaylistTrack(){
         body: JSON.stringify({
         })
     }).then(res => res.json())
-        .then((data) => {
-            return;
+        .then(() => {
+            location.reload();
         })
         .catch((error) => console.error(`Request failed ${error}`))
 }
@@ -34,8 +34,8 @@ function removePlaylistTrack(){
         body: JSON.stringify({
         })
     }).then(res => res.json())
-        .then((data) => {
-            return;
+        .then(() => {
+            location.reload();
         })
         .catch((error) => console.error(`Request failed ${error}`))
 }
@@ -48,7 +48,7 @@ function deletePlaylist(){
     }).then(res => {
         if (res.status === 200) {
             console.info("Deleted successfully")
-            return;
+            window.location.href = "/";
         } else {
             console.error(`Request failed ${res.body}`)
         }
@@ -73,9 +73,8 @@ function updatePlaylist(){
             "artwork": playlistArt
         })
     }).then(res => res.json())
-        .then((data) => {
-            console.info("Updated")
-            return;
+        .then(() => {
+            location.reload();
         })
          .catch((error) => console.error(`Request failed ${error}`))
 }
