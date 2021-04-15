@@ -22,7 +22,7 @@ public class PlaylistMapper {
         toReturn.setName(playlist.getName());
         toReturn.setDescription(playlist.getDescription());
         toReturn.setArtwork(playlist.getArtwork());
-        toReturn.setTracks(playlist.getTracks().stream().map(link -> trackMapper.mapToShallowDTO(link.getTrack())).collect(Collectors.toList()));
+        toReturn.setTracks(playlist.getTracks().stream().map(link -> trackMapper.mapToDeepDTO(link.getTrack())).collect(Collectors.toList()));
         return toReturn;
     }
 

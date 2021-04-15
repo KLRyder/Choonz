@@ -139,8 +139,8 @@ public class PlaylistControllerIntegrationTest {
         // prevent infinite recursion when parsing into JSON
         validGenre.setTracks(new ArrayList<>());
         validAlbum.setTracks(new ArrayList<>());
-        validLink.setArtist(null);
         validLink.setAlbum(null);
+        validArtist.setAlbums(new ArrayList<>());
         PlaylistDTO expectedPlaylist = mapper.mapToDeepDTO(validPlaylist);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.request(HttpMethod.POST, "/playlists/update/1");

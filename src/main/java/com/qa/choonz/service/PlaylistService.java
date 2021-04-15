@@ -36,6 +36,7 @@ public class PlaylistService {
         if (user == null) {
             return null;
         }
+        playlist.setCreator(user);
         Playlist created = this.repo.save(playlist);
         return mapper.mapToDeepDTO(created);
     }
