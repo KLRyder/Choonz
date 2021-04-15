@@ -48,6 +48,10 @@ let fill = (genreJSON) => {
     }
     */
 
+    for (let i =0;i<genreJSON.albums.length;i++) {
+        displayAlbum(genreJSON.albums[i]);
+    }
+
 }
 
 let genreInfoFill = (genreId) => {
