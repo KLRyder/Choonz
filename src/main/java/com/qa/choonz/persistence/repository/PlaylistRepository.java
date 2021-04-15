@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
     List<Playlist> findAllByNameContaining (String term);
+
+    public List<Playlist> findAllByCreator_Id (long id);
 }

@@ -36,7 +36,6 @@ public class PlaylistService {
         if (user == null) {
             return null;
         }
-        playlist.setCreator(user);
         Playlist created = this.repo.save(playlist);
         return mapper.mapToDeepDTO(created);
     }
@@ -102,5 +101,9 @@ public class PlaylistService {
 
     public Set<Playlist> read(String term) {
         return Set.copyOf(repo.findAllByNameContaining(term));
+    }
+
+    public List<PlaylistDTO> readByUser(long id) {
+        return this.repo.findAllByCreator_Id(id).stream().map(mapper::mapToDeepDTO).collect(Collectors.toList());
     }
 }
