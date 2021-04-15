@@ -97,4 +97,8 @@ public class PlaylistService {
         }
         return false;
     }
+
+    public List<PlaylistDTO> readByUser(long id) {
+        return this.repo.findAllByCreator_Id(id).stream().map(mapper::mapToDeepDTO).collect(Collectors.toList());
+    }
 }
