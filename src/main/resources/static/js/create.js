@@ -12,7 +12,7 @@ let tryCreate = () =>{
             "role": "ADMIN"
         })
     }).then(res => console.log(res))
-        .then(() => {console.log("Create account")
+        .then(() => {location.href="/"
         })
         .catch((error) => console.error(error));
 }
