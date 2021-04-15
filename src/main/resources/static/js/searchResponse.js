@@ -41,8 +41,8 @@ let msnSetup = () =>{
     msnSearch.layout();
 }
 msnSetup();
-if (urlParams.has("term")) {
-    search(urlParams.get("term"),false);
+if (urlParams.has("term")&&urlParams.has("strict")) {
+    search(urlParams.get("term"),urlParams.has("strict"));
 } else {
     location.href="/";
 }

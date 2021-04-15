@@ -36,4 +36,11 @@ function displayLoginDetails() {
         )
 }
 
+function searchBarSubmit(){
+    let searchbar = document.getElementById("searchbar");
+    let strictBox = document.getElementById("strictBox");
+    // console.log("/searchResponse?term="+searchbar.value);
+    window.location.href = "/searchResponse?term="+searchbar.value+"&strict="+strictBox.checked;
+}
+
 displayLoginDetails();

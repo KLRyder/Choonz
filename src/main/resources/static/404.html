@@ -47,16 +47,23 @@
 <!-- /Navbar -->
 
 <!-- Search -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg mt-5">
-                <form class="form-inline d-flex justify-content-center md-form form-sm">
-                    <input class="form-control form-control-sm mr-1 w-75" type="text" placeholder="Search for music..." aria-label="Search">
-                    <button type="submit" id="Search"> Search </button>
-                </form>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg mt-5">
+            <form class="form-inline d-flex justify-content-center md-form form-sm" onsubmit="searchBarSubmit();return false;">
+                <input class="form-control form-control-sm mr-1 w-75" type="text" placeholder="Search for music..."
+                       aria-label="Search" id = "searchbar">
+                <button type="submit" id="Search" onsubmit="searchBarSubmit();return false;"> Search</button>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" value="" id="strictBox">
+                    <label class="form-check-label" for="strictBox">
+                        strict search
+                    </label>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 <!-- /Search -->
 
 <!-- Main -->
