@@ -15,19 +15,63 @@ body {
 
 .navbar-toggler:not(.collapsed) .navbar-toggler-icon {
     display: inline;
-
 }
 
 #Search {
   background-color: white;
   color: black;
   border: 2px solid grey;
-  border-radius: 3px;  // for no radius
-
+  border-radius: 3px;  /* for no radius */
   }
 
 #Search:hover {
   background-color: grey;
   color: white;
+}
+
+.resize-image {
+  width: 80%;
+  height: 80%;
+}
+
+.username {
+  margin-top :8px;
+  font-weight: bold;
+}
+
+.container {
+  margin-bottom :40px;
+}
+
+.col {
+  margin-bottom :20px;
+}
+
+.btn {
+  width: 60%;
+}
+
+.modal-body {
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
+}
+
+.footer {
+  height:24px; 
+  width: 100%; 
+  background-image: none;
+  background-repeat: repeat;
+  background-attachment: scroll;
+  background-position: 0% 0%;
+  position: fixed;
+  bottom: 0pt;
+  left: 0pt;
+}   
+
+.footer_contents {
+
+  height:24px; 
+  width: 1000px; 
+  margin:auto;
 
 }

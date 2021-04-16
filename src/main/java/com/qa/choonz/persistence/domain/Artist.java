@@ -1,17 +1,15 @@
 package com.qa.choonz.persistence.domain;
 
-import java.util.List;
-import java.util.Objects;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Artist {
@@ -25,19 +23,31 @@ public class Artist {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
-    private List<Album> albums;
+    @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<ArtistAlbumLink> albums;
 
     public Artist() {
         super();
-        // TODO Auto-generated constructor stub
+        albums = Collections.emptyList();
     }
 
-    public Artist(long id, @NotNull @Size(max = 100) String name, List<Album> albums) {
+   public Artist(long id, @NotNull @Size(max = 100) String name) {
+	   super();
+	   this.id = id;
+	   this.name = name;
+	   this.albums = new ArrayList<>();
+   }
+    
+    public Artist(long id, @NotNull @Size(max = 100) String name, List<ArtistAlbumLink> albums) {
         super();
         this.id = id;
         this.name = name;
         this.albums = albums;
+    }
+
+    public Artist(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -55,38 +65,40 @@ public class Artist {
     public void setName(String name) {
         this.name = name;
     }
-
-    public List<Album> getAlbums() {
+    
+    public List<ArtistAlbumLink> getAlbums() {
         return albums;
     }
 
-    public void setAlbums(List<Album> albums) {
+    public void setAlbums(List<ArtistAlbumLink> albums) {
         this.albums = albums;
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Artist [id=").append(id).append(", name=").append(name).append(", albums=").append(albums)
-                .append("]");
-        return builder.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Artist)) return false;
+
+        Artist artist = (Artist) o;
+
+        if (!Objects.equals(getName(), artist.getName())) return false;
+        return Objects.equals(albums, artist.albums);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(albums, id, name);
+        int result = 1;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (albums != null ? albums.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Artist)) {
-            return false;
-        }
-        Artist other = (Artist) obj;
-        return Objects.equals(albums, other.albums) && id == other.id && Objects.equals(name, other.name);
+    public String toString() {
+        return "Artist{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", albums=" + albums +
+                '}';
     }
-
 }

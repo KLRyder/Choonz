@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <title>Choonz Artist</title>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar fixed-top navbar-expand-lg bg-light navbar-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="./">
+      <img class="logo ml-auto" src="../img/Choonz.png" width="auto" height="50" alt="Choonz"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar"
+            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      <div class="close-icon py-1">✖</div>
+    </button>
+    <!-- Collapsable section of navbar -->
+    <div class="collapse navbar-collapse" id="collapsingNavbar">
+      <ul class="nav navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/hotTracks">Featured Tracks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/hotArtists">Artists</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/hotPlaylists">Top Playlists</a>
+        </li>
+      </ul>
+      <!-- Rightside of navbar-->
+      <ul class="nav navbar-nav ms-auto" id="rightNavbar">
+        <li class="nav-item" id="finalNavListItem">
+          <a class="nav-link" id="logNavLink" href="/login">Login</a>
+        </li>
+      </ul>
+      <!-- /Rightside of navbar-->
+    </div>
+    <!-- /Collapsable section of navbar -->
+  </div>
+</nav>
+<!-- /Navbar -->
+
+<!-- Search -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg mt-5">
+      <form class="form-inline d-flex justify-content-center md-form form-sm" onsubmit="searchBarSubmit();return false;">
+        <input class="form-control form-control-sm mr-1 w-75" type="text" placeholder="Search for music..."
+               aria-label="Search" id = "searchbar">
+        <button type="submit" id="Search" onsubmit="searchBarSubmit();return false;"> Search</button>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" value="" id="strictBox">
+          <label class="form-check-label" for="strictBox">
+            strict search
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- /Search -->
+
+<!-- Main -->
+<div class="container"><h1 id="artistName">Artist Name</h1></div>
+
+<section class="artistInfo">
+  <div class="container">
+    <div class="row" id="artistInfoRow">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-7">
+      </div>
+      <div class="col-md-2">
+        <div class="col">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateArtistModal">Edit Artist</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteArtistModal">Delete Artist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+  <h1 class=text-center><u>Albums:</u></h1>
+  <hr class="my-3">
+  <div class="row" id="albumListContainer" style="position: relative; height: 0">
+  </div>
+</div>
+<!-- /Main -->
+
+<!-- Footer -->
+<div class="footer">
+  <div class="container">
+    <span class="text-muted">QA 21JanSDET Team 2 2021</span>
+  </div>
+</div>
+<!-- /Footer -->
+
+<!-- Update Modal-->
+<div class="modal fade" id="updateArtistModal" tabindex="-1" aria-labelledby="updateArtistModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateArtistModalLabel">Update Artist</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="updateArtist(); return false;">
+          <div class="mb-3">
+            <label for="update-artist-name" class="col-form-label">Artist name:</label>
+            <input type="text" class="form-control" id="update-artist-name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="updateArtist()" data-bs-dismiss="modal">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteArtistModal" tabindex="-1" aria-labelledby="deleteArtistModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteArtistModalLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="deleteArtist(); window.location.href='/home'; return false;">
+          <p>You are about to delete the artist, this procedure is irreversible.</p>
+          <p>Do you want to proceed?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onclick="deleteArtist()" data-bs-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+        async></script>
+<script src="./js/base.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+<script src="./js/albumListPopulator.js"></script>
+<script src="./js/artists.js"></script>
+</body>
+
+<!-- Templates -->
+<template id="albumTemplate">
+  <div class="col-sm-6 col-lg-4 mb-4 msnry-Card" id="album_ALBUM-ID" style="position: absolute; left: 0; top: 0;">
+    <a id="albumLink_ALBUM-ID" href="albums?album_id=_ALBUM-ID">
+      <div class="card bg-dark text-white">
+        <img src="_ALBUM-COVER" class="card-img" alt="ALBUM COVER">
+        <div class="card-img-overlay">
+          <h5 class="card-title">ALBUM NAME</h5>
+        </div>
+      </div>
+    </a>
+  </div>
+</template>
+
+</html>

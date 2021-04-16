@@ -1,15 +1,9 @@
 package com.qa.choonz.persistence.domain;
 
-import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @Entity
 public class Track {
@@ -20,18 +14,18 @@ public class Track {
 
     @NotNull
     @Size(max = 100)
-    @Column(unique = true)
     private String name;
 
-    @ManyToOne
-    private Album album;
+    @ManyToOne(targetEntity = Genre.class, fetch = FetchType.LAZY)
+    private Genre genre;
 
-    @ManyToOne
-    private Playlist playlist;
+    @ManyToOne(targetEntity = Album.class, fetch = FetchType.LAZY)
+    private Album album;
 
     // in seconds
     private int duration;
 
+    @Size(max = 10000)
     private String lyrics;
 
     public Track() {
@@ -39,17 +33,27 @@ public class Track {
         // TODO Auto-generated constructor stub
     }
 
-    public Track(long id, @NotNull @Size(max = 100) String name, Album album, Playlist playlist, int duration,
+    public Track(long id, @NotNull @Size(max = 100) String name, Album album, int duration,
             String lyrics) {
         super();
         this.id = id;
         this.name = name;
         this.album = album;
-        this.playlist = playlist;
         this.duration = duration;
         this.lyrics = lyrics;
     }
 
+    public Track(long id) {
+        this.id = id;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
     public long getId() {
         return id;
     }
@@ -74,14 +78,6 @@ public class Track {
         this.album = album;
     }
 
-    public Playlist getPlaylist() {
-        return playlist;
-    }
-
-    public void setPlaylist(Playlist playlist) {
-        this.playlist = playlist;
-    }
-
     public int getDuration() {
         return duration;
     }
@@ -99,31 +95,37 @@ public class Track {
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Track [id=").append(id).append(", name=").append(name).append(", album=").append(album)
-                .append(", playlist=").append(playlist).append(", duration=").append(duration).append(", lyrics=")
-                .append(lyrics).append("]");
-        return builder.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Track)) return false;
+
+        Track track = (Track) o;
+
+        if (duration != track.duration) return false;
+        if (!Objects.equals(name, track.name)) return false;
+        if (!Objects.equals(genre, track.genre)) return false;
+        if (!Objects.equals(album, track.album)) return false;
+        return Objects.equals(lyrics, track.lyrics);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(album, duration, id, lyrics, name, playlist);
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (genre != null ? genre.hashCode() : 0);
+        result = 31 * result + (album != null ? album.hashCode() : 0);
+        result = 31 * result + duration;
+        result = 31 * result + (lyrics != null ? lyrics.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Track)) {
-            return false;
-        }
-        Track other = (Track) obj;
-        return Objects.equals(album, other.album) && duration == other.duration && id == other.id
-                && Objects.equals(lyrics, other.lyrics) && Objects.equals(name, other.name)
-                && Objects.equals(playlist, other.playlist);
+    public String toString() {
+        return "Track{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", album=" + album +
+                ", duration=" + duration +
+                ", lyrics='" + lyrics + '\'' +
+                '}';
     }
-
 }

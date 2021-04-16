@@ -1,18 +1,15 @@
 package com.qa.choonz.persistence.domain;
 
-import java.util.List;
-import java.util.Objects;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Album {
@@ -23,34 +20,44 @@ public class Album {
 
     @NotNull
     @Size(max = 100)
-    @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Track> tracks;
 
-    @ManyToOne
-    private Artist artist;
+    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<ArtistAlbumLink> artists;
 
-    @ManyToOne
-    private Genre genre;
-
+    @NotNull
     private String cover;
 
     public Album() {
         super();
-        // TODO Auto-generated constructor stub
+        tracks = Collections.emptyList();
+        artists = Collections.emptyList();
     }
 
-    public Album(long id, @NotNull @Size(max = 100) String name, List<Track> tracks, Artist artist, Genre genre,
-            String cover) {
+    public Album(long id, @NotNull @Size(max=100) String name, List<ArtistAlbumLink> artists, String cover) {
+    	this.id = id;
+        this.name = name;
+        this.artists = artists;
+        this.cover = cover;
+        this.tracks = new ArrayList<>();
+    }
+    
+    public Album(long id, @NotNull @Size(max = 100) String name, List<Track> tracks, List<ArtistAlbumLink> artists, String cover) {
         super();
         this.id = id;
         this.name = name;
         this.tracks = tracks;
-        this.artist = artist;
-        this.genre = genre;
+        this.artists = artists;
         this.cover = cover;
+    }
+
+    public Album(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -77,20 +84,12 @@ public class Album {
         this.tracks = tracks;
     }
 
-    public Artist getArtist() {
-        return artist;
+    public List<ArtistAlbumLink> getArtists() {
+        return artists;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
-    }
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setArtists(List<ArtistAlbumLink> artists) {
+        this.artists = artists;
     }
 
     public String getCover() {
@@ -102,31 +101,36 @@ public class Album {
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Album [id=").append(id).append(", name=").append(name).append(", tracks=").append(tracks)
-                .append(", artist=").append(artist).append(", genre=").append(genre).append(", cover=").append(cover)
-                .append("]");
-        return builder.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Album)) return false;
+
+        Album album = (Album) o;
+
+        if (!Objects.equals(name, album.name)) return false;
+        if (!Objects.equals(tracks, album.tracks)) return false;
+        if (!Objects.equals(artists, album.artists)) return false;
+        return Objects.equals(cover, album.cover);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(artist, cover, genre, id, name, tracks);
+        int result = 1;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        result = 31 * result + (artists != null ? artists.hashCode() : 0);
+        result = 31 * result + (cover != null ? cover.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Album)) {
-            return false;
-        }
-        Album other = (Album) obj;
-        return Objects.equals(artist, other.artist) && Objects.equals(cover, other.cover)
-                && Objects.equals(genre, other.genre) && id == other.id && Objects.equals(name, other.name)
-                && Objects.equals(tracks, other.tracks);
+    public String toString() {
+        return "Album{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", tracks=" + tracks +
+                ", artist=" + artists +
+                ", cover='" + cover + '\'' +
+                '}';
     }
-
 }

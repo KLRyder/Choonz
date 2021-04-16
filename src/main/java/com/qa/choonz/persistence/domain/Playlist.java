@@ -1,17 +1,15 @@
 package com.qa.choonz.persistence.domain;
 
-import java.util.List;
-import java.util.Objects;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Playlist {
@@ -22,12 +20,10 @@ public class Playlist {
 
     @NotNull
     @Size(max = 100)
-    @Column(unique = true)
     private String name;
 
     @NotNull
     @Size(max = 500)
-    @Column(unique = true)
     private String description;
 
     @NotNull
@@ -35,22 +31,41 @@ public class Playlist {
     @Column(unique = true)
     private String artwork;
 
-    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL)
-    private List<Track> tracks;
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<PlaylistLink> tracks;
+
+    @ManyToOne(targetEntity = UserDetails.class, fetch = FetchType.LAZY)
+    private UserDetails creator;
 
     public Playlist() {
         super();
-        // TODO Auto-generated constructor stub
+        tracks = Collections.emptyList();
+    }
+    
+    public Playlist(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description, @NotNull @Size(max = 1000) String artwork, UserDetails creator) {
+    	super();
+    	this.id = id;
+    	this.name = name;
+    	this.description = description;
+    	this.artwork = artwork;
+        this.creator = creator;
+        this.tracks = new ArrayList<>();
     }
 
     public Playlist(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description,
-            @NotNull @Size(max = 1000) String artwork, List<Track> tracks) {
+                    @NotNull @Size(max = 1000) String artwork, List<PlaylistLink> tracks, UserDetails creator) {
         super();
         this.id = id;
         this.name = name;
         this.description = description;
         this.artwork = artwork;
         this.tracks = tracks;
+        this.creator = creator;
+    }
+
+    public Playlist(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -85,39 +100,56 @@ public class Playlist {
         this.artwork = artwork;
     }
 
-    public List<Track> getTracks() {
+    public List<PlaylistLink> getTracks() {
         return tracks;
     }
 
-    public void setTracks(List<Track> tracks) {
+    public void setTracks(List<PlaylistLink> tracks) {
         this.tracks = tracks;
     }
 
+    public UserDetails getCreator() {
+        return creator;
+    }
+
+    public void setCreator(UserDetails creator) {
+        this.creator = creator;
+    }
+
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Playlist [id=").append(id).append(", name=").append(name).append(", description=")
-                .append(description).append(", artwork=").append(artwork).append(", tracks=").append(tracks)
-                .append("]");
-        return builder.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Playlist)) return false;
+
+        Playlist playlist = (Playlist) o;
+        
+        if (!Objects.equals(name, playlist.name)) return false;
+        if (!Objects.equals(description, playlist.description)) return false;
+        if (!Objects.equals(artwork, playlist.artwork)) return false;
+        if (!Objects.equals(creator, playlist.creator)) return false;
+        return Objects.equals(tracks, playlist.tracks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(artwork, description, id, name, tracks);
+        int result = 1;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (artwork != null ? artwork.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        result = 31 * result + (creator != null ? creator.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Playlist)) {
-            return false;
-        }
-        Playlist other = (Playlist) obj;
-        return Objects.equals(artwork, other.artwork) && Objects.equals(description, other.description)
-                && id == other.id && Objects.equals(name, other.name) && Objects.equals(tracks, other.tracks);
+    public String toString() {
+        return "Playlist{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", artwork='" + artwork + '\'' +
+                ", tracks=" + tracks +
+                ", creator=" + creator +
+                '}';
     }
-
 }

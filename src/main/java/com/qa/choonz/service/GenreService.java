@@ -1,55 +1,67 @@
 package com.qa.choonz.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-
 import com.qa.choonz.exception.GenreNotFoundException;
 import com.qa.choonz.persistence.domain.Genre;
+import com.qa.choonz.persistence.domain.UserDetails;
 import com.qa.choonz.persistence.repository.GenreRepository;
+import com.qa.choonz.persistence.roles.UserRole;
 import com.qa.choonz.rest.dto.GenreDTO;
+import com.qa.choonz.rest.mapper.GenreMapper;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class GenreService {
 
     private GenreRepository repo;
-    private ModelMapper mapper;
+    private GenreMapper mapper;
 
-    public GenreService(GenreRepository repo, ModelMapper mapper) {
+    public GenreService(GenreRepository repo, GenreMapper mapper) {
         super();
         this.repo = repo;
         this.mapper = mapper;
     }
 
-    private GenreDTO mapToDTO(Genre genre) {
-        return this.mapper.map(genre, GenreDTO.class);
-    }
+    public GenreDTO create(Genre genre, UserDetails user) {
+        // ensure only admin can create genre
+        if (user == null || user.getRole() != UserRole.ADMIN){return null;}
 
-    public GenreDTO create(Genre genre) {
         Genre created = this.repo.save(genre);
-        return this.mapToDTO(created);
+        return mapper.mapToDeepDTO(created);
     }
 
     public List<GenreDTO> read() {
-        return this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+        return this.repo.findAll().stream().map(mapper::mapToDeepDTO).collect(Collectors.toList());
     }
 
     public GenreDTO read(long id) {
         Genre found = this.repo.findById(id).orElseThrow(GenreNotFoundException::new);
-        return this.mapToDTO(found);
+        return mapper.mapToDeepDTO(found);
     }
 
-    public GenreDTO update(Genre genre, long id) {
+    public GenreDTO update(Genre genre, long id, UserDetails user) {
+        // ensure only admin can edit genre
+        if (user == null || user.getRole() != UserRole.ADMIN){return null;}
+
         Genre toUpdate = this.repo.findById(id).orElseThrow(GenreNotFoundException::new);
+        toUpdate.setName(genre.getName());
+        toUpdate.setDescription(genre.getDescription());
         Genre updated = this.repo.save(toUpdate);
-        return this.mapToDTO(updated);
+        return mapper.mapToDeepDTO(updated);
     }
 
-    public boolean delete(long id) {
+    public boolean delete(long id, UserDetails user) {
+        // ensure only admin can delete genre
+        if (user == null || user.getRole() != UserRole.ADMIN){return false;}
+
         this.repo.deleteById(id);
         return !this.repo.existsById(id);
     }
 
+    public Set<Genre> read(String term) {
+        return Set.copyOf(repo.findAllByNameContaining(term));
+    }
 }

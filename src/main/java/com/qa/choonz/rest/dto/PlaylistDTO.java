@@ -1,9 +1,11 @@
 package com.qa.choonz.rest.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.qa.choonz.persistence.domain.Track;
 
 public class PlaylistDTO {
 
@@ -11,14 +13,24 @@ public class PlaylistDTO {
     private String name;
     private String description;
     private String artwork;
-    private List<Track> tracks;
+    private List<TrackDTO> tracks;
 
     public PlaylistDTO() {
         super();
         // TODO Auto-generated constructor stub
     }
+    
+    public PlaylistDTO(long id, @NotNull @Size(max = 100) String name, @NotNull @Size(max = 500) String description, @NotNull @Size(max = 1000) String artwork) {
+    	super();
+    	this.id = id;
+    	this.name = name;
+    	this.description = description;
+    	this.artwork = artwork;
+    	this.tracks = new ArrayList<>();
+    	
+    }
 
-    public PlaylistDTO(long id, String name, String description, String artwork, List<Track> tracks) {
+    public PlaylistDTO(long id, String name, String description, String artwork, List<TrackDTO> tracks) {
         super();
         this.id = id;
         this.name = name;
@@ -86,42 +98,50 @@ public class PlaylistDTO {
     /**
      * @return the tracks
      */
-    public List<Track> getTracks() {
+    public List<TrackDTO> getTracks() {
         return tracks;
     }
 
     /**
      * @param tracks the tracks to set
      */
-    public void setTracks(List<Track> tracks) {
+    public void setTracks(List<TrackDTO> tracks) {
         this.tracks = tracks;
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("PlaylistDTO [id=").append(id).append(", name=").append(name).append(", description=")
-                .append(description).append(", artwork=").append(artwork).append(", tracks=").append(tracks)
-                .append("]");
-        return builder.toString();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PlaylistDTO)) return false;
+
+        PlaylistDTO that = (PlaylistDTO) o;
+
+        if (id != that.id) return false;
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(description, that.description)) return false;
+        if (!Objects.equals(artwork, that.artwork)) return false;
+        return Objects.equals(tracks, that.tracks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(artwork, description, id, name, tracks);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (artwork != null ? artwork.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof PlaylistDTO)) {
-            return false;
-        }
-        PlaylistDTO other = (PlaylistDTO) obj;
-        return Objects.equals(artwork, other.artwork) && Objects.equals(description, other.description)
-                && id == other.id && Objects.equals(name, other.name) && Objects.equals(tracks, other.tracks);
+    public String toString() {
+        return "PlaylistDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", artwork='" + artwork + '\'' +
+                ", tracks=" + tracks +
+                '}';
     }
 
 }
