@@ -82,7 +82,7 @@ let fill = (albumJSON, fillTracks, fillArtists) => {
         for (let i = 0; i < albumJSON.artists.length; i++) {
             let a = document.createElement('a');
             a.setAttribute('href', "/artists?artist_id=" + albumJSON.artists[i].id)
-            a.innerHTML = albumJSON.artists[i].name;
+            a.innerHTML = albumJSON.artists[i].name+"&nbsp;";
             artists.append(a)
         }
     }
